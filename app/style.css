@@ -1,0 +1,57 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+div {
+  box-sizing: border-box;
+}
+
+.code::selection {
+  background-color: transparent;
+}
+
+.search {
+  padding: 20px 10px;
+  font-size: 14px;
+  width: 100%;
+  border: 0;
+  background: #f7f7f7;
+  border-bottom: 1px solid #f0f0f0;
+  -webkit-appearance: textfield;
+}
+
+.search:focus {
+  background: #fff;
+  outline: none;
+}
+
+.result {
+  float: left;
+  font-size: 16px;
+  padding: 5px;
+  width: 33.3%;
+}
+
+.code {
+  font-family: "Source Sans Pro";
+  width: 100%;
+  display: inline-block;
+  border: 0;
+  padding: 5px 15px;
+  padding-left: 35px;
+  font-size: 13px;
+}
+
+.code:focus {
+  outline: none;
+  background-color: #08c;
+  color: #fff;
+  border-radius: 30px;
+}
+
+.emoji {
+  margin-left: 10px;
+  position: absolute;
+  font-family: AppleColorEmoji;
+}
