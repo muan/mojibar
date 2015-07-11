@@ -1,10 +1,20 @@
 var emojis = require('emojilib')
+var ipc = require('ipc')
 var index = buildIndex(emojis)
 var searchInput = document.querySelector('.js-search')
 
 searchInput.focus()
-searchInput.addEventListener('keyup', function() {
-  search(this.value)
+searchInput.addEventListener('keypress', function (evt) {
+  var isWord = !!String.fromCharCode(evt.charCode).match(/\w/)
+  if(isWord) {
+    search(this.value)
+  }
+})
+
+document.addEventListener('keyup', function (evt) {
+  if (evt.keyCode === 27) {
+    ipc.send('abort')
+  }
 })
 
 function search (query) {
