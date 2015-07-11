@@ -43,9 +43,7 @@ document.addEventListener('keypress', function (evt) {
 })
 
 function search (query) {
-  document.querySelector('.js-outcome').innerHTML =
-
-  (Object.keys(index).filter(function matchQuery (keyword) {
+  var results = (Object.keys(index).filter(function matchQuery (keyword) {
     return keyword.match(query)
   })).map(function(keyword) {
     return index[keyword]
@@ -57,6 +55,8 @@ function search (query) {
     result += '<input readonly type="text" data-char="' + unicode + '" class="code" value=":' + name + ':"></div>'
     return result
   }).join('')
+
+  document.querySelector('.js-outcome').innerHTML = results
 }
 
 function buildIndex (emojis) {
