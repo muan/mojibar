@@ -9,11 +9,8 @@ var searchInput = document.querySelector('.js-search')
 // - pagination?
 
 searchInput.focus()
-searchInput.addEventListener('keypress', function (evt) {
-  var isWord = !!String.fromCharCode(evt.charCode).match(/\w/)
-  if(isWord) {
-    search(this.value)
-  }
+searchInput.addEventListener('input', function (evt) {
+  search(this.value)
 })
 
 document.addEventListener('keyup', function (evt) {
@@ -68,4 +65,9 @@ function buildIndex (emojis) {
     })
   })
   return keywords
+}
+
+function isWord (charCode) {
+  var word = String.fromCharCode(charCode).match(/\w/)
+  return !!word ? word : false
 }
