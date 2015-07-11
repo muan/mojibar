@@ -1,0 +1,24 @@
+{
+  "name": "mojibar",
+  "version": "0.0.1",
+  "description": ":smile::beer:",
+  "main": "index.js",
+  "dependencies": {
+    "emojilib": "0.0.4",
+    "menubar": "^2.0.14"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muan/mojibar.git"
+  },
+  "author": "Mu-An Chiou <me@muanchiou.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/muan/mojibar/issues"
+  },
+  "homepage": "https://github.com/muan/mojibar#readme"
+}
