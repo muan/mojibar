@@ -3,6 +3,11 @@ var ipc = require('ipc')
 var index = buildIndex(emojis)
 var searchInput = document.querySelector('.js-search')
 
+// todo
+// - up/down/left/right key navigation
+// - pagination?
+// - copying unicode char
+
 searchInput.focus()
 searchInput.addEventListener('keypress', function (evt) {
   var isWord = !!String.fromCharCode(evt.charCode).match(/\w/)
