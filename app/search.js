@@ -12,7 +12,9 @@ searchInput.addEventListener('keypress', function (evt) {
 })
 
 document.addEventListener('keyup', function (evt) {
-  if (evt.keyCode === 27) {
+  if (evt.keyCode === 191) {
+    searchInput.select()
+  } else if (evt.keyCode === 27) {
     ipc.send('abort')
   }
 })
