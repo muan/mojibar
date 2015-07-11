@@ -33,6 +33,15 @@ document.addEventListener('keyup', function (evt) {
   }
 })
 
+document.addEventListener('keypress', function (evt) {
+  // if typing while navigatin, just type into the search box!
+  var word = isWord(evt.charCode)
+  if (word && evt.target.className === "code") {
+    searchInput.focus()
+    searchInput.value = word
+  }
+})
+
 function search (query) {
   document.querySelector('.js-outcome').innerHTML =
 
