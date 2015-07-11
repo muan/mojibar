@@ -3,9 +3,14 @@ var clipboard = require('clipboard')
 var ipc = require('ipc')
 var index = buildIndex(emojis)
 var searchInput = document.querySelector('.js-search')
+var directions = {
+  37: "left",
+  38: "up",
+  39: "right",
+  40: "down"
+}
 
 // todo
-// - up/down/left/right key navigation
 // - pagination?
 
 searchInput.focus()
@@ -14,16 +19,21 @@ searchInput.addEventListener('input', function (evt) {
 })
 
 document.addEventListener('keyup', function (evt) {
-  if (evt.keyCode === 13 && evt.target.className === "code") {
-    // on enter: copy data and exit
-    if (evt.shiftKey) {
-      var data = evt.target.dataset.char
-    } else {
-      var data = evt.target.value
-    }
-    clipboard.writeText(data)
+  if (evt.target.className === "code") {
+    if (evt.keyCode === 13) {
+      // on enter: copy data and exit
+      if (evt.shiftKey) {
+        var data = evt.target.dataset.char
+      } else {
+        var data = evt.target.value
+      }
+      clipboard.writeText(data)
 
-    ipc.send('abort')
+      ipc.send('abort')
+    } else if (Object.keys(directions).indexOf(evt.keyCode.toString()) >= 0) {
+      // on navigation, navigate
+      jumpto(directions[evt.keyCode])
+    }
   } else if (evt.keyCode === 191) {
     // on `/`: focus on the search field
     searchInput.select()
@@ -80,4 +90,33 @@ function buildIndex (emojis) {
 function isWord (charCode) {
   var word = String.fromCharCode(charCode).match(/\w/)
   return !!word ? word : false
+}
+
+function jumpto (direction) {
+  var all = document.getElementsByClassName('code')
+  var focusedElement = document.querySelector('.code:focus')
+  var nodeIndex = Array.prototype.indexOf.call(all, focusedElement)
+  var resultPerRow = 3
+
+  if (direction === 'up') {
+    var newTarget = nodeIndex - 3
+  } else if (direction === 'down') {
+    var newTarget = nodeIndex + 3
+  } else if (direction === 'left') {
+    if ((nodeIndex+1)%3 === 1) {
+      var newTarget = nodeIndex + 2
+    } else {
+      var newTarget = nodeIndex - 1
+    }
+  } else if (direction === 'right') {
+    if ((nodeIndex+1)%3 === 0) {
+      var newTarget = nodeIndex - 2
+    } else {
+      var newTarget = nodeIndex + 1
+    }
+  }
+
+  if (newTarget < 0) newTarget = 0
+  if (newTarget >= all.length - 1) newTarget = all.length - 1
+  all[newTarget].focus()
 }
