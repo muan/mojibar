@@ -64,6 +64,7 @@ function buildIndex (emojis) {
   Object.keys(emojis).map(function (name) {
     var words = emojis[name]["keywords"]
     words.push(name)
+    words.push(emojis[name]["category"])
 
     words.forEach(function(word) {
       if (keywords[word] && keywords[word].indexOf(name) < 0) {
