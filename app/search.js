@@ -26,9 +26,9 @@ document.addEventListener('keyup', function (evt) {
     if (evt.keyCode === 13) {
       // on enter: copy data and exit
       if (evt.shiftKey) {
-        var data = evt.target.dataset.char
-      } else {
         var data = evt.target.value
+      } else {
+        var data = evt.target.dataset.char
       }
       clipboard.writeText(data)
 

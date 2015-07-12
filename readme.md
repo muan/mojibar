@@ -17,10 +17,10 @@ Open app.
 Navigate between emojis.
 
 `enter`<br>
-(when focused on an emoji) Copy emoji code and exit. For example: `:poop:`.
+(when focused on an emoji) Copy emoji unicode char and exit. For example: `💩`.
 
 `shift + enter`<br>
-(when focused on an emoji) Copy emoji unicode char and exit. For example: `💩`.
+(when focused on an emoji) Copy emoji code and exit. For example: `:poop:`.
 
 `/`<br>
 Jump to the search field.
