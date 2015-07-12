@@ -1,6 +1,7 @@
 body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 div {
@@ -26,6 +27,12 @@ div {
   outline: none;
 }
 
+.results {
+  height: 115px;
+  overflow: hidden;
+  position: relative;
+}
+
 .result {
   float: left;
   font-size: 16px;
@@ -37,17 +44,16 @@ div {
   font-family: "Source Sans Pro";
   width: 100%;
   display: inline-block;
-  border: 0;
+  border: 1px solid transparent;
   padding: 5px 15px;
   padding-left: 35px;
   font-size: 13px;
+  border-radius: 30px;
 }
 
 .code:focus {
   outline: none;
-  background-color: #08c;
-  color: #fff;
-  border-radius: 30px;
+  border-color: #08c;
 }
 
 .emoji {

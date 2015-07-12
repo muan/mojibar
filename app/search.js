@@ -36,11 +36,13 @@ document.addEventListener('keyup', function (evt) {
     } else if (Object.keys(directions).indexOf(evt.keyCode.toString()) >= 0) {
       // on navigation, navigate
       jumpto(directions[evt.keyCode])
+    } else if (evt.keyCode === 191) {
+      // on `/`: focus on the search field
+      searchInput.select()
     }
-  } else if (evt.keyCode === 191) {
-    // on `/`: focus on the search field
-    searchInput.select()
-  } else if (evt.keyCode === 27) {
+  }
+
+  if (evt.keyCode === 27) {
     // on escape: exit
     ipc.send('abort')
   }
@@ -69,7 +71,7 @@ function search (query) {
     return result
   }).join('')
 
-  document.querySelector('.js-outcome').innerHTML = results
+  document.querySelector('.js-results').innerHTML = results
 }
 
 function buildIndex (emojis) {
@@ -121,5 +123,8 @@ function jumpto (direction) {
 
   if (newTarget < 0) newTarget = 0
   if (newTarget >= all.length - 1) newTarget = all.length - 1
-  if (all[newTarget]) all[newTarget].focus()
+  if (all[newTarget]) {
+    all[newTarget].focus()
+    all[newTarget].scrollIntoViewIfNeeded()
+  }
 }
