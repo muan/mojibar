@@ -1,6 +1,6 @@
 # Mojibar
 
-![image](https://cloud.githubusercontent.com/assets/1153134/8635572/9779af4e-27dd-11e5-9c81-80fa3d9a195a.png)
+![screenshot](https://cloud.githubusercontent.com/assets/1153134/8635921/b841261c-27f6-11e5-950a-fb820d1218f0.png)
 
 A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 
