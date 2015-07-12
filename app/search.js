@@ -44,13 +44,13 @@ document.addEventListener('keyup', function (evt) {
     } else if (Object.keys(directions).indexOf(evt.keyCode.toString()) >= 0) {
       // on navigation, navigate
       jumpto(directions[evt.keyCode])
-    } else if (evt.keyCode === 191) {
-      // on `/`: focus on the search field
-      searchInput.select()
     }
   }
 
-  if (evt.keyCode === 27) {
+  if (evt.keyCode === 191) {
+    // on `/`: focus on the search field
+    searchInput.select()
+  } else if (evt.keyCode === 27) {
     // on escape: exit
     ipc.send('abort')
   }
