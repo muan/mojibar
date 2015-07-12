@@ -8,6 +8,13 @@ A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 
 :construction:
 
+```
+$ git clone https://github.com/muan/mojibar.git
+$ cd mojibar
+$ npm install
+$ npm run app
+```
+
 ## Usage
 
 `ctrl + shift + space`<br>
