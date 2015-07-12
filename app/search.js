@@ -14,6 +14,7 @@ var directions = {
 // - fix click/shortcut window positioning
 
 searchInput.focus()
+search('')
 searchInput.addEventListener('input', function (evt) {
   search(this.value)
 })
@@ -71,6 +72,8 @@ function search (query) {
     return index[keyword]
   }).join().split(',').filter(function filterUniqueResults (emoji, pos, arr) {
     return emoji && arr.indexOf(emoji) === pos
+  }).sort(function sortResults (a, b) {
+      return emojis.keys.indexOf(a) - emojis.keys.indexOf(b)
   }).map(function generateMarkup (name) {
     var unicode = (emojis[name]['char'] || '--')
     var result = '<div class="result"><span class="emoji">' + unicode + '</span>'
@@ -96,12 +99,6 @@ function buildIndex (emojis) {
       } else if (!keywords[word]) {
         keywords[word] = [name]
       }
-    })
-  })
-
-  Object.keys(keywords).forEach(function sort (word) {
-    keywords[word] = keywords[word].sort(function sortResults (a, b) {
-      return emojis.keys.indexOf(a) - emojis.keys.indexOf(b)
     })
   })
 
