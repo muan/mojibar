@@ -1,10 +1,16 @@
 # Mojibar [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 
-![screenshot](https://cloud.githubusercontent.com/assets/1153134/8635921/b841261c-27f6-11e5-950a-fb820d1218f0.png)
-
 A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 
+![screenshot](https://cloud.githubusercontent.com/assets/1153134/8635921/b841261c-27f6-11e5-950a-fb820d1218f0.png)
+
 ## Install
+
+### Download
+
+[Download the latest version for Mac on the releases page](https://github.com/muan/mojibar/releases).
+
+### Build
 
 :construction:
 
@@ -15,7 +21,7 @@ $ npm install
 $ npm run app
 ```
 
-At the moment you'd also need electron-prebuilt to run the app, so if you don't have it, do this:
+If you don't have `electron-prebuilt`, do this:
 
 ```
 $ npm install electron-prebuilt -g
