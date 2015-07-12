@@ -4,10 +4,10 @@ var ipc = require('ipc')
 var index = buildIndex(emojis)
 var searchInput = document.querySelector('.js-search')
 var directions = {
-  37: "left",
-  38: "up",
-  39: "right",
-  40: "down"
+  37: 'left',
+  38: 'up',
+  39: 'right',
+  40: 'down'
 }
 
 // todo
@@ -19,10 +19,10 @@ searchInput.addEventListener('input', function (evt) {
 })
 
 document.addEventListener('keyup', function (evt) {
-  if (evt.target.className.match("js-search") && evt.keyCode === 40) {
+  if (evt.target.className.match('js-search') && evt.keyCode === 40) {
     // on down: focus on the first thing!
     jumpto('up')
-  } else if (evt.target.className === "code") {
+  } else if (evt.target.className === 'code') {
     if (evt.keyCode === 32) {
       if (evt.shiftKey) {
         jumpto('prev')
@@ -30,11 +30,12 @@ document.addEventListener('keyup', function (evt) {
         jumpto('next')
       }
     } else if (evt.keyCode === 13) {
+      var data
       // on enter: copy data and exit
       if (evt.shiftKey) {
-        var data = evt.target.value
+        data = evt.target.value
       } else {
-        var data = evt.target.dataset.char
+        data = evt.target.dataset.char
       }
       clipboard.writeText(data)
 
@@ -57,7 +58,7 @@ document.addEventListener('keyup', function (evt) {
 document.addEventListener('keypress', function (evt) {
   // if typing while navigatin, just type into the search box!
   var word = isWord(evt.charCode)
-  if (word && evt.target.className === "code") {
+  if (word && evt.target.className === 'code') {
     searchInput.focus()
     searchInput.value = word
   }
@@ -66,7 +67,7 @@ document.addEventListener('keypress', function (evt) {
 function search (query) {
   var results = (Object.keys(index).filter(function matchQuery (keyword) {
     return keyword.match(query)
-  })).map(function(keyword) {
+  })).map(function (keyword) {
     return index[keyword]
   }).join().split(',').filter(function filterUniqueResults (emoji, pos, arr) {
     return emoji && arr.indexOf(emoji) === pos
@@ -83,11 +84,11 @@ function search (query) {
 function buildIndex (emojis) {
   var keywords = {}
   Object.keys(emojis).map(function (name) {
-    var words = emojis[name]["keywords"]
+    var words = emojis[name]['keywords']
     words.push(name)
-    words.push(emojis[name]["category"])
+    words.push(emojis[name]['category'])
 
-    words.forEach(function(word) {
+    words.forEach(function (word) {
       if (keywords[word] && keywords[word].indexOf(name) < 0) {
         keywords[word].push(name)
       } else {
@@ -100,7 +101,7 @@ function buildIndex (emojis) {
 
 function isWord (charCode) {
   var word = String.fromCharCode(charCode).match(/\w/)
-  return !!word ? word : false
+  return Boolean(word) ? word : false
 }
 
 function jumpto (destination) {
@@ -108,27 +109,28 @@ function jumpto (destination) {
   var focusedElement = document.querySelector('.code:focus')
   var nodeIndex = Array.prototype.indexOf.call(all, focusedElement)
   var resultPerRow = 3
+  var newTarget
 
   if (destination === 'up') {
-    var newTarget = nodeIndex - 3
+    newTarget = nodeIndex - 3
   } else if (destination === 'down') {
-    var newTarget = nodeIndex + 3
+    newTarget = nodeIndex + 3
   } else if (destination === 'left') {
-    if ((nodeIndex+1)%3 === 1) {
-      var newTarget = nodeIndex + 2
+    if ((nodeIndex + 1) % 3 === 1) {
+      newTarget = nodeIndex + 2
     } else {
-      var newTarget = nodeIndex - 1
+      newTarget = nodeIndex - 1
     }
   } else if (destination === 'right') {
-    if ((nodeIndex+1)%3 === 0) {
-      var newTarget = nodeIndex - 2
+    if ((nodeIndex + 1) % 3 === 0) {
+      newTarget = nodeIndex - 2
     } else {
-      var newTarget = nodeIndex + 1
+      newTarget = nodeIndex + 1
     }
   } else if (destination === 'next') {
-    var newTarget = nodeIndex + resultPerRow*2
+    newTarget = nodeIndex + resultPerRow * 2
   } else if (destination === 'prev') {
-    var newTarget = nodeIndex - resultPerRow*2
+    newTarget = nodeIndex - resultPerRow * 2
   }
 
   if (newTarget < 0) newTarget = 0
