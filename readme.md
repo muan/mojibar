@@ -13,7 +13,7 @@ A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 `ctrl + shift + space`<br>
 Open app.
 
-`🔼🔽◀️▶️`<br>
+`⬆️⬇️⬅️➡`<br>
 Navigate between emojis.
 
 `enter`<br>
