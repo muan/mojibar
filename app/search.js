@@ -87,6 +87,7 @@ function buildIndex (emojis) {
   emojis.keys.forEach(function (name) {
     var words = emojis[name]['keywords']
     words.push(name)
+    words.push(emojis[name]['char'])
     words.push(emojis[name]['category'])
 
     words.forEach(function (word) {
