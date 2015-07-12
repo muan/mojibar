@@ -24,10 +24,16 @@ Open app.
 Navigate between emojis.
 
 <kbd>enter</kbd><br>
-(when focused on an emoji) Copy emoji unicode char and exit. For example: `💩`.
+Copy emoji unicode char and exit. For example: `💩`.
 
 <kbd>shift + enter</kbd><br>
-(when focused on an emoji) Copy emoji code and exit. For example: `:poop:`.
+Copy emoji code and exit. For example: `:poop:`.
+
+<kbd>space</kbd><br>
+Next 6~9 results.
+
+<kbd>shift + space</kbd><br>
+Previous 6~9 results.
 
 <kbd>/</kbd><br>
 Jump to the search field.
