@@ -41,7 +41,7 @@ div {
 }
 
 .code {
-  font-family: "Source Sans Pro";
+  font-family: "Source Sans Pro", sans-serif;
   width: 100%;
   display: inline-block;
   border: 1px solid transparent;
