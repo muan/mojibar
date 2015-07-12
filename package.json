@@ -1,7 +1,7 @@
 {
   "name": "mojibar",
-  "version": "0.0.1",
-  "description": ":smile::beer:",
+  "version": "1.0.0",
+  "description": "A menubar app adaptation of Emoji searcher.",
   "main": "index.js",
   "dependencies": {
     "emojilib": "0.1.0",
