@@ -4,7 +4,7 @@
   "description": ":smile::beer:",
   "main": "index.js",
   "dependencies": {
-    "emojilib": "0.0.4",
+    "emojilib": "0.1.0",
     "menubar": "^2.0.14"
   },
   "devDependencies": {},

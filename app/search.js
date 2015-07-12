@@ -83,7 +83,7 @@ function search (query) {
 
 function buildIndex (emojis) {
   var keywords = {}
-  Object.keys(emojis).map(function (name) {
+  emojis.keys.forEach(function (name) {
     var words = emojis[name]['keywords']
     words.push(name)
     words.push(emojis[name]['category'])
@@ -91,11 +91,18 @@ function buildIndex (emojis) {
     words.forEach(function (word) {
       if (keywords[word] && keywords[word].indexOf(name) < 0) {
         keywords[word].push(name)
-      } else {
+      } else if (!keywords[word]) {
         keywords[word] = [name]
       }
     })
   })
+
+  Object.keys(keywords).forEach(function sort (word) {
+    keywords[word] = keywords[word].sort(function sortResults (a, b) {
+      return emojis.keys.indexOf(a) > emojis.keys.indexOf(b) ? 1 : -1
+    })
+  })
+
   return keywords
 }
 
