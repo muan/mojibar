@@ -28,4 +28,9 @@ Jump to the search field.
 `escape`<br>
 Exit.
 
+## Built with
+
+- [maxogden/menubar](https://github.com/maxogden/menubar)
+- [muan/emojilib](https://github.com/muan/emojilib)
+
 ## :heart:
