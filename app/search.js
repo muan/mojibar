@@ -19,7 +19,10 @@ searchInput.addEventListener('input', function (evt) {
 })
 
 document.addEventListener('keyup', function (evt) {
-  if (evt.target.className === "code") {
+  if (evt.target.className.match("js-search") && evt.keyCode === 40) {
+    // on down: focus on the first thing!
+    jumpto('up')
+  } else if (evt.target.className === "code") {
     if (evt.keyCode === 13) {
       // on enter: copy data and exit
       if (evt.shiftKey) {
@@ -118,5 +121,5 @@ function jumpto (direction) {
 
   if (newTarget < 0) newTarget = 0
   if (newTarget >= all.length - 1) newTarget = all.length - 1
-  all[newTarget].focus()
+  if (all[newTarget]) all[newTarget].focus()
 }
