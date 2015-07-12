@@ -8,12 +8,19 @@ div {
   box-sizing: border-box;
 }
 
+.prepend-mag {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-family: AppleColorEmoji;
+}
+
 .code::selection {
   background-color: transparent;
 }
 
 .search {
-  padding: 20px 10px;
+  padding: 20px 10px 20px 35px;
   font-size: 14px;
   width: 100%;
   border: 0;
