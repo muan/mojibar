@@ -11,7 +11,7 @@ var directions = {
 }
 
 // todo
-// - pagination?
+// - fix click/shortcut window positioning
 
 searchInput.focus()
 searchInput.addEventListener('input', function (evt) {
@@ -23,7 +23,13 @@ document.addEventListener('keyup', function (evt) {
     // on down: focus on the first thing!
     jumpto('up')
   } else if (evt.target.className === "code") {
-    if (evt.keyCode === 13) {
+    if (evt.keyCode === 32) {
+      if (evt.shiftKey) {
+        jumpto('prev')
+      } else {
+        jumpto('next')
+      }
+    } else if (evt.keyCode === 13) {
       // on enter: copy data and exit
       if (evt.shiftKey) {
         var data = evt.target.value
@@ -97,28 +103,32 @@ function isWord (charCode) {
   return !!word ? word : false
 }
 
-function jumpto (direction) {
+function jumpto (destination) {
   var all = document.getElementsByClassName('code')
   var focusedElement = document.querySelector('.code:focus')
   var nodeIndex = Array.prototype.indexOf.call(all, focusedElement)
   var resultPerRow = 3
 
-  if (direction === 'up') {
+  if (destination === 'up') {
     var newTarget = nodeIndex - 3
-  } else if (direction === 'down') {
+  } else if (destination === 'down') {
     var newTarget = nodeIndex + 3
-  } else if (direction === 'left') {
+  } else if (destination === 'left') {
     if ((nodeIndex+1)%3 === 1) {
       var newTarget = nodeIndex + 2
     } else {
       var newTarget = nodeIndex - 1
     }
-  } else if (direction === 'right') {
+  } else if (destination === 'right') {
     if ((nodeIndex+1)%3 === 0) {
       var newTarget = nodeIndex - 2
     } else {
       var newTarget = nodeIndex + 1
     }
+  } else if (destination === 'next') {
+    var newTarget = nodeIndex + resultPerRow*2
+  } else if (destination === 'prev') {
+    var newTarget = nodeIndex - resultPerRow*2
   }
 
   if (newTarget < 0) newTarget = 0
