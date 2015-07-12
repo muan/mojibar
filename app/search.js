@@ -79,7 +79,7 @@ function search (query) {
   }).join('')
 
   document.querySelector('.js-results').innerHTML = results
-  if(document.querySelector('.code')) document.querySelector('.code').scrollIntoViewIfNeeded()
+  if (document.querySelector('.code')) document.querySelector('.code').scrollIntoViewIfNeeded()
 }
 
 function buildIndex (emojis) {

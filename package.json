@@ -7,11 +7,15 @@
     "emojilib": "0.1.0",
     "menubar": "^2.0.14"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "electron-packager": "^5.0.1",
+    "electron-prebuilt": "^0.29.2",
+    "standard": "^4.5.3"
+  },
   "scripts": {
     "app": "electron .",
     "build": "electron-packager . Mojibar --platform=darwin --arch=x64 --version=0.29.2",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "standard index.js app/search.js"
   },
   "repository": {
     "type": "git",
