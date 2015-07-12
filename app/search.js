@@ -99,7 +99,7 @@ function buildIndex (emojis) {
 
   Object.keys(keywords).forEach(function sort (word) {
     keywords[word] = keywords[word].sort(function sortResults (a, b) {
-      return emojis.keys.indexOf(a) > emojis.keys.indexOf(b) ? 1 : -1
+      return emojis.keys.indexOf(a) - emojis.keys.indexOf(b)
     })
   })
 
