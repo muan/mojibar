@@ -2,7 +2,7 @@
 
 A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 
-![screenshot](https://cloud.githubusercontent.com/assets/1153134/8635921/b841261c-27f6-11e5-950a-fb820d1218f0.png)
+![screenshot](https://cloud.githubusercontent.com/assets/6844785/8640713/c00c690e-28b6-11e5-9f75-021f4971b2ef.gif)
 
 ## Install
 
