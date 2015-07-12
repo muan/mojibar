@@ -17,17 +17,23 @@ $ npm run app
 
 ## Usage
 
-<kbd>ctrl + shift + space</kbd> Open app.
+<kbd>ctrl + shift + space</kbd><br>
+Open app.
 
-<kbd>👆/👇/👈/👉</kbd> Navigate between emojis.
+<kbd>👆/👇/👈/👉</kbd><br>
+Navigate between emojis.
 
-<kbd>enter</kbd> (when focused on an emoji) Copy emoji unicode char and exit. For example: `💩`.
+<kbd>enter</kbd><br>
+(when focused on an emoji) Copy emoji unicode char and exit. For example: `💩`.
 
-<kbd>shift + enter</kbd> (when focused on an emoji) Copy emoji code and exit. For example: `:poop:`.
+<kbd>shift + enter</kbd><br>
+(when focused on an emoji) Copy emoji code and exit. For example: `:poop:`.
 
-<kbd>/</kbd> Jump to the search field.
+<kbd>/</kbd><br>
+Jump to the search field.
 
-<kbd>esc</kbd> Exit.
+<kbd>esc</kbd><br>
+Exit.
 
 ## Built with
 
