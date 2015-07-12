@@ -1,4 +1,4 @@
-# Mojibar
+# Mojibar [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 
 ![screenshot](https://cloud.githubusercontent.com/assets/1153134/8635921/b841261c-27f6-11e5-950a-fb820d1218f0.png)
 
