@@ -15,6 +15,12 @@ $ npm install
 $ npm run app
 ```
 
+At the moment you'd also need electron-prebuilt to run the app, so if you don't have it, do this:
+
+```
+$ npm install electron-prebuilt -g
+```
+
 ## Usage
 
 <kbd>ctrl + shift + space</kbd><br>
