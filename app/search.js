@@ -47,7 +47,7 @@ document.addEventListener('keyup', function (evt) {
     }
   }
 
-  if (evt.keyCode === 191) {
+  if (!evt.target.className.match('search') && evt.keyCode === 191 && !evt.shiftKey && !evt.metaKey && !evt.ctrlKey) {
     // on `/`: focus on the search field
     searchInput.select()
   } else if (evt.keyCode === 27) {
