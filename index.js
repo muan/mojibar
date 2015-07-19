@@ -62,6 +62,11 @@ var template = [
         selector: 'selectAll:'
       },
       {
+        label: 'Quit App',
+        accelerator: 'Command+Q',
+        selector: 'terminate:'
+      },
+      {
         label: 'Toggle DevTools',
         accelerator: 'Alt+Command+I',
         click: function () { mb.window.toggleDevTools() }
