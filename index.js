@@ -2,6 +2,7 @@ var menubar = require('menubar')
 var ipc = require('ipc')
 var globalShortcut = require('global-shortcut')
 var mb = menubar({ dir: __dirname + '/app', height: 175, x: 0, y: 0 })
+var Menu = require('menu')
 
 // Register a 'ctrl+shift+space' shortcut listener.
 mb.app.on('ready', function () {
@@ -24,4 +25,53 @@ ipc.on('abort', function () {
   mb.emit('hide')
   mb.window.hide()
   mb.emit('after-hide')
+})
+
+var template = [
+  {
+    label: 'Mojibar',
+    submenu: [
+      {
+        label: 'Undo',
+        accelerator: 'Command+Z',
+        selector: 'undo:'
+      },
+      {
+        label: 'Redo',
+        accelerator: 'Shift+Command+Z',
+        selector: 'redo:'
+      },
+      {
+        label: 'Cut',
+        accelerator: 'Command+X',
+        selector: 'cut:'
+      },
+      {
+        label: 'Copy',
+        accelerator: 'Command+C',
+        selector: 'copy:'
+      },
+      {
+        label: 'Paste',
+        accelerator: 'Command+V',
+        selector: 'paste:'
+      },
+      {
+        label: 'Select All',
+        accelerator: 'Command+A',
+        selector: 'selectAll:'
+      },
+      {
+        label: 'Toggle DevTools',
+        accelerator: 'Alt+Command+I',
+        click: function () { mb.window.toggleDevTools() }
+      }
+    ]
+  }
+]
+
+mb.on('ready', function ready () {
+  // Build default menu for text editing and devtools. (gone since electron 0.25.2)
+  menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
 })
