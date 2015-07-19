@@ -19,7 +19,7 @@ searchInput.addEventListener('input', function (evt) {
   search(this.value)
 })
 
-document.addEventListener('keyup', function (evt) {
+document.addEventListener('keydown', function (evt) {
   if (evt.target.className.match('js-search') && evt.keyCode === 40) {
     // on down: focus on the first thing!
     jumpto('up')
@@ -50,6 +50,7 @@ document.addEventListener('keyup', function (evt) {
   if (!evt.target.className.match('search') && evt.keyCode === 191 && !evt.shiftKey && !evt.metaKey && !evt.ctrlKey) {
     // on `/`: focus on the search field
     searchInput.select()
+    evt.preventDefault()
   } else if (evt.keyCode === 27) {
     // on escape: exit
     ipc.send('abort')
