@@ -72,6 +72,6 @@ var template = [
 
 mb.on('ready', function ready () {
   // Build default menu for text editing and devtools. (gone since electron 0.25.2)
-  menu = Menu.buildFromTemplate(template)
+  var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 })
