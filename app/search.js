@@ -73,7 +73,7 @@ function search (query) {
   }).join().split(',').filter(function filterUniqueResults (emoji, pos, arr) {
     return emoji && arr.indexOf(emoji) === pos
   }).sort(function sortResults (a, b) {
-      return emojis.keys.indexOf(a) - emojis.keys.indexOf(b)
+    return emojis.keys.indexOf(a) - emojis.keys.indexOf(b)
   }).map(function generateMarkup (name) {
     var unicode = (emojis[name]['char'] || '--')
     var result = '<div class="result"><span class="emoji">' + unicode + '</span>'
