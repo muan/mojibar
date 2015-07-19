@@ -23,6 +23,7 @@ document.addEventListener('keydown', function (evt) {
   if (evt.target.className.match('js-search') && evt.keyCode === 40) {
     // on down: focus on the first thing!
     jumpto('up')
+    evt.preventDefault()
   } else if (evt.target.className === 'code') {
     if (evt.keyCode === 32) {
       if (evt.shiftKey) {
