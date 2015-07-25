@@ -1,7 +1,7 @@
 var menubar = require('menubar')
 var ipc = require('ipc')
 var globalShortcut = require('global-shortcut')
-var mb = menubar({ dir: __dirname + '/app', height: 175, x: 0, y: 0 })
+var mb = menubar({ dir: __dirname + '/app', height: 175, x: 0, y: 0, icon: __dirname + '/app/Icon-Template.png' })
 var Menu = require('menu')
 
 // Register a 'ctrl+shift+space' shortcut listener.
