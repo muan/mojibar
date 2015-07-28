@@ -1,14 +1,18 @@
 var menubar = require('menubar')
 var ipc = require('ipc')
 var globalShortcut = require('global-shortcut')
-var mb = menubar({ dir: __dirname + '/app', height: 175, x: 0, y: 0, icon: __dirname + '/app/Icon-Template.png' })
+var mb = menubar({ dir: __dirname + '/app', width: 400, height: 175, x: 0, y: 0, icon: __dirname + '/app/Icon-Template.png' })
 var Menu = require('menu')
 
 // Register a 'ctrl+shift+space' shortcut listener.
 mb.app.on('ready', function () {
+  var electronScreen = require('screen')
+  var bounds = electronScreen.getDisplayNearestPoint(electronScreen.getCursorScreenPoint()).workArea
+  bounds.x = 520
+
   var ret = globalShortcut.register('ctrl+shift+space', function () {
     // It gets angry not knowing where to put the window if bounds not passed
-    mb.tray.emit('clicked', null, {x: 0, y: 0, width: 0, height: 0})
+    mb.tray.emit('clicked', null, bounds)
   })
 
   if (!ret) {
