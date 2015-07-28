@@ -4,7 +4,7 @@
   "description": "A menubar app adaptation of Emoji searcher.",
   "main": "index.js",
   "dependencies": {
-    "emojilib": "0.1.0",
+    "emojilib": "1.0.0",
     "menubar": "^2.0.17"
   },
   "devDependencies": {
