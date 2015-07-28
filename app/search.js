@@ -2,6 +2,7 @@ var emojis = require('emojilib')
 var clipboard = require('clipboard')
 var ipc = require('ipc')
 var index = buildIndex(emojis)
+var searching = false
 var searchInput = document.querySelector('.js-search')
 var directions = {
   37: 'left',
@@ -68,23 +69,28 @@ document.addEventListener('keypress', function (evt) {
 })
 
 function search (query) {
-  var results = (Object.keys(index).filter(function matchQuery (keyword) {
-    return keyword.match(query)
-  })).map(function (keyword) {
-    return index[keyword]
-  }).join().split(',').filter(function filterUniqueResults (emoji, pos, arr) {
-    return emoji && arr.indexOf(emoji) === pos
-  }).sort(function sortResults (a, b) {
-    return emojis.keys.indexOf(a) - emojis.keys.indexOf(b)
-  }).map(function generateMarkup (name) {
-    var unicode = (emojis[name]['char'] || '--')
-    var result = '<div class="result"><span class="emoji">' + unicode + '</span>'
-    result += '<input readonly type="text" data-char="' + unicode + '" class="code" value=":' + name + ':"></div>'
-    return result
-  }).join('')
+  if (searching) {
+    clearTimeout(searching)
+  }
+  searching = setTimeout(function () {
+    var results = (Object.keys(index).filter(function matchQuery (keyword) {
+      return keyword.match(query)
+    })).map(function (keyword) {
+      return index[keyword]
+    }).join().split(',').filter(function filterUniqueResults (emoji, pos, arr) {
+      return emoji && arr.indexOf(emoji) === pos
+    }).sort(function sortResults (a, b) {
+      return emojis.keys.indexOf(a) - emojis.keys.indexOf(b)
+    }).map(function generateMarkup (name) {
+      var unicode = (emojis[name]['char'] || '--')
+      var result = '<div class="result"><span class="emoji">' + unicode + '</span>'
+      result += '<input readonly type="text" data-char="' + unicode + '" class="code" value=":' + name + ':"></div>'
+      return result
+    }).join('')
 
-  document.querySelector('.js-results').innerHTML = results
-  if (document.querySelector('.code')) document.querySelector('.code').scrollIntoViewIfNeeded()
+    document.querySelector('.js-results').innerHTML = results
+    if (document.querySelector('.code')) document.querySelector('.code').scrollIntoViewIfNeeded()
+  }, 100)
 }
 
 function buildIndex (emojis) {
