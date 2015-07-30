@@ -84,3 +84,8 @@ mb.on('ready', function ready () {
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 })
+
+// Make work across workspaces on Mac
+mb.on('show', function show () {
+  mb.window.setVisibleOnAllWorkspaces(true)
+})
