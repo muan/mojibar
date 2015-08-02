@@ -6,6 +6,10 @@ A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 
 ## Install
 
+Using [Homebrew Cask](http://caskroom.io/)
+
+    brew cask install mojibar
+
 ### Download
 
 [Download the latest version for Mac on the releases page](https://github.com/muan/mojibar/releases).
