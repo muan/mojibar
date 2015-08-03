@@ -4,6 +4,10 @@ body {
   overflow: hidden;
 }
 
+body, input {
+  font-family: "Source Sans Pro", sans-serif;
+}
+
 div {
   box-sizing: border-box;
 }
@@ -48,7 +52,6 @@ div {
 }
 
 .code {
-  font-family: "Source Sans Pro", sans-serif;
   width: 100%;
   display: inline-block;
   border: 1px solid transparent;
