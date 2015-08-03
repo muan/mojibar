@@ -16,23 +16,6 @@ A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 $ brew cask install mojibar
 ```
 
-## Build
-
-:construction:
-
-```
-$ git clone https://github.com/muan/mojibar.git
-$ cd mojibar
-$ npm install
-$ npm run app
-```
-
-If you don't have `electron-prebuilt`, do this:
-
-```
-$ npm install electron-prebuilt -g
-```
-
 ## Usage
 
 <kbd>ctrl + shift + space</kbd><br>
@@ -58,6 +41,23 @@ Jump to the search field.
 
 <kbd>esc</kbd><br>
 Exit.
+
+## Build
+
+:construction:
+
+```
+$ git clone https://github.com/muan/mojibar.git
+$ cd mojibar
+$ npm install
+$ npm run app
+```
+
+If you don't have `electron-prebuilt`, do this:
+
+```
+$ npm install electron-prebuilt -g
+```
 
 ## Built with
 
