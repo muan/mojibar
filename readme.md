@@ -6,15 +6,17 @@ A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 
 ## Install
 
-Using [Homebrew Cask](http://caskroom.io/)
+#### :triangular_flag_on_post: Download and drag
 
-    brew cask install mojibar
+[Download the latest version for Mac on the releases page](https://github.com/muan/mojibar/releases) (and drag into your apps folder.)
 
-### Download
+#### :triangular_flag_on_post: Using [Homebrew Cask](http://caskroom.io/)
 
-[Download the latest version for Mac on the releases page](https://github.com/muan/mojibar/releases).
+```
+$ brew cask install mojibar
+```
 
-### Build
+## Build
 
 :construction:
 
