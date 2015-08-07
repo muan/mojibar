@@ -83,8 +83,8 @@ function search (query) {
       return emojis.keys.indexOf(a) - emojis.keys.indexOf(b)
     }).map(function generateMarkup (name) {
       var unicode = (emojis[name]['char'] || '--')
-      var result = '<div class="result"><span class="emoji">' + unicode + '</span>'
-      result += '<input readonly type="text" data-char="' + unicode + '" class="code" value=":' + name + ':"></div>'
+      var result = '<div class="result"><span class="emoji" aria-hidden="true">' + unicode + '</span>'
+      result += '<input readonly role="menuitemradio" tabindex="1" aria-label="Press enter to copy character, shift + enter to copy emoji code." type="text" data-char="' + unicode + '" class="code" value=":' + name + ':"></div>'
       return result
     }).join('')
 
