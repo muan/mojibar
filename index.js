@@ -8,7 +8,8 @@ var Menu = require('menu')
 mb.app.on('ready', function () {
   var electronScreen = require('screen')
   var bounds = electronScreen.getDisplayNearestPoint(electronScreen.getCursorScreenPoint()).workArea
-  bounds.x = 520
+
+  mb.setOption('x', bounds.width - 400)
 
   var ret = globalShortcut.register('ctrl+shift+space', function () {
     // It gets angry not knowing where to put the window if bounds not passed
