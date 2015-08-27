@@ -42,6 +42,9 @@ Jump to the search field.
 <kbd>esc</kbd><br>
 Exit.
 
+<kbd>command + q</kbd> while open<br>
+Quit Mojibar.
+
 ## Build
 
 :construction:
