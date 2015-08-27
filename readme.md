@@ -42,8 +42,8 @@ Jump to the search field.
 <kbd>esc</kbd><br>
 Exit.
 
-<kbd>command + q</kbd> while open<br>
-Quit Mojibar.
+<kbd>command + q</kbd><br>
+Quit Mojibar (while window is open).
 
 ## Build
 
