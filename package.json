@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "emojilib": "1.0.0",
-    "menubar": "^2.0.17"
+    "menubar": "^2.2.0"
   },
   "devDependencies": {
     "electron-packager": "^5.0.1",
