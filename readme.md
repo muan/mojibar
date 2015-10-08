@@ -10,11 +10,14 @@ A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 
 [Download the latest version for Mac on the releases page](https://github.com/muan/mojibar/releases) (and drag into your apps folder.)
 
-#### :triangular_flag_on_post: Using [Homebrew Cask](http://caskroom.io/)
+#### :triangular_flag_on_post: Install using [Homebrew Cask](http://caskroom.io/)
 
 ```
 $ brew cask install mojibar
 ```
+#### :triangular_flag_on_post: Launch Mojibar
+
+Go into your apps folder and select Mojibar (Mac shortcut: use command-space bar, then type Mojibar in the spotlight search field). Mojibar will display in the menubar at the top right corner of your screen. 
 
 ## Usage
 
