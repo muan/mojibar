@@ -24,11 +24,10 @@ var savePreference = function () {
 
   localStorage.setItem('preference', JSON.stringify(preference))
   applyPreferences(preference)
-  alert('Saved!')
-  togglePreferencePanel()
-
   return false
 }
+
+
 
 if (!localStorage.getItem('preference')) {
   localStorage.setItem('preference', JSON.stringify(defaultPreference))
@@ -42,8 +41,17 @@ if (!localStorage.getItem('preference')) {
 
 applyPreferences(preference)
 
-require('electron').ipcRenderer.on('open-preference', function (event, message) {
+ipc.on('open-preference', function (event, message) {
   togglePreferencePanel()
+})
+
+ipc.on('preference-updated', function (event, result, err) {
+  if (result) {
+    alert('Saved!')
+    togglePreferencePanel()
+  } else {
+    alert('Something went wrong, likely related to keybindings. See http://electron.atom.io/docs/v0.36.5/api/accelerator/ for more.')
+  }
 })
 
 var togglePreferencePanel = function () {

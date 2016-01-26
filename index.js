@@ -91,11 +91,15 @@ mb.on('ready', function ready () {
 var registerShortcut = function (keybinding) {
   globalShortcut.unregisterAll()
 
-  var ret = globalShortcut.register(keybinding, function () {
-    mb.window.isVisible() ? mb.hideWindow() : mb.showWindow()
-  })
+  try {
+    var ret = globalShortcut.register(keybinding, function () {
+      mb.window.isVisible() ? mb.hideWindow() : mb.showWindow()
+    })
+  } catch (err) {
+    mb.window.webContents.send('preference-updated', false)
+  }
 
-  if (!ret) {
-    console.log('registration failed')
+  if (ret) {
+    mb.window.webContents.send('preference-updated', true)
   }
 }
