@@ -2,7 +2,7 @@
 
 A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 
-![screenshot](https://cloud.githubusercontent.com/assets/1153134/8794765/1c246d46-2fb9-11e5-9429-560fa1192b4f.gif)
+![screenshot](https://cloud.githubusercontent.com/assets/1153134/12583324/7756a38a-c485-11e5-9388-3b5c61743905.gif)
 
 ## Install
 
@@ -15,14 +15,18 @@ A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 ```
 $ brew cask install mojibar
 ```
+
 #### :triangular_flag_on_post: Launch Mojibar
 
-Go into your apps folder and select Mojibar (Mac shortcut: use command-space bar, then type Mojibar in the spotlight search field). Mojibar will display in the menubar at the top right corner of your screen. 
+Go into your apps folder and select Mojibar (Mac shortcut: use command-space bar, then type Mojibar in the spotlight search field). Mojibar will display in the menubar at the top right corner of your screen.
 
 ## Usage
 
 <kbd>ctrl + shift + space</kbd><br>
 Open app.
+
+<kbd>cmd + ,</kbd><br>
+Open preference (while window is open).
 
 <kbd>👆/👇/👈/👉</kbd><br>
 Navigate between emojis.
@@ -34,10 +38,10 @@ Copy emoji unicode char and exit. For example: `💩`.
 Copy emoji code and exit. For example: `:poop:`.
 
 <kbd>space</kbd><br>
-Next 6~9 results.
+Next page.
 
 <kbd>shift + space</kbd><br>
-Previous 6~9 results.
+Previous page.
 
 <kbd>/</kbd><br>
 Jump to the search field.
@@ -57,12 +61,6 @@ $ git clone https://github.com/muan/mojibar.git
 $ cd mojibar
 $ npm install
 $ npm run app
-```
-
-If you don't have `electron-prebuilt`, do this:
-
-```
-$ npm install electron-prebuilt -g
 ```
 
 ## Built with
