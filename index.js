@@ -69,7 +69,6 @@ mb.on('ready', function ready () {
   // Build default menu for text editing and devtools. (gone since electron 0.25.2)
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
-  console.log(process.versions.electron)
 
   // Register a 'ctrl+shift+space' shortcut listener.
   var ret = globalShortcut.register('ctrl+shift+space', function () {
