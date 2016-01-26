@@ -20,6 +20,12 @@ searchInput.addEventListener('input', function (evt) {
   search(this.value)
 })
 
+document.addEventListener('mousewheel', function (e) {
+  if (e.deltaY % 1 !== 0) {
+    e.preventDefault()
+  }
+})
+
 document.addEventListener('keydown', function (evt) {
   if (evt.target.className.match('js-search') && evt.keyCode === 40) {
     // on down: focus on the first thing!
