@@ -67,7 +67,6 @@ document.addEventListener('keypress', function (evt) {
   var word = isWord(evt.charCode)
   if (word && evt.target.classList.contains('emoji')) {
     searchInput.focus()
-    searchInput.value = word
   }
 })
 
