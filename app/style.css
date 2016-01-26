@@ -85,12 +85,12 @@ button {
 }
 
 .pref-title {
-  margin: 0 0 5px;
+  margin: 0 0 15px;
   font-size: 16px;
 }
 
 .pref-item {
-  margin-top: 10px;
+  margin-bottom: 10px;
   font-size: 13px;
   display: block;
 }

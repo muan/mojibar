@@ -10,8 +10,8 @@ var preferenceNames = {
   'emoji-size': 'Emoji font size'
 }
 
-var applyPreferences = function (preference) {
-  ipc.send('update-preference', preference)
+var applyPreferences = function (preference, initialization) {
+  ipc.send('update-preference', preference, initialization)
   var style = document.createElement('style')
   style.innerText = '.emoji { font-size: ' + preference['emoji-size'] + 'px; width: ' + (Number(preference['emoji-size']) + 20) + 'px; height: ' + (Number(preference['emoji-size']) + 20) + 'px; }'
   document.body.appendChild(style)
@@ -27,8 +27,6 @@ var savePreference = function () {
   return false
 }
 
-
-
 if (!localStorage.getItem('preference')) {
   localStorage.setItem('preference', JSON.stringify(defaultPreference))
 } else {
@@ -39,16 +37,18 @@ if (!localStorage.getItem('preference')) {
   localStorage.setItem('preference', JSON.stringify(preference))
 }
 
-applyPreferences(preference)
+applyPreferences(preference, true)
 
 ipc.on('open-preference', function (event, message) {
   togglePreferencePanel()
 })
 
-ipc.on('preference-updated', function (event, result, err) {
+ipc.on('preference-updated', function (event, result, initialization) {
   if (result) {
-    alert('Saved!')
-    togglePreferencePanel()
+    if (!initialization) {
+      alert('Saved!')
+      togglePreferencePanel()
+    }
   } else {
     alert('Something went wrong, likely related to keybindings. See http://electron.atom.io/docs/v0.36.5/api/accelerator/ for more.')
   }

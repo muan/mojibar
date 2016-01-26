@@ -1,7 +1,7 @@
 var menubar = require('menubar')
 var ipc = require('electron').ipcMain
 var globalShortcut = require('global-shortcut')
-var mb = menubar({ dir: __dirname + '/app', width: 400, height: 190, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, 'window-position': 'topRight' })
+var mb = menubar({ dir: __dirname + '/app', width: 440, height: 190, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, 'window-position': 'topRight' })
 var Menu = require('menu')
 
 mb.app.on('will-quit', function () {
@@ -18,8 +18,8 @@ ipc.on('abort', function () {
 })
 
 // when receive the abort message, close the app
-ipc.on('update-preference', function (evt, pref) {
-  registerShortcut(pref['open-window-shortcut'])
+ipc.on('update-preference', function (evt, pref, initialization) {
+  registerShortcut(pref['open-window-shortcut'], initialization)
 })
 
 var template = [
@@ -84,11 +84,10 @@ mb.on('ready', function ready () {
   // Build default menu for text editing and devtools. (gone since electron 0.25.2)
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
-  registerShortcut('ctrl+shift+space')
 })
 
 // Register a shortcut listener.
-var registerShortcut = function (keybinding) {
+var registerShortcut = function (keybinding, initialization) {
   globalShortcut.unregisterAll()
 
   try {
@@ -96,10 +95,10 @@ var registerShortcut = function (keybinding) {
       mb.window.isVisible() ? mb.hideWindow() : mb.showWindow()
     })
   } catch (err) {
-    mb.window.webContents.send('preference-updated', false)
+    mb.window.webContents.send('preference-updated', false, initialization)
   }
 
   if (ret) {
-    mb.window.webContents.send('preference-updated', true)
+    mb.window.webContents.send('preference-updated', true, initialization)
   }
 }
