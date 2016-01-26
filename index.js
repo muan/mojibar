@@ -17,6 +17,11 @@ ipc.on('abort', function () {
   mb.hideWindow()
 })
 
+// when receive the abort message, close the app
+ipc.on('update-preference', function (evt, pref) {
+  registerShortcut(pref['open-window-shortcut'])
+})
+
 var template = [
   {
     label: 'Mojibar',
@@ -52,6 +57,16 @@ var template = [
         selector: 'selectAll:'
       },
       {
+        label: 'Reload',
+        accelerator: 'CmdOrCtrl+R',
+        click: function(item, focusedWindow) { if (focusedWindow) focusedWindow.reload() }
+      },
+      {
+        label: 'Preferance',
+        accelerator: 'Command+,',
+        click: function () { mb.window.webContents.send('open-preference') }
+      },
+      {
         label: 'Quit App',
         accelerator: 'Command+Q',
         selector: 'terminate:'
@@ -69,13 +84,18 @@ mb.on('ready', function ready () {
   // Build default menu for text editing and devtools. (gone since electron 0.25.2)
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
+  registerShortcut('ctrl+shift+space')
+})
 
-  // Register a 'ctrl+shift+space' shortcut listener.
-  var ret = globalShortcut.register('ctrl+shift+space', function () {
+// Register a shortcut listener.
+var registerShortcut = function (keybinding) {
+  globalShortcut.unregisterAll()
+
+  var ret = globalShortcut.register(keybinding, function () {
     mb.window.isVisible() ? mb.hideWindow() : mb.showWindow()
   })
 
   if (!ret) {
     console.log('registration failed')
   }
-})
+}

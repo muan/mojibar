@@ -1,6 +1,6 @@
 var emojis = require('emojilib')
 var clipboard = require('clipboard')
-var ipc = require('ipc')
+var ipc = require('electron').ipcRenderer
 var index = buildIndex(emojis)
 var searching = false
 var searchInput = document.querySelector('.js-search')
@@ -125,15 +125,14 @@ function jumpto (destination) {
   var all = document.getElementsByClassName('emoji')
   var focusedElement = document.querySelector('.emoji:focus')
   var nodeIndex = Array.prototype.indexOf.call(all, focusedElement)
-  var resultPerRow = Number((container.clientWidth/40).toFixed())
-  var resultPerCol = Number((container.clientHeight/40).toFixed())
+  var resultPerRow = Number((container.clientWidth/all[0].clientWidth).toFixed())
+  var resultPerCol = Number((container.clientHeight/all[0].clientHeight).toFixed())
   var newTarget
 
   if (destination === 'up') {
     newTarget = nodeIndex - resultPerRow
   } else if (destination === 'down') {
     newTarget = nodeIndex + resultPerRow
-    console.log(newTarget)
   } else if (destination === 'left') {
     if ((nodeIndex + 1) % resultPerRow === 1) {
       newTarget = nodeIndex + (resultPerRow - 1)
