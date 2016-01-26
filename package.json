@@ -5,16 +5,16 @@
   "main": "index.js",
   "dependencies": {
     "emojilib": "1.0.0",
-    "menubar": "^2.2.0"
+    "menubar": "^3.0.0"
   },
   "devDependencies": {
-    "electron-packager": "^5.0.1",
-    "electron-prebuilt": "^0.29.2",
+    "electron-packager": "^5.2.1",
+    "electron-prebuilt": "^0.36.0",
     "standard": "^4.5.3"
   },
   "scripts": {
     "app": "electron .",
-    "build": "electron-packager . Mojibar --platform=darwin --arch=x64 --version=0.30.0 --overwrite --icon=mojibar",
+    "build": "electron-packager . Mojibar --platform=darwin --arch=x64 --version=0.36.5 --overwrite --icon=mojibar",
     "test": "standard index.js app/search.js"
   },
   "repository": {

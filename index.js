@@ -1,11 +1,15 @@
 var menubar = require('menubar')
-var ipc = require('ipc')
+var ipc = require('electron').ipcMain
 var globalShortcut = require('global-shortcut')
 var mb = menubar({ dir: __dirname + '/app', width: 400, height: 175, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, 'window-position': 'topRight' })
 var Menu = require('menu')
 
 mb.app.on('will-quit', function () {
   globalShortcut.unregisterAll()
+})
+
+mb.app.on('activate', function () {
+  mb.showWindow()
 })
 
 // when receive the abort message, close the app
