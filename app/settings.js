@@ -10,6 +10,26 @@ var preferenceNames = {
   'emoji-size': 'Emoji font size'
 }
 
+var applyPreferences = function (preference) {
+  ipc.send('update-preference', preference)
+  var style = document.createElement('style')
+  style.innerText = '.emoji { font-size: ' + preference['emoji-size'] + 'px; width: ' + (Number(preference['emoji-size']) + 20) + 'px; height: ' + (Number(preference['emoji-size']) + 20) + 'px; }'
+  document.body.appendChild(style)
+}
+
+var savePreference = function () {
+  Object.keys(preference).forEach(function (key) {
+    preference[key] = document.getElementById(key).value
+  })
+
+  localStorage.setItem('preference', JSON.stringify(preference))
+  applyPreferences(preference)
+  alert('Saved!')
+  togglePreferencePanel()
+
+  return false
+}
+
 if (!localStorage.getItem('preference')) {
   localStorage.setItem('preference', JSON.stringify(defaultPreference))
 } else {
@@ -19,6 +39,8 @@ if (!localStorage.getItem('preference')) {
   })
   localStorage.setItem('preference', JSON.stringify(preference))
 }
+
+applyPreferences(preference)
 
 require('electron').ipcRenderer.on('open-preference', function (event, message) {
   togglePreferencePanel()
@@ -51,20 +73,4 @@ var togglePreferencePanel = function () {
     document.body.appendChild(panel)
     panel.getElementsByTagName('input')[0].focus()
   }
-}
-
-var applyPreferences = function (preference) {
-  ipc.send('update-preference', preference)
-  document.body.innerHTML += '<style> .emoji { font-size: ' + preference['emoji-size'] + 'px; width: ' + (Number(preference['emoji-size']) + 20) + 'px; height: ' + (Number(preference['emoji-size']) + 20) + 'px; }</style>'
-}
-
-var savePreference = function () {
-  Object.keys(preference).forEach(function (key) {
-    preference[key] = document.getElementById(key).value
-  })
-
-  localStorage.setItem('preference', JSON.stringify(preference))
-  applyPreferences(preference)
-  alert('Saved!')
-  togglePreferencePanel()
 }
