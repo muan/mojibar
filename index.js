@@ -1,7 +1,7 @@
 var menubar = require('menubar')
 var ipc = require('electron').ipcMain
 var globalShortcut = require('global-shortcut')
-var mb = menubar({ dir: __dirname + '/app', width: 440, height: 190, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, 'window-position': 'topRight' })
+var mb = menubar({ dir: __dirname + '/app', width: 440, height: 230, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, 'window-position': 'topRight' })
 var Menu = require('menu')
 
 mb.app.on('will-quit', function () {
