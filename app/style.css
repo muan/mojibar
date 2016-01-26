@@ -72,6 +72,10 @@ button {
   border: 0;
 }
 
+.on-preference {
+  overflow: hidden;
+}
+
 .preference-panel {
   width: 100%;
   position: fixed;
@@ -82,23 +86,47 @@ button {
   background: #f5f5f5;
   z-index: 3;
   padding: 20px;
-}
-
-.pref-title {
-  margin: 0 0 15px;
-  font-size: 16px;
+  overflow: auto;
+  border-left: 100px solid #f0f0f0;
+  box-shadow: inset 1px 0 0 0 #ddd;
 }
 
 .pref-item {
-  margin-bottom: 10px;
-  font-size: 13px;
   display: block;
+  margin-bottom: 20px;
+}
+
+.preference-panel label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
 .preference-panel input {
-  padding: 3px;
+  padding: 10px 13px;
   font-size: 13px;
-  width: 150px;
-  margin-top: 5px;
-  display: block;
+  width: 70%;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+  font-family: menlo, monospace;
+}
+
+.preference-panel button {
+  border: 0;
+  background: #08c;
+  color: #fff;
+  font-weight: bold;
+  padding: 8px 13px;
+  border-radius: 3px;
+}
+
+.pref-sidebar {
+  position: absolute;
+  width: 20%;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #efefef;
+  border-right: 1px solid #cfcfcf;
 }

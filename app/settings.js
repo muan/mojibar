@@ -64,14 +64,15 @@ var togglePreferencePanel = function () {
 
     panel.classList.add('preference-panel')
     panel.id = 'js-preference-panel'
-    var html = '<h1 class="pref-title">Preference</h1><form>'
+    var html = '<form>'
     Object.keys(preferenceNames).forEach(function (key) {
-      html += '<label class="pref-item">'
-      html += preferenceNames[key] + ': '
-      html += '<input type=" text" id="' + key + '" value="' + preference[key] + '" placeholder="' + defaultPreference[key] + '">'
+      html += '<div class="pref-item"><label for="' + key + '">'
+      html += preferenceNames[key]
       html += '</label>'
+      html += '<input type=" text" id="' + key + '" value="' + preference[key] + '" placeholder="' + defaultPreference[key] + '">'
+      html += '</div>'
     })
-    html += '<button type="submit">Save</button>'
+    html += '<label></label><button type="submit">Save</button>'
     html += '</form>'
     panel.innerHTML += html
 
