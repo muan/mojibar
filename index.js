@@ -1,11 +1,15 @@
 var menubar = require('menubar')
-var ipc = require('ipc')
+var ipc = require("electron").ipcMain
 var globalShortcut = require('global-shortcut')
 var mb = menubar({ dir: __dirname + '/app', width: 400, height: 175, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, 'window-position': 'topRight' })
 var Menu = require('menu')
 
 mb.app.on('will-quit', function () {
   globalShortcut.unregisterAll()
+})
+
+mb.app.on('activate', function () {
+  mb.showWindow()
 })
 
 // when receive the abort message, close the app
@@ -65,6 +69,7 @@ mb.on('ready', function ready () {
   // Build default menu for text editing and devtools. (gone since electron 0.25.2)
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
+  console.log(process.versions.electron)
 
   // Register a 'ctrl+shift+space' shortcut listener.
   var ret = globalShortcut.register('ctrl+shift+space', function () {
