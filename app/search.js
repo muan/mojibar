@@ -39,7 +39,7 @@ document.addEventListener('keydown', function (evt) {
       var data
       // on enter: copy data and exit
       if (evt.shiftKey) {
-        data = ":" + evt.target.getAttribute('aria-label') + ":"
+        data = ':' + evt.target.getAttribute('aria-label') + ':'
       } else {
         data = evt.target.innerText
       }
@@ -125,8 +125,8 @@ function jumpto (destination) {
   var all = document.getElementsByClassName('emoji')
   var focusedElement = document.querySelector('.emoji:focus')
   var nodeIndex = Array.prototype.indexOf.call(all, focusedElement)
-  var resultPerRow = Number((container.clientWidth/all[0].clientWidth).toFixed())
-  var resultPerCol = Number((container.clientHeight/all[0].clientHeight).toFixed())
+  var resultPerRow = Number((container.clientWidth / all[0].clientWidth).toFixed())
+  var resultPerCol = Number((container.clientHeight / all[0].clientHeight).toFixed())
   var newTarget
 
   if (destination === 'up') {

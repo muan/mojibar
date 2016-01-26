@@ -59,7 +59,7 @@ var template = [
       {
         label: 'Reload',
         accelerator: 'CmdOrCtrl+R',
-        click: function(item, focusedWindow) { if (focusedWindow) focusedWindow.reload() }
+        click: function (item, focusedWindow) { if (focusedWindow) focusedWindow.reload() }
       },
       {
         label: 'Preferance',
