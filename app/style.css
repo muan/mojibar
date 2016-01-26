@@ -1,26 +1,24 @@
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  padding-top: 60px;
 }
 
 body, input {
   font-family: "Source Sans Pro", sans-serif;
 }
 
-div {
+div,
+button {
   box-sizing: border-box;
 }
 
 .prepend-mag {
-  position: absolute;
+  position: fixed;
+  z-index: 2;
   top: 15px;
   left: 15px;
   font-family: AppleColorEmoji;
-}
-
-.code::selection {
-  background-color: transparent;
 }
 
 .search {
@@ -30,6 +28,9 @@ div {
   border: 0;
   background: #f7f7f7;
   border-bottom: 1px solid #f0f0f0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
   -webkit-appearance: textfield;
 }
 
@@ -39,16 +40,8 @@ div {
 }
 
 .results {
-  height: 115px;
-  overflow: hidden;
+  height: 100%;
   position: relative;
-}
-
-.result {
-  float: left;
-  font-size: 16px;
-  padding: 5px;
-  width: 33.3%;
 }
 
 .code {
@@ -67,7 +60,14 @@ div {
 }
 
 .emoji {
-  margin-left: 10px;
-  position: absolute;
+  overflow: hidden;
+  float: left;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
   font-family: AppleColorEmoji;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
 }
