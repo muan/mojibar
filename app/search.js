@@ -1,6 +1,6 @@
 var emojis = require('emojilib')
 var clipboard = require('clipboard')
-var ipc = require('ipc')
+var ipc = require('electron').ipcRenderer
 var index = buildIndex(emojis)
 var searching = false
 var searchInput = document.querySelector('.js-search')
@@ -10,9 +10,6 @@ var directions = {
   39: 'right',
   40: 'down'
 }
-
-// todo
-// - fix click/shortcut window positioning
 
 searchInput.focus()
 search('')
@@ -31,7 +28,7 @@ document.addEventListener('keydown', function (evt) {
     // on down: focus on the first thing!
     jumpto('up')
     evt.preventDefault()
-  } else if (evt.target.className === 'code') {
+  } else if (evt.target.classList.contains('emoji')) {
     if (evt.keyCode === 32) {
       if (evt.shiftKey) {
         jumpto('prev')
@@ -42,9 +39,9 @@ document.addEventListener('keydown', function (evt) {
       var data
       // on enter: copy data and exit
       if (evt.shiftKey) {
-        data = evt.target.value
+        data = ':' + evt.target.getAttribute('aria-label') + ':'
       } else {
-        data = evt.target.dataset.char
+        data = evt.target.innerText
       }
       clipboard.writeText(data)
 
@@ -68,9 +65,8 @@ document.addEventListener('keydown', function (evt) {
 document.addEventListener('keypress', function (evt) {
   // if typing while navigatin, just type into the search box!
   var word = isWord(evt.charCode)
-  if (word && evt.target.className === 'code') {
+  if (word && evt.target.classList.contains('emoji')) {
     searchInput.focus()
-    searchInput.value = word
   }
 })
 
@@ -89,13 +85,12 @@ function search (query) {
       return emojis.keys.indexOf(a) - emojis.keys.indexOf(b)
     }).map(function generateMarkup (name) {
       var unicode = (emojis[name]['char'] || '--')
-      var result = '<div class="result"><span class="emoji" aria-hidden="true">' + unicode + '</span>'
-      result += '<input readonly role="menuitemradio" tabindex="1" aria-label="Press enter to copy character, shift + enter to copy emoji code." type="text" data-char="' + unicode + '" class="code" value=":' + name + ':"></div>'
+      var result = '<button type="button" class="emoji" aria-label="' + name + '">' + unicode + '</button>'
       return result
     }).join('')
 
     document.querySelector('.js-results').innerHTML = results
-    if (document.querySelector('.code')) document.querySelector('.code').scrollIntoViewIfNeeded()
+    if (document.querySelector('.emoji')) document.querySelector('.emoji').scrollIntoViewIfNeeded()
   }, 100)
 }
 
@@ -125,32 +120,35 @@ function isWord (charCode) {
 }
 
 function jumpto (destination) {
-  var all = document.getElementsByClassName('code')
-  var focusedElement = document.querySelector('.code:focus')
+  var container = document.getElementsByClassName('js-results')[0]
+  var all = document.getElementsByClassName('emoji')
+  var focusedElement = document.querySelector('.emoji:focus')
   var nodeIndex = Array.prototype.indexOf.call(all, focusedElement)
-  var resultPerRow = 3
+  var resultPerRow = Number((container.clientWidth / all[0].clientWidth).toFixed())
+  var resultPerCol = Number((container.clientHeight / all[0].clientHeight).toFixed())
   var newTarget
 
   if (destination === 'up') {
-    newTarget = nodeIndex - 3
+    newTarget = nodeIndex - resultPerRow
   } else if (destination === 'down') {
-    newTarget = nodeIndex + 3
+    newTarget = nodeIndex + resultPerRow
   } else if (destination === 'left') {
-    if ((nodeIndex + 1) % 3 === 1) {
-      newTarget = nodeIndex + 2
+    if ((nodeIndex + 1) % resultPerRow === 1) {
+      newTarget = nodeIndex + (resultPerRow - 1)
     } else {
       newTarget = nodeIndex - 1
     }
   } else if (destination === 'right') {
-    if ((nodeIndex + 1) % 3 === 0) {
-      newTarget = nodeIndex - 2
+    if ((nodeIndex + 1) % resultPerRow === 0) {
+      newTarget = nodeIndex - (resultPerRow - 1)
     } else {
       newTarget = nodeIndex + 1
     }
   } else if (destination === 'next') {
-    newTarget = nodeIndex + resultPerRow * 2
+    console.log(resultPerCol)
+    newTarget = nodeIndex + resultPerRow * (resultPerCol - 1)
   } else if (destination === 'prev') {
-    newTarget = nodeIndex - resultPerRow * 2
+    newTarget = nodeIndex - resultPerRow * (resultPerCol - 1)
   }
 
   if (newTarget < 0) newTarget = 0
