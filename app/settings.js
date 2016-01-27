@@ -27,16 +27,15 @@ var savePreference = function () {
   return false
 }
 
-if (!window.localStorage.getItem('preference')) {
-  window.localStorage.setItem('preference', JSON.stringify(defaultPreference))
-} else {
+if (window.localStorage.getItem('preference')) {
   var preference = JSON.parse(window.localStorage.getItem('preference'))
   Object.keys(defaultPreference).forEach(function (key) {
     if (!preference[key]) preference[key] = defaultPreference[key]
   })
-  window.localStorage.setItem('preference', JSON.stringify(preference))
+} else {
+  var preference = defaultPreference
 }
-
+window.localStorage.setItem('preference', JSON.stringify(preference))
 applyPreferences(preference, true)
 
 ipc.on('open-preference', function (event, message) {
