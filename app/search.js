@@ -145,10 +145,9 @@ function jumpto (destination) {
       newTarget = nodeIndex + 1
     }
   } else if (destination === 'next') {
-    console.log(resultPerCol)
-    newTarget = nodeIndex + resultPerRow * (resultPerCol - 1)
+    newTarget = nodeIndex + resultPerRow * (resultPerCol - 1 || 1)
   } else if (destination === 'prev') {
-    newTarget = nodeIndex - resultPerRow * (resultPerCol - 1)
+    newTarget = nodeIndex - resultPerRow * (resultPerCol - 1 || 1)
   }
 
   if (newTarget < 0) newTarget = 0
