@@ -24,10 +24,15 @@ document.addEventListener('mousewheel', function (e) {
 })
 
 document.addEventListener('keydown', function (evt) {
-  if (evt.target.className.match('js-search') && evt.keyCode === 40) {
-    // on down: focus on the first thing!
-    jumpto('up')
-    evt.preventDefault()
+  var onSearchField = evt.target.className.match('js-search')
+  if (onSearchField) {
+    if (evt.keyCode === 40) {
+      // on down: focus on the first thing!
+      jumpto('up')
+      evt.preventDefault()
+    } else if (evt.keyCode === 13) {
+      copyFocusedEmoji(document.querySelector('.emoji:first-child'), evt.shiftKey)
+    }
   } else if (evt.target.classList.contains('emoji')) {
     if (evt.keyCode === 32) {
       if (evt.shiftKey) {
@@ -36,23 +41,14 @@ document.addEventListener('keydown', function (evt) {
         jumpto('next')
       }
     } else if (evt.keyCode === 13) {
-      var data
-      // on enter: copy data and exit
-      if (evt.shiftKey) {
-        data = ':' + evt.target.getAttribute('aria-label') + ':'
-      } else {
-        data = evt.target.innerText
-      }
-      clipboard.writeText(data)
-
-      ipc.send('abort')
+      copyFocusedEmoji(evt.target, evt.shiftKey)
     } else if (Object.keys(directions).indexOf(evt.keyCode.toString()) >= 0) {
       // on navigation, navigate
       jumpto(directions[evt.keyCode])
     }
   }
 
-  if (!evt.target.className.match('search') && evt.keyCode === 191 && !evt.shiftKey && !evt.metaKey && !evt.ctrlKey) {
+  if (!onSearchField && evt.keyCode === 191 && !evt.shiftKey && !evt.metaKey && !evt.ctrlKey) {
     // on `/`: focus on the search field
     searchInput.select()
     evt.preventDefault()
@@ -61,6 +57,19 @@ document.addEventListener('keydown', function (evt) {
     ipc.send('abort')
   }
 })
+
+function copyFocusedEmoji (emoji, copyText) {
+  var data
+  // on enter: copy data and exit
+  if (copyText) {
+    data = ':' + emoji.getAttribute('aria-label') + ':'
+  } else {
+    data = emoji.innerText
+  }
+  clipboard.writeText(data)
+
+  ipc.send('abort')
+}
 
 document.addEventListener('keypress', function (evt) {
   // if typing while navigatin, just type into the search box!
