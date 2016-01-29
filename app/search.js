@@ -1,7 +1,8 @@
-var emojis = require('emojilib')
+var emojilib = require('emojilib').lib
+var emojikeys = require('emojilib').ordered
 var clipboard = require('clipboard')
 var ipc = require('electron').ipcRenderer
-var index = buildIndex(emojis)
+var index = buildIndex()
 var searching = false
 var searchInput = document.querySelector('.js-search')
 var directions = {
@@ -91,9 +92,9 @@ function search (query) {
     }).join().split(',').filter(function filterUniqueResults (emoji, pos, arr) {
       return emoji && arr.indexOf(emoji) === pos
     }).sort(function sortResults (a, b) {
-      return emojis.keys.indexOf(a) - emojis.keys.indexOf(b)
+      return emojikeys.indexOf(a) - emojikeys.indexOf(b)
     }).map(function generateMarkup (name) {
-      var unicode = (emojis[name]['char'] || '--')
+      var unicode = (emojilib[name]['char'] || '--')
       var result = '<button type="button" class="emoji" aria-label="' + name + '">' + unicode + '</button>'
       return result
     }).join('')
@@ -103,13 +104,14 @@ function search (query) {
   }, 100)
 }
 
-function buildIndex (emojis) {
+function buildIndex () {
   var keywords = {}
-  emojis.keys.forEach(function (name) {
-    var words = emojis[name]['keywords']
+  emojikeys.forEach(function (name) {
+    console.log(name)
+    var words = emojilib[name]['keywords']
     words.push(name)
-    words.push(emojis[name]['char'])
-    words.push(emojis[name]['category'])
+    words.push(emojilib[name]['char'])
+    words.push(emojilib[name]['category'])
 
     words.forEach(function (word) {
       if (keywords[word] && keywords[word].indexOf(name) < 0) {
