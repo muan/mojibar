@@ -15,7 +15,7 @@ var directions = {
 searchInput.focus()
 search('')
 searchInput.addEventListener('input', function (evt) {
-  search(this.value)
+  if (this.value.length > 1 || this.value.charCodeAt() > 255) search(this.value)
 })
 
 document.addEventListener('mousewheel', function (e) {
@@ -107,7 +107,6 @@ function search (query) {
 function buildIndex () {
   var keywords = {}
   emojikeys.forEach(function (name) {
-    console.log(name)
     var words = emojilib[name]['keywords']
     words.push(name)
     words.push(emojilib[name]['char'])
