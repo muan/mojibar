@@ -14,8 +14,8 @@ var directions = {
 
 searchInput.focus()
 search('')
-searchInput.addEventListener('input', function (evt) {
-  if (this.value.length > 1 || this.value.charCodeAt() > 255) search(this.value)
+searchInput.addEventListener('input', function () {
+  search(this.value)
 })
 
 document.addEventListener('mousewheel', function (e) {
@@ -85,23 +85,32 @@ function search (query) {
     clearTimeout(searching)
   }
   searching = setTimeout(function () {
-    var results = (Object.keys(index).filter(function matchQuery (keyword) {
-      return keyword.match(query)
-    })).map(function (keyword) {
-      return index[keyword]
-    }).join().split(',').filter(function filterUniqueResults (emoji, pos, arr) {
-      return emoji && arr.indexOf(emoji) === pos
-    }).sort(function sortResults (a, b) {
-      return emojikeys.indexOf(a) - emojikeys.indexOf(b)
-    }).map(function generateMarkup (name) {
-      var unicode = (emojilib[name]['char'] || '--')
-      var result = '<button type="button" class="emoji" aria-label="' + name + '">' + unicode + '</button>'
-      return result
-    }).join('')
+    var results
+    if (query.length === 0 || (query.length === 1 && query.charCodeAt() <= 255)) {
+      results = emojikeys
+    } else {
+      results = (Object.keys(index).filter(function matchQuery (keyword) {
+        return keyword.match(query)
+      })).map(function (keyword) {
+        return index[keyword]
+      }).join().split(',').filter(function filterUniqueResults (emoji, pos, arr) {
+        return emoji && arr.indexOf(emoji) === pos
+      }).sort(function sortResults (a, b) {
+        return emojikeys.indexOf(a) - emojikeys.indexOf(b)
+      })
+    }
 
-    document.querySelector('.js-results').innerHTML = results
+    document.querySelector('.js-results').innerHTML = generateMarkup(results)
     if (document.querySelector('.emoji')) document.querySelector('.emoji').scrollIntoViewIfNeeded()
   }, 100)
+}
+
+function generateMarkup (emojiNameArray) {
+  return emojiNameArray.map(function (name) {
+    var unicode = (emojilib[name]['char'] || '--')
+    var result = '<button type="button" class="emoji" aria-label="' + name + '">' + unicode + '</button>'
+    return result
+  }).join('')
 }
 
 function buildIndex () {
