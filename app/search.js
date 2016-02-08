@@ -23,6 +23,7 @@ ipc.on('forget-input', function (event, message) {
   var remember = pref['remember-input']
   if (!remember) {
     searchInput.value = ''
+    searchInput.focus()
     search('')
   }
 })
