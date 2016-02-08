@@ -18,6 +18,15 @@ searchInput.addEventListener('input', function () {
   search(this.value)
 })
 
+ipc.on('forget-input', function (event, message) {
+  var pref = JSON.parse(window.localStorage.getItem('preference'))
+  var remember = pref['remember-input']
+  if (!remember) {
+    searchInput.value = ''
+    search('')
+  }
+})
+
 document.addEventListener('mousewheel', function (e) {
   if (e.deltaY % 1 !== 0) {
     e.preventDefault()
