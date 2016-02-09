@@ -18,14 +18,8 @@ searchInput.addEventListener('input', function () {
   search(this.value)
 })
 
-ipc.on('forget-input', function (event, message) {
-  var pref = JSON.parse(window.localStorage.getItem('preference'))
-  var remember = pref['remember-input']
-  if (!remember) {
-    searchInput.value = ''
-    searchInput.focus()
-    search('')
-  }
+ipc.on('show', function (event, message) {
+  searchInput.focus()
 })
 
 document.addEventListener('mousewheel', function (e) {
@@ -78,7 +72,8 @@ function copyFocusedEmoji (emoji, copyText) {
     data = emoji.innerText
   }
   clipboard.writeText(data)
-
+  searchInput.value = ''
+  search('')
   ipc.send('abort')
 }
 

@@ -5,7 +5,7 @@ var mb = menubar({ dir: __dirname + '/app', width: 440, height: 230, icon: __dir
 var Menu = require('menu')
 
 mb.on('show', function () {
-  mb.window.webContents.send('forget-input')
+  mb.window.webContents.send('show')
 })
 
 mb.app.on('will-quit', function () {

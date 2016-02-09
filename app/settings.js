@@ -3,8 +3,7 @@ var ipc = require('electron').ipcRenderer
 
 var defaultPreference = {
   'open-window-shortcut': 'ctrl+shift+space',
-  'emoji-size': '20',
-  'remember-input': true
+  'emoji-size': '20'
 }
 
 var preferenceSettings = {
@@ -13,9 +12,6 @@ var preferenceSettings = {
   },
   'emoji-size': {
     title: 'Emoji font size', type: 'text'
-  },
-  'remember-input': {
-    title: 'Remember user input', type: 'checkbox'
   }
 }
 
