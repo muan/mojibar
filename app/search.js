@@ -18,6 +18,10 @@ searchInput.addEventListener('input', function () {
   search(this.value)
 })
 
+ipc.on('show', function (event, message) {
+  searchInput.focus()
+})
+
 document.addEventListener('mousewheel', function (e) {
   if (e.deltaY % 1 !== 0) {
     e.preventDefault()
@@ -68,7 +72,8 @@ function copyFocusedEmoji (emoji, copyText) {
     data = emoji.innerText
   }
   clipboard.writeText(data)
-
+  searchInput.value = ''
+  search('')
   ipc.send('abort')
 }
 

@@ -4,6 +4,10 @@ var globalShortcut = require('global-shortcut')
 var mb = menubar({ dir: __dirname + '/app', width: 440, height: 230, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, 'window-position': 'topRight' })
 var Menu = require('menu')
 
+mb.on('show', function () {
+  mb.window.webContents.send('show')
+})
+
 mb.app.on('will-quit', function () {
   globalShortcut.unregisterAll()
 })
