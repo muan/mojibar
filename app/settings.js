@@ -6,13 +6,9 @@ var defaultPreference = {
   'emoji-size': '20'
 }
 
-var preferenceSettings = {
-  'open-window-shortcut': {
-    title: 'Mojibar shortcut', type: 'text'
-  },
-  'emoji-size': {
-    title: 'Emoji font size', type: 'text'
-  }
+var preferenceNames = {
+  'open-window-shortcut': 'Mojibar shortcut',
+  'emoji-size': 'Emoji font size'
 }
 
 var applyPreferences = function (preference, initialization) {
@@ -24,8 +20,7 @@ var applyPreferences = function (preference, initialization) {
 
 var savePreference = function () {
   Object.keys(preference).forEach(function (key) {
-    var input = document.getElementById(key)
-    preference[key] = input.type === 'checkbox' ? input.checked : input.value
+    preference[key] = document.getElementById(key).value
   })
 
   window.localStorage.setItem('preference', JSON.stringify(preference))
@@ -36,7 +31,7 @@ var savePreference = function () {
 if (window.localStorage.getItem('preference')) {
   preference = JSON.parse(window.localStorage.getItem('preference'))
   Object.keys(defaultPreference).forEach(function (key) {
-    if (!preference[key] && preference[key] !== false) preference[key] = defaultPreference[key]
+    if (!preference[key]) preference[key] = defaultPreference[key]
   })
 } else {
   preference = defaultPreference
@@ -70,17 +65,11 @@ var togglePreferencePanel = function () {
     panel.classList.add('preference-panel')
     panel.id = 'js-preference-panel'
     var html = '<form>'
-    Object.keys(preferenceSettings).forEach(function (key) {
+    Object.keys(preferenceNames).forEach(function (key) {
       html += '<div class="pref-item"><label for="' + key + '">'
-      html += preferenceSettings[key].title
+      html += preferenceNames[key]
       html += '</label>'
-      html += '<input id="' + key + '" '
-      if (preferenceSettings[key].type === 'checkbox') {
-        html += 'type="checkbox"' + (preference[key] ? ' checked' : '')
-      } else {
-        html += 'type="text" value="' + preference[key] + '" placeholder="' + defaultPreference[key] + '"'
-      }
-      html += '>'
+      html += '<input type=" text" id="' + key + '" value="' + preference[key] + '" placeholder="' + defaultPreference[key] + '">'
       html += '</div>'
     })
     html += '<label></label><button type="submit">Save</button>'
