@@ -105,6 +105,12 @@ function search (query) {
       })
     }
 
+    // Put exact match first
+    if (results.indexOf(query) >= 0 ) {
+      results.splice(results.indexOf(query), 1)
+      results.unshift(query)
+    }
+
     document.querySelector('.js-results').innerHTML = generateMarkup(results)
     if (document.querySelector('.emoji')) document.querySelector('.emoji').scrollIntoViewIfNeeded()
   }, 100)
