@@ -92,7 +92,7 @@ function search (query) {
   searching = setTimeout(function () {
     var results
     if (query.length === 0 || (query.length === 1 && query.charCodeAt() <= 255)) {
-      results = emojikeys
+      results = emojikeys.slice(0)
     } else {
       results = (Object.keys(index).filter(function matchQuery (keyword) {
         return keyword.match(query)
@@ -106,7 +106,7 @@ function search (query) {
     }
 
     // Put exact match first
-    if (results.indexOf(query) >= 0 ) {
+    if (results.indexOf(query) >= 0) {
       results.splice(results.indexOf(query), 1)
       results.unshift(query)
     }
