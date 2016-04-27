@@ -115,11 +115,12 @@ function search (query) {
       results = Object.keys(resultsDict).sort(function sortResults (a, b) {
         return emojikeyIndexTable[a] - emojikeyIndexTable[b]
       })
-      // Put exact match first
-      if (results.indexOf(query) >= 0) {
-        results.splice(results.indexOf(query), 1)
-        results.unshift(query)
-      }
+    }
+
+    // Put exact match first
+    if (results.indexOf(query) >= 0) {
+     results.splice(results.indexOf(query), 1)
+     results.unshift(query)
     }
 
     renderResults(results, document.querySelector('.js-results'))
