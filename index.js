@@ -25,6 +25,12 @@ ipc.on('abort', function () {
 ipc.on('update-preference', function (evt, pref, initialization) {
   registerShortcut(pref['open-window-shortcut'], initialization)
 })
+// Consider checking for every accelerator string and replacing them with CmdOrCtrl. This was chosen as it's less obfuscated imo.
+var KEYS ={
+  PREFERENCE: process.platform==='darwin'? 'Command+,': 'CmdOrCtrl+,',
+  QUIT: process.platform==='darwin'? 'Command+Q': 'CmdOrCtrl+Q',
+  DEVTOOLS: process.platform==='darwin'? 'Alt+Command+I': 'Alt+CmdOrCtrl+I'
+}
 
 var template = [
   {
@@ -66,18 +72,19 @@ var template = [
         click: function (item, focusedWindow) { if (focusedWindow) focusedWindow.reload() }
       },
       {
-        label: 'Preferance',
-        accelerator: 'Command+,',
+        label: 'Preference',
+        accelerator: KEYS.PREFERENCE,
         click: function () { mb.window.webContents.send('open-preference') }
       },
       {
         label: 'Quit App',
-        accelerator: 'Command+Q',
-        selector: 'terminate:'
+        accelerator: KEYS.QUIT,
+        selector: 'terminate:',
+        click: function() { mb.window.close() }
       },
       {
         label: 'Toggle DevTools',
-        accelerator: 'Alt+Command+I',
+        accelerator: KEYS.DEVTOOLS,
         click: function () { mb.window.toggleDevTools() }
       }
     ]
