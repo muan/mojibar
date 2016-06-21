@@ -80,7 +80,7 @@ var template = [
         label: 'Quit App',
         accelerator: KEYS.QUIT,
         selector: 'terminate:',
-        click: function() { mb.window.close() }
+        click: function() { mb.app.quit() }
       },
       {
         label: 'Toggle DevTools',
