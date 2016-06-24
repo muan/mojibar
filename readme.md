@@ -22,10 +22,10 @@ Go into your apps folder and select Mojibar (Mac shortcut: use command-space bar
 
 ## Usage
 
-<kbd>ctrl + shift + space</kbd><br>
+<kbd>control + shift + space</kbd><br>
 Open app.
 
-<kbd>cmd + ,</kbd><br>
+<kbd>command + ,</kbd><br>
 Open preference (while window is open).
 
 <kbd>👆/👇/👈/👉</kbd><br>
@@ -49,7 +49,7 @@ Jump to the search field.
 <kbd>esc</kbd><br>
 Exit.
 
-<kbd>cmd + q</kbd><br>
+<kbd>command + q</kbd><br>
 Quit Mojibar (while window is open).
 
 ## Build
