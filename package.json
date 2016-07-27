@@ -15,7 +15,7 @@
   "scripts": {
     "app": "electron .",
     "build": "electron-packager . Mojibar --platform=darwin --arch=x64 --version=0.36.5 --overwrite --icon=mojibar",
-    "build-win":"electron-packager . Mojibar --platform=win32 --arch=x64 --version=0.36.5 --overwrite --icon=mojibar"
+    "build-win":"electron-packager . Mojibar --platform=win32 --arch=x64 --version=0.36.5 --overwrite --icon=mojibar",
     "test": "standard index.js app/search.js app/settings.js"
   },
   "repository": {
