@@ -1,6 +1,6 @@
 var emojilib = require('emojilib').lib
 var emojikeys = require('emojilib').ordered
-var clipboard = require('clipboard')
+var clipboard = require('electron').clipboard
 var ipc = require('electron').ipcRenderer
 var index = buildIndex()
 var searching = false
