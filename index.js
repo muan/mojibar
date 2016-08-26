@@ -66,7 +66,7 @@ var template = [
         click: function (item, focusedWindow) { if (focusedWindow) focusedWindow.reload() }
       },
       {
-        label: 'Preferance',
+        label: 'Preference',
         accelerator: 'Command+,',
         click: function () { mb.window.webContents.send('open-preference') }
       },
