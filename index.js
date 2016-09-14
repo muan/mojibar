@@ -1,8 +1,8 @@
 var menubar = require('menubar')
 var ipc = require('electron').ipcMain
-var globalShortcut = require('global-shortcut')
+var globalShortcut = require('electron').globalShortcut
 var mb = menubar({ dir: __dirname + '/app', width: 440, height: 230, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, 'window-position': 'topRight' })
-var Menu = require('menu')
+var Menu = require('electron').Menu
 
 mb.on('show', function () {
   mb.window.webContents.send('show')
