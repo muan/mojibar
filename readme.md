@@ -60,7 +60,7 @@ Quit Mojibar (while window is open).
 $ git clone https://github.com/muan/mojibar.git
 $ cd mojibar
 $ npm install
-$ npm run app
+$ npm start
 ```
 
 ## Built with
