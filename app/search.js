@@ -15,7 +15,7 @@ var directions = {
 searchInput.focus()
 search('')
 searchInput.addEventListener('input', function () {
-  search(this.value)
+  search(this.value.toLowerCase())
 })
 
 ipc.on('show', function (event, message) {
