@@ -3,6 +3,8 @@ var emojikeys = require('emojilib').ordered
 var clipboard = require('electron').clipboard
 var ipc = require('electron').ipcRenderer
 var index = buildIndex()
+var indexKeys = Object.keys(index)
+var emojikeyIndexTable = buildEmojikeyIndexTable()
 var searching = false
 var searchInput = document.querySelector('.js-search')
 var directions = {
@@ -12,6 +14,7 @@ var directions = {
   40: 'down'
 }
 
+searchInput.dataset.isSearchInput = true
 searchInput.focus()
 search('')
 searchInput.addEventListener('input', function () {
@@ -27,9 +30,8 @@ document.addEventListener('mousewheel', function (e) {
     e.preventDefault()
   }
 })
-
 document.addEventListener('keydown', function (evt) {
-  var onSearchField = evt.target.className.match('js-search')
+  var onSearchField = !!evt.target.dataset.isSearchInput
   if (onSearchField) {
     if (evt.keyCode === 40) {
       // on down: focus on the first thing!
@@ -85,6 +87,14 @@ document.addEventListener('keypress', function (evt) {
   }
 })
 
+function stringIncludes (string, search) {
+  if (search.length > string.length) {
+    return false
+  } else {
+    return string.indexOf(search) !== -1
+  }
+}
+
 function search (query) {
   if (searching) {
     clearTimeout(searching)
@@ -94,14 +104,16 @@ function search (query) {
     if (query.length === 0 || (query.length === 1 && query.charCodeAt() <= 255)) {
       results = emojikeys.slice(0)
     } else {
-      results = (Object.keys(index).filter(function matchQuery (keyword) {
-        return keyword.match(query)
-      })).map(function (keyword) {
-        return index[keyword]
-      }).join().split(',').filter(function filterUniqueResults (emoji, pos, arr) {
-        return emoji && arr.indexOf(emoji) === pos
-      }).sort(function sortResults (a, b) {
-        return emojikeys.indexOf(a) - emojikeys.indexOf(b)
+      var resultsDict = {}
+      indexKeys.forEach(function matchQuery (keyword) {
+        if (stringIncludes(keyword, query)) {
+          index[keyword].forEach(function addMatchingEmoji (emoji) {
+            resultsDict[emoji] = true
+          })
+        }
+      })
+      results = Object.keys(resultsDict).sort(function sortResults (a, b) {
+        return emojikeyIndexTable[a] - emojikeyIndexTable[b]
       })
     }
 
@@ -111,17 +123,32 @@ function search (query) {
       results.unshift(query)
     }
 
-    document.querySelector('.js-results').innerHTML = generateMarkup(results)
+    renderResults(results, document.querySelector('.js-results'))
     if (document.querySelector('.emoji')) document.querySelector('.emoji').scrollIntoViewIfNeeded()
-  }, 100)
+  }, 80)
 }
 
-function generateMarkup (emojiNameArray) {
-  return emojiNameArray.map(function (name) {
+function renderResults (emojiNameArray, containerElement) {
+  containerElement.innerHTML = ''
+  var fragment = document.createDocumentFragment()
+  emojiNameArray.forEach(function (name) {
     var unicode = (emojilib[name]['char'] || '--')
-    var result = '<button type="button" class="emoji" aria-label="' + name + '">' + unicode + '</button>'
-    return result
-  }).join('')
+    var resultElement = document.createElement('button')
+    resultElement.type = 'button'
+    resultElement.className = 'emoji'
+    resultElement.setAttribute('aria-label', name)
+    resultElement.textContent = unicode
+    fragment.appendChild(resultElement)
+  })
+  containerElement.appendChild(fragment)
+}
+
+function buildEmojikeyIndexTable () {
+  var indexTable = {}
+  emojikeys.forEach(function (name, index) {
+    indexTable[name] = index
+  })
+  return indexTable
 }
 
 function buildIndex () {
