@@ -106,10 +106,13 @@ button {
 .preference-panel input {
   padding: 10px 13px;
   font-size: 13px;
-  width: 70%;
   border-radius: 3px;
   border: 1px solid #ddd;
   font-family: menlo, monospace;
+}
+
+.preference-panel input[type="text"] {
+  width: 70%;
 }
 
 .preference-panel button {
