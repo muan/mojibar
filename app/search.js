@@ -138,6 +138,12 @@ function renderResults (emojiNameArray, containerElement) {
     resultElement.className = 'emoji'
     resultElement.setAttribute('aria-label', name)
     resultElement.textContent = unicode
+
+    // copy emoji unicode char to clipboard on click or copy emoji code if `shiftKey` is pressed
+    resultElement.addEventListener('click', function (evt) {
+      copyFocusedEmoji(resultElement, evt.shiftKey)
+    })
+
     fragment.appendChild(resultElement)
   })
   containerElement.appendChild(fragment)
