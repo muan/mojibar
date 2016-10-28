@@ -181,8 +181,8 @@ function jumpto (destination) {
   var all = document.getElementsByClassName('emoji')
   var focusedElement = document.querySelector('.emoji:focus')
   var nodeIndex = Array.prototype.indexOf.call(all, focusedElement)
-  var resultPerRow = Number((container.clientWidth / all[0].clientWidth).toFixed())
-  var resultPerCol = Number((container.clientHeight / all[0].clientHeight).toFixed())
+  var resultPerRow = Math.floor(container.clientWidth / all[0].clientWidth)
+  var resultPerCol = Math.floor(container.clientHeight / all[0].clientHeight)
   var newTarget
 
   if (destination === 'up') {
