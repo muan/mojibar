@@ -27,7 +27,6 @@ var savePreference = function (event) {
 
   Object.keys(preference).forEach(function (key) {
     var el = document.getElementById(key)
-    console.log(key, el)
     preference[key] = el.type === 'checkbox' ? el.checked : el.value
   })
 
