@@ -3,29 +3,35 @@ var ipc = require('electron').ipcRenderer
 
 var defaultPreference = {
   'open-window-shortcut': 'ctrl+shift+space',
-  'emoji-size': '20'
+  'emoji-size': '20',
+  'open-at-login': false
 }
 
 var preferenceNames = {
   'open-window-shortcut': 'Mojibar shortcut',
-  'emoji-size': 'Emoji font size'
+  'emoji-size': 'Emoji font size',
+  'open-at-login': 'Start Mojibar at login'
 }
 
 var applyPreferences = function (preference, initialization) {
+  window.localStorage.setItem('preference', JSON.stringify(preference))
+
   ipc.send('update-preference', preference, initialization)
   var style = document.createElement('style')
   style.innerText = '.emoji { font-size: ' + preference['emoji-size'] + 'px; width: ' + (Number(preference['emoji-size']) + 20) + 'px; height: ' + (Number(preference['emoji-size']) + 20) + 'px; }'
   document.body.appendChild(style)
 }
 
-var savePreference = function () {
+var savePreference = function (event) {
+  event.preventDefault()
+
   Object.keys(preference).forEach(function (key) {
-    preference[key] = document.getElementById(key).value
+    var el = document.getElementById(key)
+    console.log(key, el)
+    preference[key] = el.type === 'checkbox' ? el.checked : el.value
   })
 
-  window.localStorage.setItem('preference', JSON.stringify(preference))
   applyPreferences(preference)
-  return false
 }
 
 if (window.localStorage.getItem('preference')) {
@@ -36,7 +42,7 @@ if (window.localStorage.getItem('preference')) {
 } else {
   preference = defaultPreference
 }
-window.localStorage.setItem('preference', JSON.stringify(preference))
+
 applyPreferences(preference, true)
 
 ipc.on('open-preference', function (event, message) {
@@ -67,9 +73,16 @@ var togglePreferencePanel = function () {
     var html = '<form>'
     Object.keys(preferenceNames).forEach(function (key) {
       html += '<div class="pref-item"><label for="' + key + '">'
-      html += preferenceNames[key]
-      html += '</label>'
-      html += '<input type=" text" id="' + key + '" value="' + preference[key] + '" placeholder="' + defaultPreference[key] + '">'
+      if (typeof preference[key] === 'boolean') {
+        html += '<label>'
+        html += '<input type="checkbox" id="' + key + '"' + (preference[key] ? 'checked' : '') + '>'
+        html += preferenceNames[key]
+        html += '</label>'
+      } else {
+        html += preferenceNames[key]
+        html += '</label>'
+        html += '<input type="text" id="' + key + '" value="' + preference[key] + '" placeholder="' + defaultPreference[key] + '">'
+      }
       html += '</div>'
     })
     html += '<label></label><button type="submit">Save</button>'
