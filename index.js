@@ -2,7 +2,7 @@ var menubar = require('menubar')
 var app = require('electron').app
 var ipc = require('electron').ipcMain
 var globalShortcut = require('electron').globalShortcut
-var mb = menubar({ dir: __dirname + '/app', width: 440, height: 270, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, windowPosition: 'topRight' })
+var mb = menubar({ dir: __dirname + '/app', width: 440, height: 270, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, windowPosition: 'topRight', alwaysOnTop: true })
 var Menu = require('electron').Menu
 var isDev = require('electron-is-dev')
 
@@ -42,32 +42,32 @@ var template = [
     submenu: [
       {
         label: 'Undo',
-        accelerator: 'Command+Z',
+        accelerator: 'CommandOrControl+Z',
         selector: 'undo:'
       },
       {
         label: 'Redo',
-        accelerator: 'Shift+Command+Z',
+        accelerator: 'Shift+CommandOrControl+Z',
         selector: 'redo:'
       },
       {
         label: 'Cut',
-        accelerator: 'Command+X',
+        accelerator: 'CommandOrControl+X',
         selector: 'cut:'
       },
       {
         label: 'Copy',
-        accelerator: 'Command+C',
+        accelerator: 'CommandOrControl+C',
         selector: 'copy:'
       },
       {
         label: 'Paste',
-        accelerator: 'Command+V',
+        accelerator: 'CommandOrControl+V',
         selector: 'paste:'
       },
       {
         label: 'Select All',
-        accelerator: 'Command+A',
+        accelerator: 'CommandOrControl+A',
         selector: 'selectAll:'
       },
       {
@@ -77,17 +77,17 @@ var template = [
       },
       {
         label: 'Preference',
-        accelerator: 'Command+,',
+        accelerator: 'CommandOrControl+,',
         click: function () { mb.window.webContents.send('open-preference') }
       },
       {
         label: 'Quit App',
-        accelerator: 'Command+Q',
+        accelerator: 'CommandOrControl+Q',
         selector: 'terminate:'
       },
       {
         label: 'Toggle DevTools',
-        accelerator: 'Alt+Command+I',
+        accelerator: 'Alt+CommandOrControl+I',
         click: function () { mb.window.toggleDevTools() }
       }
     ]
@@ -106,7 +106,12 @@ var registerShortcut = function (keybinding, initialization) {
 
   try {
     var ret = globalShortcut.register(keybinding, function () {
-      mb.window.isVisible() ? mb.hideWindow() : mb.showWindow()
+      if (mb.window.isVisible()) {
+        return mb.hideWindow()
+      }
+      
+      mb.showWindow()
+      mb.window.focus()
     })
   } catch (err) {
     mb.window.webContents.send('preference-updated', false, initialization)

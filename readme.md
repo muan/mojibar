@@ -20,12 +20,20 @@ $ brew cask install mojibar
 
 Go into your apps folder and select Mojibar (Mac shortcut: use command-space bar, then type Mojibar in the spotlight search field). Mojibar will display in the menubar at the top right corner of your screen.
 
+
+#### Linux
+
+You can use it without install any font, but the not all emoji will work, to get all emoji list you can try these approach:
+
+1. **Color** Follow [these instructions](http://stdio.tumblr.com/post/114082931782)
+1. **Black and White**  Download this [emoji font](https://github.com/eosrei/emojione-color-font)
+
 ## Usage
 
 <kbd>control + shift + space</kbd><br>
 Open app.
 
-<kbd>command + ,</kbd><br>
+<kbd>command/control + ,</kbd><br>
 Open preference (while window is open).
 
 <kbd>👆/👇/👈/👉</kbd><br>
@@ -49,7 +57,7 @@ Jump to the search field.
 <kbd>esc</kbd><br>
 Exit.
 
-<kbd>command + q</kbd><br>
+<kbd>command/control + q</kbd><br>
 Quit Mojibar (while window is open).
 
 ## Build
