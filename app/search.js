@@ -48,6 +48,7 @@ document.addEventListener('keydown', function (evt) {
         jumpto('next')
       }
     } else if (evt.keyCode === 13) {
+      evt.preventDefault()
       copyFocusedEmoji(evt.target, evt.shiftKey)
     } else if (Object.keys(directions).indexOf(evt.keyCode.toString()) >= 0) {
       // on navigation, navigate
@@ -76,7 +77,7 @@ function copyFocusedEmoji (emoji, copyText) {
   clipboard.writeText(data)
   searchInput.value = ''
   search('')
-  ipc.send('abort')
+  ipc.send('abort', 'copy')
 }
 
 document.addEventListener('keypress', function (evt) {
