@@ -76,7 +76,7 @@ function copyFocusedEmoji (emoji, copyText) {
   clipboard.writeText(data)
   searchInput.value = ''
   search('')
-  ipc.send('abort')
+  ipc.send('abort', 'copy')
 }
 
 document.addEventListener('keypress', function (evt) {

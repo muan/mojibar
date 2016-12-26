@@ -5,6 +5,9 @@ var globalShortcut = require('electron').globalShortcut
 var mb = menubar({ dir: __dirname + '/app', width: 440, height: 270, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, windowPosition: 'topRight' })
 var Menu = require('electron').Menu
 var isDev = require('electron-is-dev')
+var os = require('os')
+var robot = require('robotjs')
+
 
 mb.on('show', function () {
   mb.window.webContents.send('show')
@@ -19,8 +22,20 @@ mb.app.on('activate', function () {
 })
 
 // when receive the abort message, close the app
-ipc.on('abort', function () {
+ipc.on('abort', function (event, copy) {
   mb.hideWindow()
+
+  if (!copy) {
+    return
+  }
+
+  setTimeout(function () {
+    if (os.platform() === 'darwin') {
+      robot.keyTap('v', 'command')
+    } else {
+      robot.keyTap('v', 'control')
+    }
+  }, 50)
 })
 
 // update shortcuts when preferences change
