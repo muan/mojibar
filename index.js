@@ -1,9 +1,6 @@
+var { app, ipcMain, globalShortcut, Menu } = require('electron')
 var menubar = require('menubar')
-var app = require('electron').app
-var ipc = require('electron').ipcMain
-var globalShortcut = require('electron').globalShortcut
 var mb = menubar({ dir: __dirname + '/app', width: 440, height: 270, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, windowPosition: 'topRight' })
-var Menu = require('electron').Menu
 var isDev = require('electron-is-dev')
 
 mb.on('show', function () {
@@ -19,12 +16,12 @@ mb.app.on('activate', function () {
 })
 
 // when receive the abort message, close the app
-ipc.on('abort', function () {
+ipcMain.on('abort', function () {
   mb.hideWindow()
 })
 
 // update shortcuts when preferences change
-ipc.on('update-preference', function (evt, pref, initialization) {
+ipcMain.on('update-preference', function (evt, pref, initialization) {
   registerShortcut(pref['open-window-shortcut'], initialization)
 
   // Make packaged app (not dev app) start at login
