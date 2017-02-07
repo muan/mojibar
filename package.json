@@ -1,6 +1,6 @@
 {
   "name": "mojibar",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "A menubar app adaptation of Emoji searcher.",
   "main": "index.js",
   "dependencies": {
