@@ -17,6 +17,7 @@ mb.app.on('activate', function () {
 
 // when receive the abort message, close the app
 ipcMain.on('abort', function () {
+  mb.window.blur()
   mb.hideWindow()
 })
 
