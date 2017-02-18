@@ -2,6 +2,7 @@ var emojilib = require('emojilib').lib
 var emojikeys = require('emojilib').ordered
 var clipboard = require('electron').clipboard
 var ipc = require('electron').ipcRenderer
+var wordwrap = require('wordwrap')
 var index = buildIndex()
 var indexKeys = Object.keys(index)
 var emojikeyIndexTable = buildEmojikeyIndexTable()
@@ -65,13 +66,23 @@ document.addEventListener('keydown', function (evt) {
   }
 })
 
-function copyFocusedEmoji (emoji, copyText) {
-  var data
+function copyFocusedEmoji (targetElement, copyText) {
+  var data, image
+
+  // Since focused target could be an image, retarget the parent button.
+  if (targetElement.tagName == 'IMG') {
+    image = targetElement
+    button = targetElement.parentNode
+  } else {
+    // Pull image from first child node instead.
+    image = targetElement.childNodes[0]
+  }
+
   // on enter: copy data and exit
   if (copyText) {
-    data = ':' + emoji.getAttribute('aria-label') + ':'
+    data = ':' + button.getAttribute('aria-label') + ':'
   } else {
-    data = emoji.innerText
+    data = image.alt
   }
   clipboard.writeText(data)
   searchInput.value = ''
@@ -90,6 +101,7 @@ document.addEventListener('keypress', function (evt) {
 // if click on and emoji item, copy emoji unicode char to clipboard on click or
 // copy emoji code if `shiftKey` is pressed
 document.addEventListener('click', function (evt) {
+  window.clickEvent = evt
   if (evt.target.classList.contains('emoji')) {
     copyFocusedEmoji(evt.target, evt.shiftKey)
   }
@@ -139,13 +151,28 @@ function search (query) {
 function renderResults (emojiNameArray, containerElement) {
   containerElement.innerHTML = ''
   var fragment = document.createDocumentFragment()
+
+  // TODO: Due to overhead of rendering elements from scratch, maybe faster to use CSS to toggle element in DOM (i.e. display: none).
   emojiNameArray.forEach(function (name) {
     var unicode = (emojilib[name]['char'] || '--')
     var resultElement = document.createElement('button')
     resultElement.type = 'button'
     resultElement.className = 'emoji'
     resultElement.setAttribute('aria-label', name)
-    resultElement.textContent = unicode
+
+    // Parse the Twitter version of this emoji.
+    var parsed = twemoji.parse(unicode, function(icon) {
+		return '../node_modules/twemoji/2/svg/' + icon + '.svg'
+	});
+    resultElement.innerHTML = parsed
+
+    // Setup title for mouse over to provide hints about what keywords trigger this emoji.
+    var keywords = emojilib[name].keywords.filter(function(val) {
+        return val != unicode
+    });
+    var title = ':' + name + ':\n\n(' + keywords.join(', ') + ')'
+    resultElement.title = wordwrap(50)(title)
+
     fragment.appendChild(resultElement)
   })
   containerElement.appendChild(fragment)
@@ -186,7 +213,7 @@ function isWord (charCode) {
 
 function jumpto (destination) {
   var container = document.getElementsByClassName('js-results')[0]
-  var all = document.getElementsByClassName('emoji')
+  var all = document.querySelectorAll('button.emoji')
   var focusedElement = document.querySelector('.emoji:focus')
   var nodeIndex = Array.prototype.indexOf.call(all, focusedElement)
   var resultPerRow = Math.floor(container.clientWidth / all[0].clientWidth)

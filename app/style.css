@@ -62,14 +62,23 @@ button {
 .emoji {
   overflow: hidden;
   float: left;
-  padding: 10px;
+  padding: 0;
   width: 40px;
   height: 40px;
-  font-size: 20px;
-  font-family: AppleColorEmoji;
   -webkit-appearance: none;
   background: transparent;
   border: 0;
+  position: relative;
+}
+
+/* Make image relative to button size, centered x/y. */
+.emoji img {
+  width: 70%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  height: 70%;
 }
 
 .on-preference {
