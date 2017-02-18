@@ -16,9 +16,41 @@ var directions = {
   40: 'down'
 }
 
+
+// Initialize container now. Further results are simply filtered via calls to search().
+containerElement.innerHTML = ''
+var fragment = document.createDocumentFragment()
+for(let i in emojikeys) {
+  let name = emojikeys[i]
+  let unicode = (emojilib[name]['char'] || '--')
+  let resultElement = document.createElement('button')
+  resultElement.type = 'button'
+  resultElement.className = 'emoji'
+  resultElement.id = name
+  resultElement.setAttribute('aria-label', name)
+
+  // For consistent retrieval, if no image could be parsed/generated.
+  resultElement.setAttribute('data-char', unicode)
+
+  // Parse the Twitter version of this emoji.
+  resultElement.innerHTML = twemoji.parse(unicode, function(icon) {
+    return '../node_modules/twemoji/2/svg/' + icon + '.svg'
+  })
+
+  // Setup title for mouse over to provide hints about what keywords trigger this emoji.
+  let keywords = emojilib[name].keywords.filter(function(val) {
+      return val != unicode
+  });
+  let title = ':' + name + ':\n\n(' + keywords.join(', ') + ')'
+  resultElement.title = wordwrap(50)(title)
+
+  fragment.appendChild(resultElement)
+}
+containerElement.appendChild(fragment)
+
+// Init search.
 searchInput.dataset.isSearchInput = true
 searchInput.focus()
-search('') // Initialize container now. Further results are simply filtered.
 searchInput.addEventListener('input', function () {
   search(this.value.toLowerCase())
 })
@@ -141,51 +173,16 @@ function search (query) {
     }
 
     renderResults(results)
-    if (document.querySelector('.emoji')) document.querySelector('.emoji').scrollIntoViewIfNeeded()
+    if (document.querySelector('button:not(.hide)')) document.querySelector('button:not(.hide)').scrollIntoViewIfNeeded()
   }, 80)
 }
 
 function renderResults (emojiNameArray) {
-  if (containerElement.childNodes.length > 0) {
-      // Already initialized, just hide all and show only matches.
-      let all = document.querySelectorAll('button');
-      all.forEach(function(button) {
-        button.classList.toggle('hide', emojiNameArray.indexOf(button.id) === -1);
-      });
-
-  } else {
-      // Initialize container contents.
-	  containerElement.innerHTML = ''
-	  var fragment = document.createDocumentFragment()
-
-	  emojiNameArray.forEach(function (name) {
-		  var unicode = (emojilib[name]['char'] || '--')
-		  var resultElement = document.createElement('button')
-		  resultElement.type = 'button'
-		  resultElement.className = 'emoji'
-		  resultElement.id = name;
-		  resultElement.setAttribute('aria-label', name)
-
-		  // For consistent retrieval, if no image could be parsed/generated.
-		  resultElement.setAttribute('data-char', unicode)
-
-		  // Parse the Twitter version of this emoji.
-		  var parsed = twemoji.parse(unicode, function(icon) {
-			  return '../node_modules/twemoji/2/svg/' + icon + '.svg'
-		  });
-		  resultElement.innerHTML = parsed
-
-		  // Setup title for mouse over to provide hints about what keywords trigger this emoji.
-		  var keywords = emojilib[name].keywords.filter(function(val) {
-			  return val != unicode
-		  });
-		  var title = ':' + name + ':\n\n(' + keywords.join(', ') + ')'
-		  resultElement.title = wordwrap(50)(title)
-
-		  fragment.appendChild(resultElement)
-	  })
-	  containerElement.appendChild(fragment)
-  }
+  // Already initialized, just hide all and show only matches.
+  let all = document.querySelectorAll('button')
+  all.forEach(function(button) {
+    button.classList.toggle('hide', emojiNameArray.indexOf(button.id) === -1)
+  })
 }
 
 function buildEmojikeyIndexTable () {
@@ -222,7 +219,6 @@ function isWord (charCode) {
 }
 
 function jumpto (destination) {
-  var containerElement = document.getElementsByClassName('js-results')[0]
   var all = document.querySelectorAll('button.emoji:not(.hide)')
   var focusedElement = document.querySelector('.emoji:focus')
   var nodeIndex = Array.prototype.indexOf.call(all, focusedElement)
