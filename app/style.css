@@ -81,6 +81,10 @@ button {
   height: 70%;
 }
 
+.hide {
+  display: none;
+}
+
 .on-preference {
   overflow: hidden;
 }
