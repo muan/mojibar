@@ -3,14 +3,16 @@ var ipc = require('electron').ipcRenderer
 
 var defaultPreference = {
   'open-window-shortcut': 'ctrl+shift+space',
-  'emoji-size': '20',
-  'open-at-login': false
+  'emoji-size': '40',
+  'window-position': 'topRight',
+  'open-at-login': false,
 }
 
 var preferenceNames = {
   'open-window-shortcut': 'Mojibar shortcut',
-  'emoji-size': 'Emoji font size',
-  'open-at-login': 'Start Mojibar at login'
+  'emoji-size': 'Emoji size',
+  'window-position': 'Window Position',
+  'open-at-login': 'Start Mojibar at login',
 }
 
 var applyPreferences = function (preference, initialization) {
@@ -18,7 +20,7 @@ var applyPreferences = function (preference, initialization) {
 
   ipc.send('update-preference', preference, initialization)
   var style = document.createElement('style')
-  style.innerText = '.emoji { font-size: ' + preference['emoji-size'] + 'px; width: ' + (Number(preference['emoji-size']) + 20) + 'px; height: ' + (Number(preference['emoji-size']) + 20) + 'px; }'
+  style.innerText = '.emoji { width: ' + preference['emoji-size'] + 'px; height: ' + preference['emoji-size'] + 'px; }'
   document.body.appendChild(style)
 }
 
@@ -71,16 +73,37 @@ var togglePreferencePanel = function () {
     panel.id = 'js-preference-panel'
     var html = '<form>'
     Object.keys(preferenceNames).forEach(function (key) {
+      var prefTitle = preferenceNames[key]
+      var prefVal = preference[key]
       html += '<div class="pref-item"><label for="' + key + '">'
-      if (typeof preference[key] === 'boolean') {
+      if (typeof defaultPreference[key] === 'boolean') {
         html += '<label>'
-        html += '<input type="checkbox" id="' + key + '"' + (preference[key] ? 'checked' : '') + '>'
-        html += preferenceNames[key]
+        html += '<input type="checkbox" id="' + key + '"' + (prefVal ? 'checked' : '') + '>'
+        html += prefTitle
         html += '</label>'
+	  } else if (key == 'window-position') {
+	    let positionOptions = {
+          'topLeft': 'Top Left',
+          'topRight': 'Top Right',
+          'bottomLeft': 'Bottom Left',
+          'bottomRight': 'Bottom Right',
+          'topCenter': 'Top Center',
+          'bottomCenter': 'Bottom Center',
+          'center': 'Center'
+	    };
+        html += '<label for="' + key + '">'
+        html += prefTitle
+        html += '</label>'
+        html += '<select id="' + key + '">'
+        for(let opt in positionOptions) {
+          let title = positionOptions[opt];
+          html += '<option value="' + opt + '"' + (prefVal == opt ? ' selected' : '') + '>' + title + '</option>'
+        }
+        html += '</select>'
       } else {
-        html += preferenceNames[key]
+        html += prefTitle
         html += '</label>'
-        html += '<input type="text" id="' + key + '" value="' + preference[key] + '" placeholder="' + defaultPreference[key] + '">'
+        html += '<input type="text" id="' + key + '" value="' + prefVal + '" placeholder="' + defaultPreference[key] + '">'
       }
       html += '</div>'
     })

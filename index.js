@@ -31,7 +31,12 @@ ipcMain.on('update-preference', function (evt, pref, initialization) {
       openAsHidden: true
     })
   }
+
+  mb.setOption('windowPosition', pref['window-position'])
 })
+
+var isWin = /^win/.test(process.platform)
+var superHotKey = isWin ? 'Control+Shift' : 'Command'
 
 var template = [
   {
@@ -74,17 +79,17 @@ var template = [
       },
       {
         label: 'Preference',
-        accelerator: 'Command+,',
+        accelerator: superHotKey + '+,',
         click: function () { mb.window.webContents.send('open-preference') }
       },
       {
         label: 'Quit App',
-        accelerator: 'Command+Q',
-        selector: 'terminate:'
-      },
+        accelerator: superHotKey + '+Q',
+        click: function () { app.quit() }
+	  },
       {
         label: 'Toggle DevTools',
-        accelerator: 'Alt+Command+I',
+        accelerator: (isWin ? 'Control+Shift' : 'Alt+Command') + '+I',
         click: function () { mb.window.toggleDevTools() }
       }
     ]
