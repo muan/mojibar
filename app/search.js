@@ -67,22 +67,18 @@ document.addEventListener('keydown', function (evt) {
 })
 
 function copyFocusedEmoji (targetElement, copyText) {
-  var data, image
+  var data
 
   // Since focused target could be an image, retarget the parent button.
+  button = targetElement
   if (targetElement.tagName == 'IMG') {
-    image = targetElement
     button = targetElement.parentNode
-  } else {
-    // Pull image from first child node instead.
-    image = targetElement.childNodes[0]
   }
 
   // on enter: copy data and exit
-  if (copyText) {
-    data = ':' + button.getAttribute('aria-label') + ':'
-  } else {
-    data = image.alt
+  data = button.getAttribute('data-char')
+  if (copyText || data == '--') {
+	data = ':' + button.getAttribute('aria-label') + ':'
   }
   clipboard.writeText(data)
   searchInput.value = ''
@@ -159,6 +155,9 @@ function renderResults (emojiNameArray, containerElement) {
     resultElement.type = 'button'
     resultElement.className = 'emoji'
     resultElement.setAttribute('aria-label', name)
+
+    // For consistent retrieval, if no image could be parsed/generated.
+    resultElement.setAttribute('data-char', unicode)
 
     // Parse the Twitter version of this emoji.
     var parsed = twemoji.parse(unicode, function(icon) {
