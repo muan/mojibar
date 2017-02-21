@@ -130,7 +130,6 @@ document.addEventListener('keypress', function (evt) {
 // if click on and emoji item, copy emoji unicode char to clipboard on click or
 // copy emoji code if `shiftKey` is pressed
 document.addEventListener('click', function (evt) {
-  window.clickEvent = evt
   if (evt.target.classList.contains('emoji')) {
     copyFocusedEmoji(evt.target, evt.shiftKey)
   }
