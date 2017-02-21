@@ -1,6 +1,8 @@
 var { app, ipcMain, globalShortcut, Menu } = require('electron')
+var isWin = /^win/.test(process.platform)
+var iconType = (isWin ? 'color' : 'monotone'); // Will vary depending on OS.
 var menubar = require('menubar')
-var mb = menubar({ dir: __dirname + '/app', width: 440, height: 270, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, windowPosition: 'topRight' })
+var mb = menubar({ dir: __dirname + '/app', width: 440, height: 270, icon: __dirname + '/app/icons/' + iconType + '.png', preloadWindow: true, windowPosition: 'topRight' })
 var isDev = require('electron-is-dev')
 
 mb.on('show', function () {
@@ -35,7 +37,6 @@ ipcMain.on('update-preference', function (evt, pref, initialization) {
   mb.setOption('windowPosition', pref['window-position'])
 })
 
-var isWin = /^win/.test(process.platform)
 var superHotKey = isWin ? 'Control+Shift' : 'Command'
 
 var template = [
