@@ -1,7 +1,7 @@
 var { app, ipcMain, globalShortcut, Menu } = require('electron')
 var isWin = /^win/.test(process.platform)
 var isMac = /darwin/.test(process.platform)
-var iconType = (isWin ? 'color' : 'monotone'); // Will vary depending on OS.
+var iconType = (isWin ? 'color' : 'monotone'); // Will vary depending on OS. TODO: Should we be checking isMac instead (since Linux may have same issue)?
 var menubar = require('menubar')
 var mb = menubar({ dir: __dirname + '/app', width: 440, height: 270, icon: __dirname + '/app/icons/' + iconType + '.png', preloadWindow: true, windowPosition: 'topRight', alwaysOnTop: true })
 var isDev = require('electron-is-dev')
