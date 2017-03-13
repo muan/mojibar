@@ -77,7 +77,7 @@ var template = [
       },
       {
         label: 'Reload',
-        accelerator: 'CmdOrCtrl+R',
+        accelerator: 'CommandOrControl+R',
         click: function (item, focusedWindow) { if (focusedWindow) focusedWindow.reload() }
       },
       {
