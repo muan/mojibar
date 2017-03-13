@@ -1,6 +1,9 @@
 var { app, ipcMain, globalShortcut, Menu } = require('electron')
+var isWin = /^win/.test(process.platform)
+var isMac = /darwin/.test(process.platform)
+var iconType = (isWin ? 'color' : 'monotone'); // Will vary depending on OS. TODO: Should we be checking isMac instead (since Linux may have same issue)?
 var menubar = require('menubar')
-var mb = menubar({ dir: __dirname + '/app', width: 440, height: 270, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, windowPosition: 'topRight', alwaysOnTop: true })
+var mb = menubar({ dir: __dirname + '/app', width: 440, height: 270, icon: __dirname + '/app/icons/' + iconType + '.png', preloadWindow: true, windowPosition: 'topRight', alwaysOnTop: true })
 var isDev = require('electron-is-dev')
 
 mb.on('show', function () {
@@ -31,7 +34,12 @@ ipcMain.on('update-preference', function (evt, pref, initialization) {
       openAsHidden: true
     })
   }
+
+  mb.setOption('windowPosition', pref['window-position'])
 })
+
+// Since Windows/Linux use 'control' key and only Mac uses 'command'.
+var superHotKey = isMac ? 'CommandOrControl' : 'Control+Shift'
 
 var template = [
   {
@@ -69,22 +77,22 @@ var template = [
       },
       {
         label: 'Reload',
-        accelerator: 'CmdOrCtrl+R',
+        accelerator: 'CommandOrControl+R',
         click: function (item, focusedWindow) { if (focusedWindow) focusedWindow.reload() }
       },
       {
         label: 'Preference',
-        accelerator: 'CommandOrControl+,',
+        accelerator: superHotKey + '+,',
         click: function () { mb.window.webContents.send('open-preference') }
       },
       {
         label: 'Quit App',
-        accelerator: 'CommandOrControl+Q',
-        selector: 'terminate:'
-      },
+        accelerator: superHotKey + '+Q',
+        click: function () { app.quit() }
+	  },
       {
         label: 'Toggle DevTools',
-        accelerator: 'Alt+CommandOrControl+I',
+        accelerator: (isMac ? 'Alt+CommandOrControl' : 'Control+Shift') + '+I',
         click: function () { mb.window.toggleDevTools() }
       }
     ]

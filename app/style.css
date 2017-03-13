@@ -62,14 +62,27 @@ button {
 .emoji {
   overflow: hidden;
   float: left;
-  padding: 10px;
+  padding: 0;
   width: 40px;
   height: 40px;
-  font-size: 20px;
-  font-family: "AppleColorEmoji", "Noto Color Emoji", "EmojiOne Color", sans-serif;
   -webkit-appearance: none;
   background: transparent;
   border: 0;
+  position: relative;
+}
+
+/* Make image relative to button size, centered x/y. */
+.emoji img {
+  width: 70%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  height: 70%;
+}
+
+.hide {
+  display: none;
 }
 
 .on-preference {
@@ -103,7 +116,7 @@ button {
   margin-bottom: 8px;
 }
 
-.preference-panel input {
+.preference-panel input, .preference-panel select {
   padding: 10px 13px;
   font-size: 13px;
   border-radius: 3px;
