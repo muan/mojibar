@@ -1,8 +1,9 @@
 var { app, ipcMain, globalShortcut, Menu } = require('electron')
 var isWin = /^win/.test(process.platform)
+var isMac = /darwin/.test(process.platform)
 var iconType = (isWin ? 'color' : 'monotone'); // Will vary depending on OS.
 var menubar = require('menubar')
-var mb = menubar({ dir: __dirname + '/app', width: 440, height: 270, icon: __dirname + '/app/icons/' + iconType + '.png', preloadWindow: true, windowPosition: 'topRight' })
+var mb = menubar({ dir: __dirname + '/app', width: 440, height: 270, icon: __dirname + '/app/icons/' + iconType + '.png', preloadWindow: true, windowPosition: 'topRight', alwaysOnTop: true })
 var isDev = require('electron-is-dev')
 
 mb.on('show', function () {
@@ -37,7 +38,8 @@ ipcMain.on('update-preference', function (evt, pref, initialization) {
   mb.setOption('windowPosition', pref['window-position'])
 })
 
-var superHotKey = isWin ? 'Control+Shift' : 'Command'
+// Since Windows/Linux use 'control' key and only Mac uses 'command'.
+var superHotKey = isMac ? 'CommandOrControl' : 'Control+Shift'
 
 var template = [
   {
@@ -45,32 +47,32 @@ var template = [
     submenu: [
       {
         label: 'Undo',
-        accelerator: 'Command+Z',
+        accelerator: 'CommandOrControl+Z',
         selector: 'undo:'
       },
       {
         label: 'Redo',
-        accelerator: 'Shift+Command+Z',
+        accelerator: 'Shift+CommandOrControl+Z',
         selector: 'redo:'
       },
       {
         label: 'Cut',
-        accelerator: 'Command+X',
+        accelerator: 'CommandOrControl+X',
         selector: 'cut:'
       },
       {
         label: 'Copy',
-        accelerator: 'Command+C',
+        accelerator: 'CommandOrControl+C',
         selector: 'copy:'
       },
       {
         label: 'Paste',
-        accelerator: 'Command+V',
+        accelerator: 'CommandOrControl+V',
         selector: 'paste:'
       },
       {
         label: 'Select All',
-        accelerator: 'Command+A',
+        accelerator: 'CommandOrControl+A',
         selector: 'selectAll:'
       },
       {
@@ -90,7 +92,7 @@ var template = [
 	  },
       {
         label: 'Toggle DevTools',
-        accelerator: (isWin ? 'Control+Shift' : 'Alt+Command') + '+I',
+        accelerator: (isMac ? 'Alt+CommandOrControl' : 'Control+Shift') + '+I',
         click: function () { mb.window.toggleDevTools() }
       }
     ]
@@ -109,7 +111,12 @@ var registerShortcut = function (keybinding, initialization) {
 
   try {
     var ret = globalShortcut.register(keybinding, function () {
-      mb.window.isVisible() ? mb.hideWindow() : mb.showWindow()
+      if (mb.window.isVisible()) {
+        return mb.hideWindow()
+      }
+
+      mb.showWindow()
+      mb.window.focus()
     })
   } catch (err) {
     mb.window.webContents.send('preference-updated', false, initialization)

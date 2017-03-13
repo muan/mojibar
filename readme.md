@@ -6,6 +6,8 @@ A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 
 ## Install
 
+### OSX
+
 #### :triangular_flag_on_post: Download and drag
 
 [Download the latest version for Mac on the releases page](https://github.com/muan/mojibar/releases) (and drag into your apps folder.)
@@ -16,16 +18,25 @@ A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 $ brew cask install mojibar
 ```
 
-#### :triangular_flag_on_post: Launch Mojibar
+After installation, find Mojibar in your apps folder or search Mojibar in spotlight. Mojibar will appear in your tray at the top right corner of your screen.
 
-Go into your apps folder and select Mojibar (Mac shortcut: use command-space bar, then type Mojibar in the spotlight search field). Mojibar will display in the menubar at the top right corner of your screen.
+### Linux
+
+#### :triangular_flag_on_post: Download and drag
+
+[Download the latest version for Linux on the releases page](https://github.com/muan/mojibar/releases) (and drag into your apps folder.)
+
+You can use it without install any font, but the not all emoji will work, to get all emoji list you can try these approach:
+
+1. **Color** – Follow [these instructions](http://stdio.tumblr.com/post/114082931782)
+1. **Black and White** – Download this [emoji font](https://github.com/eosrei/emojione-color-font)
 
 ## Usage
 
 <kbd>control + shift + space</kbd><br>
 Open app.
 
-<kbd>command + ,</kbd><br>
+<kbd>command/control + ,</kbd><br>
 Open preference (while window is open).
 
 <kbd>👆/👇/👈/👉</kbd><br>
@@ -49,7 +60,7 @@ Jump to the search field.
 <kbd>esc</kbd><br>
 Exit.
 
-<kbd>command + q</kbd><br>
+<kbd>command/control + q</kbd><br>
 Quit Mojibar (while window is open).
 
 ## Build

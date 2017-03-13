@@ -231,13 +231,17 @@ function jumpto (destination) {
     newTarget = nodeIndex + resultPerRow
   } else if (destination === 'left') {
     if ((nodeIndex + 1) % resultPerRow === 1) {
-      newTarget = nodeIndex + (resultPerRow - 1)
+      // Wrap to previous row.
+      newTarget = nodeIndex + (resultPerRow - 1) // Adjust to last column.
+      newTarget -= resultPerRow // Up one row.
     } else {
       newTarget = nodeIndex - 1
     }
   } else if (destination === 'right') {
     if ((nodeIndex + 1) % resultPerRow === 0) {
-      newTarget = nodeIndex - (resultPerRow - 1)
+      // Wrap to next row.
+      newTarget = nodeIndex - (resultPerRow - 1) // Adjust to first column.
+      newTarget += resultPerRow // Down one row.
     } else {
       newTarget = nodeIndex + 1
     }
@@ -247,10 +251,20 @@ function jumpto (destination) {
     newTarget = nodeIndex - resultPerRow * (resultPerCol - 1 || 1)
   }
 
-  if (newTarget < 0) newTarget = 0
+  if (newTarget < 0) {
+    // Allow jump back up to search field IF already at first item.
+    if (nodeIndex === 0) {
+	  // Purposefully mismatch so we focus on input instead.
+      newTarget = -1
+    } else {
+      newTarget = 0
+    }
+  }
   if (newTarget >= all.length - 1) newTarget = all.length - 1
   if (all[newTarget]) {
     all[newTarget].focus()
     all[newTarget].scrollIntoViewIfNeeded()
+  } else {
+    searchInput.focus()
   }
 }
