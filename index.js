@@ -1,4 +1,6 @@
 var { app, ipcMain, globalShortcut, Menu } = require('electron')
+var isWin = /^win/.test(process.platform)
+var isMac = /darwin/.test(process.platform)
 var menubar = require('menubar')
 var mb = menubar({ dir: __dirname + '/app', width: 440, height: 270, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, windowPosition: 'topRight' })
 var isDev = require('electron-is-dev')
@@ -17,8 +19,13 @@ mb.app.on('activate', function () {
 
 // when receive the abort message, close the app
 ipcMain.on('abort', function () {
-  mb.window.blur()
-  mb.hideWindow()
+  if (isMac) {
+    mb.app.hide()
+  } else {
+    // Windows and Linux
+    mb.window.blur()
+    mb.hideWindow()
+  }
 })
 
 // update shortcuts when preferences change
