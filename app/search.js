@@ -222,7 +222,7 @@ function jumpto (destination) {
   if (newTarget < 0) {
     // Allow jump back up to search field IF already at first item.
     if (nodeIndex === 0) {
-	  // Purposefully mismatch so we focus on input instead.
+    // Purposefully mismatch so we focus on input instead.
       newTarget = -1
     } else {
       newTarget = 0
