@@ -23,8 +23,9 @@ ipcMain.on('abort', function () {
   } else {
     // Windows and Linux
     mb.window.blur()
-    mb.hideWindow()
   }
+
+  mb.hideWindow()
 })
 
 // update shortcuts when preferences change
