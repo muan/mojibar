@@ -5,13 +5,13 @@
   "main": "index.js",
   "dependencies": {
     "electron-is-dev": "^0.1.2",
-    "emojilib": "2.0.7",
+    "emojilib": "2.2.0",
     "menubar": "^5.1.0"
   },
   "devDependencies": {
     "electron": "^1.4.0",
     "electron-packager": "^8.0.0",
-    "standard": "^4.5.3"
+    "standard": "^9.0.2"
   },
   "scripts": {
     "start": "electron .",
