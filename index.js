@@ -1,7 +1,16 @@
 var { app, ipcMain, globalShortcut, Menu } = require('electron')
 var menubar = require('menubar')
-var mb = menubar({ dir: __dirname + '/app', width: 440, height: 270, icon: __dirname + '/app/Icon-Template.png', preloadWindow: true, windowPosition: 'topRight', alwaysOnTop: true })
 var isDev = require('electron-is-dev')
+var path = require('path')
+var mb = menubar({
+  dir: path.join(__dirname, '/app'),
+  width: 440,
+  height: 270,
+  icon: path.join(__dirname, '/app/Icon-Template.png'),
+  preloadWindow: true,
+  windowPosition: 'topRight',
+  alwaysOnTop: true
+})
 
 mb.on('show', function () {
   mb.window.webContents.send('show')
