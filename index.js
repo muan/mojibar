@@ -16,6 +16,10 @@ mb.on('show', function () {
   mb.window.webContents.send('show')
 })
 
+mb.on('after-hide', function() {
+  mb.app.hide()
+})
+
 mb.app.on('will-quit', function () {
   globalShortcut.unregisterAll()
 })
