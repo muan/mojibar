@@ -1,5 +1,7 @@
 # Mojibar [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/muan/mojibar.svg)](https://greenkeeper.io/)
+
 A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 
 ![screenshot](https://cloud.githubusercontent.com/assets/1153134/12583324/7756a38a-c485-11e5-9388-3b5c61743905.gif)
