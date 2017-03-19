@@ -180,8 +180,7 @@ function buildIndex () {
 }
 
 function isWord (charCode) {
-  var word = String.fromCharCode(charCode).match(/\w/)
-  return Boolean(word) ? word : false
+  return String.fromCharCode(charCode).match(/\w/)
 }
 
 function jumpto (destination) {
