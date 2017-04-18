@@ -13,10 +13,13 @@ var directions = {
   40: 'down'
 }
 
-var orderedEmojiChars = emojikeys.map( function(name) {
-  return emojilib[name]['char']
-});
+var orderedEmojiChars = emojikeys.map(function (name) { return emojilib[name]['char'] })
 
+var charToName = {}
+emojikeys.forEach(function (name) {
+  var char = emojilib[name]['char']
+  charToName[char] = name
+})
 
 searchInput.dataset.isSearchInput = true
 searchInput.focus()
@@ -124,7 +127,7 @@ function renderResults (emojiCharArray, containerElement) {
     var resultElement = document.createElement('button')
     resultElement.type = 'button'
     resultElement.className = 'emoji'
-    resultElement.setAttribute('aria-label', name)
+    resultElement.setAttribute('aria-label', charToName[emojiChar] || '')
     resultElement.textContent = unicode
     fragment.appendChild(resultElement)
   })
@@ -133,7 +136,7 @@ function renderResults (emojiCharArray, containerElement) {
 
 function isWord (charCode) {
   var word = String.fromCharCode(charCode).match(/\w/)
-  return Boolean(word) ? word : false
+  return word || false
 }
 
 function jumpto (destination) {
