@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "electron-is-dev": "^0.1.2",
+    "emoji-search": "1.0.0",
     "emojilib": "2.0.7",
     "menubar": "^5.1.0"
   },
