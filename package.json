@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "electron": "^1.6.0",
-    "electron-packager": "^8.0.0",
+    "electron-packager": "^8.7.0",
     "standard": "^9.0.2"
   },
   "scripts": {
