@@ -9,7 +9,7 @@
     "menubar": "^5.1.0"
   },
   "devDependencies": {
-    "electron": "^1.6.0",
+    "electron": "^1.6.8",
     "electron-packager": "^8.0.0",
     "standard": "^9.0.2"
   },
