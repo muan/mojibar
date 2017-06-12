@@ -1,4 +1,4 @@
-# Mojibar [![Travis CI build status](https://img.shields.io/travis/muan/mojibar.svg)](https://travis-ci.org/muan/mojibar) [![JS Standard Style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard)
+# Mojibar [![Travis CI build status](https://img.shields.io/travis/muan/mojibar.svg)](https://travis-ci.org/muan/mojibar) [![JS Standard Style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://github.com/feross/standard) [![Greenkeeper badge](https://badges.greenkeeper.io/muan/mojibar.svg)](https://greenkeeper.io/)
 
 A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 
