@@ -112,6 +112,10 @@ mb.on('ready', function ready () {
   // Build default menu for text editing and devtools. (gone since electron 0.25.2)
   var menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
+
+  mb.window.on('hide', function () {
+    mb.window.webContents.send('fetch')
+  })
 })
 
 // Register a shortcut listener.

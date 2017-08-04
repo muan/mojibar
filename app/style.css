@@ -133,3 +133,9 @@ button {
   background: #efefef;
   border-right: 1px solid #cfcfcf;
 }
+
+.emojilib-version {
+  font-family: monaco, monospace;
+  margin-left: 15px;
+  font-size: 10px;
+}

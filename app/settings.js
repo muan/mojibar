@@ -85,6 +85,7 @@ var togglePreferencePanel = function () {
       html += '</div>'
     })
     html += '<label></label><button type="submit">Save</button>'
+    if (localStorage.getItem('emojilibVersion')) html += `<code class="emojilib-version">emojilib@${localStorage.getItem('emojilibVersion')}</code>`
     html += '</form>'
     panel.innerHTML += html
 

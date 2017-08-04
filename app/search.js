@@ -1,5 +1,5 @@
-var emojilib = require('emojilib').lib
-var emojikeys = require('emojilib').ordered
+var emojilib = JSON.parse(localStorage.getItem('emojilib')) || require('emojilib').lib
+var emojikeys = JSON.parse(localStorage.getItem('emojikeys')) || require('emojilib').ordered
 var clipboard = require('electron').clipboard
 var ipc = require('electron').ipcRenderer
 var index = buildIndex()
@@ -14,6 +14,35 @@ var directions = {
   40: 'down'
 }
 
+function fetchAndUpdateLocalCache () {
+  if (!navigator.onLine) return
+  var expireTime = localStorage.getItem('emojilibExpireTime')
+  if (expireTime && Number(expireTime) > new Date().getTime()) return
+  var version = '^2.0.0'
+  var emojilibLib = `https://unpkg.com/emojilib@${version}/emojis.json`
+  var emojilibOrdered = `https://unpkg.com/emojilib@${version}/ordered.json`
+
+  fetch(emojilibLib).then(function (res) { return checkIfNewVersion(res) }).then(function(newData) {
+    // Fetch only once per day
+    localStorage.setItem('emojilibExpireTime', new Date().getTime() + 1000 * 60 * 60 * 24)
+    if (!newData) return
+    localStorage.setItem('emojilib', JSON.stringify(newData))
+
+    fetch(emojilibOrdered).then(function (res) { return res.json() }).then(function(newData) {
+      localStorage.setItem('emojikeys', JSON.stringify(newData))
+      location.reload()
+    })
+  })
+
+  function checkIfNewVersion (res) {
+    var fetchedVersion = res.url.match(/@([\d.]+)/)[1]
+    if (fetchedVersion !== localStorage.getItem('emojilibVersion')) {
+      localStorage.setItem('emojilibVersion', fetchedVersion)
+      return res.json()
+    }
+  }
+}
+
 searchInput.dataset.isSearchInput = true
 searchInput.focus()
 search('')
@@ -23,6 +52,10 @@ searchInput.addEventListener('input', function () {
 
 ipc.on('show', function (event, message) {
   searchInput.focus()
+})
+
+ipc.on('fetch', function (event, message) {
+  fetchAndUpdateLocalCache()
 })
 
 document.addEventListener('mousewheel', function (e) {
