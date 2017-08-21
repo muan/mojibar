@@ -24,7 +24,7 @@ var applyPreferences = function (preference, initialization) {
   style.innerText = '.emoji { font-size: ' + preference['emoji-size'] + 'px; width: ' + (Number(preference['emoji-size']) + 20) + 'px; height: ' + (Number(preference['emoji-size']) + 20) + 'px; }'
   document.body.appendChild(style)
   // Update skin tone setting
-  search(' ')
+  window.search(' ')
 }
 
 var savePreference = function (event) {
