@@ -144,7 +144,7 @@ function renderResults (emojiNameArray, containerElement) {
   var modifierValue = preference['skin-tone-modifier']
   var modifier = modifiers.indexOf(modifierValue) >= 0 ? modifierValue : null
   emojiNameArray.forEach(function (name) {
-    var unicode = (emojilib[name]['char'] + (modifier && emojilib[name]['fitzpatrick_scale'] ? modifier : '') || '--')
+    var unicode = addModifier(emojilib[name], modifier) || '--'
     var resultElement = document.createElement('button')
     resultElement.type = 'button'
     resultElement.className = 'emoji'
@@ -185,6 +185,13 @@ function buildIndex () {
 
 function isWord (charCode) {
   return String.fromCharCode(charCode).match(/\w/)
+}
+
+// Insert modifier in front of zwj
+function addModifier (emoji, modifier) {
+  if (!modifier || !emoji['fitzpatrick_scale']) return emoji['char']
+  var zwj = new RegExp('‍', 'g')
+  return emoji['char'].match(zwj) ? emoji['char'].replace(zwj, modifier + '‍') : emoji['char'] + modifier
 }
 
 function jumpto (destination) {
