@@ -134,8 +134,8 @@ button {
   border-right: 1px solid #cfcfcf;
 }
 
-.emojilib-version {
-  font-family: monaco, monospace;
+.version {
+  font-family: menlo, monospace;
   margin-left: 15px;
   font-size: 10px;
 }
