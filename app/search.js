@@ -1,3 +1,4 @@
+/* global localStorage, fetch */
 var emojilib = JSON.parse(localStorage.getItem('emojilib')) || require('emojilib').lib
 var emojikeys = JSON.parse(localStorage.getItem('emojikeys')) || require('emojilib').ordered
 var modifiers = require('emojilib').fitzpatrick_scale_modifiers
@@ -8,7 +9,7 @@ var indexKeys = Object.keys(index)
 var emojikeyIndexTable = buildEmojikeyIndexTable()
 var searching = false
 var searchInput = document.querySelector('.js-search')
-var preference = JSON.parse(window.localStorage.getItem('preference'))
+var preference = JSON.parse(localStorage.getItem('preference'))
 var directions = {
   37: 'left',
   38: 'up',
@@ -24,15 +25,15 @@ function fetchAndUpdateLocalCache () {
   var emojilibLib = `https://unpkg.com/emojilib@${version}/emojis.json`
   var emojilibOrdered = `https://unpkg.com/emojilib@${version}/ordered.json`
 
-  fetch(emojilibLib).then(function (res) { return checkIfNewVersion(res) }).then(function(newData) {
+  fetch(emojilibLib).then(function (res) { return checkIfNewVersion(res) }).then(function (newData) {
     // Fetch only once per day
     localStorage.setItem('emojilibExpireTime', new Date().getTime() + 1000 * 60 * 60 * 24)
     if (!newData) return
     localStorage.setItem('emojilib', JSON.stringify(newData))
 
-    fetch(emojilibOrdered).then(function (res) { return res.json() }).then(function(newData) {
+    fetch(emojilibOrdered).then(function (res) { return res.json() }).then(function (newData) {
       localStorage.setItem('emojikeys', JSON.stringify(newData))
-      location.reload()
+      window.location.reload()
     })
   })
 

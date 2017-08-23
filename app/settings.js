@@ -1,3 +1,4 @@
+/* global localStorage, alert */
 var preference
 var ipc = require('electron').ipcRenderer
 var modifiers = require('emojilib').fitzpatrick_scale_modifiers
@@ -17,7 +18,7 @@ var preferenceNames = {
 }
 
 var applyPreferences = function (preference, initialization) {
-  window.localStorage.setItem('preference', JSON.stringify(preference))
+  localStorage.setItem('preference', JSON.stringify(preference))
 
   ipc.send('update-preference', preference, initialization)
   var style = document.createElement('style')
@@ -39,8 +40,8 @@ var savePreference = function (event) {
   applyPreferences(preference)
 }
 
-if (window.localStorage.getItem('preference')) {
-  preference = JSON.parse(window.localStorage.getItem('preference'))
+if (localStorage.getItem('preference')) {
+  preference = JSON.parse(localStorage.getItem('preference'))
   Object.keys(defaultPreference).forEach(function (key) {
     if (!preference[key]) preference[key] = defaultPreference[key]
   })
@@ -57,11 +58,11 @@ ipc.on('open-preference', function (event, message) {
 ipc.on('preference-updated', function (event, result, initialization) {
   if (result) {
     if (!initialization) {
-      window.alert('Saved!')
+      alert('Saved!')
       togglePreferencePanel()
     }
   } else {
-    window.alert('Something went wrong, likely related to keybindings. See http://electron.atom.io/docs/v0.36.5/api/accelerator/ for more.')
+    alert('Something went wrong, likely related to keybindings. See http://electron.atom.io/docs/v0.36.5/api/accelerator/ for more.')
   }
 })
 
@@ -70,7 +71,7 @@ var togglePreferencePanel = function () {
     document.body.classList.remove('on-preference')
     document.getElementById('js-preference-panel').remove()
   } else {
-    var preference = JSON.parse(window.localStorage.getItem('preference'))
+    var preference = JSON.parse(localStorage.getItem('preference'))
     var panel = document.createElement('div')
 
     panel.classList.add('preference-panel')
