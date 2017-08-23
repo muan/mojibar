@@ -14,11 +14,20 @@ A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 
 #### :triangular_flag_on_post: Install using [Homebrew Cask](http://caskroom.io/)
 
-```
+```bash
+# Make sure homebrew knows about the latest mojibar
+$ brew update && brew upgrade brew-cask
+# Install mojibar
 $ brew cask install mojibar
 ```
 
 After installation, find Mojibar in your apps folder or search Mojibar in spotlight. Mojibar will appear in your tray at the top right corner of your screen.
+
+To upgrade mojibar installed from brew-cask to a newer version:
+
+```
+$ brew cask reinstall mojibar
+```
 
 ### Linux
 
