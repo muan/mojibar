@@ -1,5 +1,6 @@
 var emojilib = JSON.parse(localStorage.getItem('emojilib')) || require('emojilib').lib
 var emojikeys = JSON.parse(localStorage.getItem('emojikeys')) || require('emojilib').ordered
+var modifiers = require('emojilib').fitzpatrick_scale_modifiers
 var clipboard = require('electron').clipboard
 var ipc = require('electron').ipcRenderer
 var index = buildIndex()
@@ -7,6 +8,7 @@ var indexKeys = Object.keys(index)
 var emojikeyIndexTable = buildEmojikeyIndexTable()
 var searching = false
 var searchInput = document.querySelector('.js-search')
+var preference = JSON.parse(window.localStorage.getItem('preference'))
 var directions = {
   37: 'left',
   38: 'up',
@@ -172,8 +174,10 @@ function search (query) {
 function renderResults (emojiNameArray, containerElement) {
   containerElement.innerHTML = ''
   var fragment = document.createDocumentFragment()
+  var modifierValue = preference['skin-tone-modifier']
+  var modifier = modifiers.indexOf(modifierValue) >= 0 ? modifierValue : null
   emojiNameArray.forEach(function (name) {
-    var unicode = (emojilib[name]['char'] || '--')
+    var unicode = addModifier(emojilib[name], modifier) || '--'
     var resultElement = document.createElement('button')
     resultElement.type = 'button'
     resultElement.className = 'emoji'
@@ -214,6 +218,13 @@ function buildIndex () {
 
 function isWord (charCode) {
   return String.fromCharCode(charCode).match(/\w/)
+}
+
+// Insert modifier in front of zwj
+function addModifier (emoji, modifier) {
+  if (!modifier || !emoji['fitzpatrick_scale']) return emoji['char']
+  var zwj = new RegExp('‍', 'g')
+  return emoji['char'].match(zwj) ? emoji['char'].replace(zwj, modifier + '‍') : emoji['char'] + modifier
 }
 
 function jumpto (destination) {

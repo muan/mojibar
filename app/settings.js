@@ -1,16 +1,19 @@
 var preference
 var ipc = require('electron').ipcRenderer
+var modifiers = require('emojilib').fitzpatrick_scale_modifiers
 
 var defaultPreference = {
   'open-window-shortcut': 'ctrl+shift+space',
   'emoji-size': '20',
-  'open-at-login': false
+  'open-at-login': false,
+  'skin-tone-modifier': ''
 }
 
 var preferenceNames = {
   'open-window-shortcut': 'Mojibar shortcut',
   'emoji-size': 'Emoji font size',
-  'open-at-login': 'Start Mojibar at login'
+  'open-at-login': 'Start Mojibar at login',
+  'skin-tone-modifier': 'Skin tone modifier'
 }
 
 var applyPreferences = function (preference, initialization) {
@@ -20,6 +23,9 @@ var applyPreferences = function (preference, initialization) {
   var style = document.createElement('style')
   style.innerText = '.emoji { font-size: ' + preference['emoji-size'] + 'px; width: ' + (Number(preference['emoji-size']) + 20) + 'px; height: ' + (Number(preference['emoji-size']) + 20) + 'px; }'
   document.body.appendChild(style)
+  // Update skin tone setting
+  window.search(window.searchInput.value)
+  window.searchInput.focus()
 }
 
 var savePreference = function (event) {
@@ -27,7 +33,7 @@ var savePreference = function (event) {
 
   Object.keys(preference).forEach(function (key) {
     var el = document.getElementById(key)
-    preference[key] = el.type === 'checkbox' ? el.checked : el.value
+    preference[key] = el.nodeName === 'INPUT' && el.type === 'checkbox' ? el.checked : el.value
   })
 
   applyPreferences(preference)
@@ -71,13 +77,25 @@ var togglePreferencePanel = function () {
     panel.id = 'js-preference-panel'
     var html = '<form>'
     Object.keys(preferenceNames).forEach(function (key) {
-      html += '<div class="pref-item"><label for="' + key + '">'
+      html += '<div class="pref-item">'
       if (typeof preference[key] === 'boolean') {
         html += '<label>'
         html += '<input type="checkbox" id="' + key + '"' + (preference[key] ? 'checked' : '') + '>'
         html += preferenceNames[key]
         html += '</label>'
+      } else if (key === 'skin-tone-modifier') {
+        html += '<label for="' + key + '">'
+        html += preferenceNames[key]
+        html += '</label>'
+        html += '<select id="' + key + '">>'
+        html += `<option value="">None</option>`
+        modifiers.forEach(function (modifier) {
+          html += `<option value="${modifier}" ${preference[key] === modifier ? 'selected' : ''}>${modifier}</option>`
+        })
+        html += '</select>'
+        html += '</label>'
       } else {
+        html += '<label for="' + key + '">'
         html += preferenceNames[key]
         html += '</label>'
         html += '<input type="text" id="' + key + '" value="' + preference[key] + '" placeholder="' + defaultPreference[key] + '">'
