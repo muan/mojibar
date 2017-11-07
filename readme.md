@@ -12,7 +12,7 @@ A menubar app adaptation of [Emoji searcher](http://emoji.muan.co).
 
 [Download the latest version for Mac on the releases page](https://github.com/muan/mojibar/releases) (and drag into your apps folder.)
 
-#### :triangular_flag_on_post: Install using [Homebrew Cask](http://caskroom.io/)
+#### :triangular_flag_on_post: Install using [Homebrew Cask](https://caskroom.github.io/)
 
 ```bash
 # Make sure homebrew knows about the latest mojibar
