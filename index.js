@@ -117,6 +117,17 @@ mb.on('ready', function ready () {
   })
 })
 
+// Close the window when losing focus
+mb.on('focus-lost', function focusLost () {
+  if (isMac) {
+    mb.hideWindow()
+  } else {
+    // Windows and Linux
+    mb.window.blur()
+    mb.hideWindow()
+  }
+})
+
 // Register a shortcut listener.
 var registerShortcut = function (keybinding, initialization) {
   globalShortcut.unregisterAll()
