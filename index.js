@@ -9,7 +9,7 @@ var mb = menubar({
   height: 330,
   icon: path.join(__dirname, '/app/Icon-Template.png'),
   preloadWindow: true,
-  windowPosition: 'topRight',
+  windowPosition: 'trayLeft',
   alwaysOnTop: true
 })
 
