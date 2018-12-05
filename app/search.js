@@ -58,11 +58,11 @@ let audioProcessingInterval;
 let predictionFrequency = 350;
 let audioInputDelay = 2500;
 let lastAudioInputTime = 0;
-let audioDir = "/Users/jaejunlee/Documents/master/keyword-spotting/honkling-node/test/"
+let audioDir = "/Users/jaejunlee/Documents/master/keyword-spotting/mojibar/sample_audio/"
 let audioFiles = [];
 
 fs.readdirSync(audioDir).forEach(fileName => {
-  if (fileName.includes(".wav")) {
+  if (fileName.includes(".wav") || fileName.includes(".mp3")) {
     audioFiles.push(fileName);
   }
 })
@@ -83,6 +83,13 @@ function processAudioInput(prediction) {
       if (prediction == "yes") {
         open('', { a: "slack" }, function(error) {
           console.log('failed to load slack ' + error)
+        });
+        processed = true;
+      }
+
+      if (prediction == "left") {
+        open('/Users/jaejunlee/Documents/master/keyword-spotting/honkling-node/test/', { a: "atom" }, function(error) {
+          console.log('failed to load atom ' + error)
         });
         processed = true;
       }
