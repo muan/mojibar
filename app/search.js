@@ -5,7 +5,8 @@ var modifiers = require('emojilib').fitzpatrick_scale_modifiers
 var clipboard = require('electron').clipboard
 var ipc = require('electron').ipcRenderer
 
-var opn = require('opn');
+const fs = require('fs');
+var open = require('mac-open');
 var MicAudioProcessor = require('./micAudioProcessor')
 var KeywordSpotter = require('honkling-node')
 
@@ -57,6 +58,14 @@ let audioProcessingInterval;
 let predictionFrequency = 350;
 let audioInputDelay = 2500;
 let lastAudioInputTime = 0;
+let audioDir = "/Users/jaejunlee/Documents/master/keyword-spotting/honkling-node/test/"
+let audioFiles = [];
+
+fs.readdirSync(audioDir).forEach(fileName => {
+  if (fileName.includes(".wav")) {
+    audioFiles.push(fileName);
+  }
+})
 
 function processAudioInput(prediction) {
   if (prediction != 'unknown' && prediction != 'silence') {
@@ -66,11 +75,32 @@ function processAudioInput(prediction) {
       lastAudioInputTime = currentTime;
       searchInput.value = prediction;
       search(prediction);
-
-      opn('https://www.google.ca/search?q=' + prediction);
       console.log('audio input = ' + prediction);
-
       ipc.send('abort');
+
+      let processed = false;
+
+      if (prediction == "yes") {
+        open('', { a: "slack" }, function(error) {
+          console.log('failed to load slack ' + error)
+        });
+        processed = true;
+      }
+
+      if (!processed) {
+        audioFiles.forEach(fileName => {
+          if (fileName.includes(prediction)) {
+            open(audioDir+fileName, { a: "VOX" }, function(error) {
+              console.log('failed to load audio file ' + error)
+            });
+            processed = true;
+          }
+        })
+      }
+
+      if (!processed) {
+        open('https://en.wikipedia.org/wiki/ ' + prediction);
+      }
     }
   }
 }
@@ -94,6 +124,8 @@ searchInput.addEventListener('input', function () {
 })
 
 ipc.on('show', function (event, message) {
+  searchInput.value = '';
+  search('');
   searchInput.focus()
   startAudioProcessing();
 })
