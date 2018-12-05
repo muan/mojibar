@@ -4,6 +4,7 @@ var emojikeys = JSON.parse(localStorage.getItem('emojikeys')) || require('emojil
 var modifiers = require('emojilib').fitzpatrick_scale_modifiers
 var clipboard = require('electron').clipboard
 var ipc = require('electron').ipcRenderer
+var MicAudioProcessor = require('./micAudioProcessor')
 var index = buildIndex()
 var indexKeys = Object.keys(index)
 var emojikeyIndexTable = buildEmojikeyIndexTable()
@@ -45,6 +46,8 @@ function fetchAndUpdateLocalCache () {
     }
   }
 }
+
+let micProcessor = new MicAudioProcessor();
 
 searchInput.dataset.isSearchInput = true
 searchInput.focus()
