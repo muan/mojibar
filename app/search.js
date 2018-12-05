@@ -4,7 +4,11 @@ var emojikeys = JSON.parse(localStorage.getItem('emojikeys')) || require('emojil
 var modifiers = require('emojilib').fitzpatrick_scale_modifiers
 var clipboard = require('electron').clipboard
 var ipc = require('electron').ipcRenderer
+
+var opn = require('opn');
 var MicAudioProcessor = require('./micAudioProcessor')
+var KeywordSpotter = require('honkling-node')
+
 var index = buildIndex()
 var indexKeys = Object.keys(index)
 var emojikeyIndexTable = buildEmojikeyIndexTable()
@@ -48,6 +52,39 @@ function fetchAndUpdateLocalCache () {
 }
 
 let micProcessor = new MicAudioProcessor();
+let keywordSpotter = new KeywordSpotter();
+let audioProcessingInterval;
+let predictionFrequency = 350;
+let audioInputDelay = 2500;
+let lastAudioInputTime = 0;
+
+function processAudioInput(prediction) {
+  if (prediction != 'unknown' && prediction != 'silence') {
+    let currentTime = new Date().getTime();
+
+    if (currentTime > lastAudioInputTime + audioInputDelay) {
+      lastAudioInputTime = currentTime;
+      searchInput.value = prediction;
+      search(prediction);
+
+      opn('https://www.google.ca/search?q=' + prediction);
+      console.log('audio input = ' + prediction);
+
+      ipc.send('abort');
+    }
+  }
+}
+
+function startAudioProcessing() {
+  audioProcessingInterval = setInterval(function() {
+    let prediction = keywordSpotter.predict(micProcessor.getData());
+    processAudioInput(prediction);
+  }, predictionFrequency);
+}
+
+function stopAudioProcessing() {
+  clearInterval(audioProcessingInterval);
+}
 
 searchInput.dataset.isSearchInput = true
 searchInput.focus()
@@ -58,6 +95,11 @@ searchInput.addEventListener('input', function () {
 
 ipc.on('show', function (event, message) {
   searchInput.focus()
+  startAudioProcessing();
+})
+
+ipc.on('abort', function (event, message) {
+  stopAudioProcessing();
 })
 
 ipc.on('fetch', function (event, message) {
