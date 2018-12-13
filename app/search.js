@@ -9,6 +9,7 @@ const fs = require('fs');
 var open = require('mac-open');
 var MicAudioProcessor = require('./micAudioProcessor')
 var KeywordSpotter = require('honkling-node')
+const visualizer = require('visualizer.js')
 
 var index = buildIndex()
 var indexKeys = Object.keys(index)
@@ -22,6 +23,13 @@ var directions = {
   39: 'right',
   40: 'down'
 }
+
+// UI responding mic input
+document.getElementsByClassName('results')[0].style.visibility = "hidden";
+
+const viz = visualizer({
+  parent: '#waveform'
+})
 
 function fetchAndUpdateLocalCache () {
   if (!navigator.onLine) return
@@ -224,6 +232,7 @@ function stringIncludes (string, search) {
 }
 
 function search (query) {
+  return
   if (searching) {
     clearTimeout(searching)
   }
@@ -250,8 +259,7 @@ function search (query) {
       results.splice(results.indexOf(query), 1)
       results.unshift(query)
     }
-
-    renderResults(results, document.querySelector('.js-results'))
+    // renderResults(results, document.querySelector('.js-results'))
     if (document.querySelector('.emoji')) document.querySelector('.emoji').scrollIntoViewIfNeeded()
   }, 80)
 }
@@ -261,6 +269,7 @@ function renderResults (emojiNameArray, containerElement) {
   var fragment = document.createDocumentFragment()
   var modifierValue = preference['skin-tone-modifier']
   var modifier = modifiers.indexOf(modifierValue) >= 0 ? modifierValue : null
+  // console.log('display search results', emojiNameArray.length)
   emojiNameArray.forEach(function (name) {
     var unicode = addModifier(emojilib[name], modifier) || '--'
     var resultElement = document.createElement('button')

@@ -8,7 +8,8 @@
     "emojilib": "2.2.3",
     "honkling-node": "file:../honkling-node",
     "mac-open": "^0.1.3",
-    "menubar": "^5.1.0"
+    "menubar": "^5.1.0",
+    "visualizer.js": "^3.0.0"
   },
   "devDependencies": {
     "electron": "^3.0.10",
@@ -16,7 +17,7 @@
     "standard": "^12.0.1"
   },
   "scripts": {
-    "start": "electron .",
+    "start": "electron . --enable-logging",
     "build": "electron-packager . Mojibar --platform=darwin --arch=x64 --overwrite --icon=mojibar",
     "build:linux": "electron-packager . Mojibar --platform=linux --arch=x64 --overwrite --icon=mojibar",
     "test": "standard index.js app/search.js app/settings.js"

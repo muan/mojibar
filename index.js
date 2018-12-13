@@ -5,8 +5,8 @@ var isDev = require('electron-is-dev')
 var path = require('path')
 var mb = menubar({
   dir: path.join(__dirname, '/app'),
-  width: 440,
-  height: 330,
+  width: 400,
+  height: 200,
   icon: path.join(__dirname, '/app/Icon-Template.png'),
   preloadWindow: true,
   windowPosition: 'topRight',
