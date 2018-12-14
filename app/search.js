@@ -5,11 +5,10 @@ var modifiers = require('emojilib').fitzpatrick_scale_modifiers
 var clipboard = require('electron').clipboard
 var ipc = require('electron').ipcRenderer
 
-const fs = require('fs');
-var open = require('mac-open');
+var CommandHandler = require('./CommandHandler')
 var MicAudioProcessor = require('./micAudioProcessor')
 var KeywordSpotter = require('honkling-node')
-const visualizer = require('visualizer.js')
+var displayManager = require('./displayManager')
 
 var index = buildIndex()
 var indexKeys = Object.keys(index)
@@ -23,13 +22,6 @@ var directions = {
   39: 'right',
   40: 'down'
 }
-
-// UI responding mic input
-document.getElementsByClassName('results')[0].style.visibility = "hidden";
-
-const viz = visualizer({
-  parent: '#waveform'
-})
 
 function fetchAndUpdateLocalCache () {
   if (!navigator.onLine) return
@@ -61,19 +53,14 @@ function fetchAndUpdateLocalCache () {
 }
 
 let micProcessor = new MicAudioProcessor();
-let keywordSpotter = new KeywordSpotter();
+let keywordSpotter = new KeywordSpotter("RES8");
+let commandHandler = new CommandHandler();
+displayManager.displayAudio();
+
 let audioProcessingInterval;
 let predictionFrequency = 350;
 let audioInputDelay = 2500;
 let lastAudioInputTime = 0;
-let audioDir = "/Users/jaejunlee/Documents/master/keyword-spotting/mojibar/sample_audio/"
-let audioFiles = [];
-
-fs.readdirSync(audioDir).forEach(fileName => {
-  if (fileName.includes(".wav") || fileName.includes(".mp3")) {
-    audioFiles.push(fileName);
-  }
-})
 
 function processAudioInput(prediction) {
   if (prediction != 'unknown' && prediction != 'silence') {
@@ -81,41 +68,11 @@ function processAudioInput(prediction) {
 
     if (currentTime > lastAudioInputTime + audioInputDelay) {
       lastAudioInputTime = currentTime;
-      searchInput.value = prediction;
-      search(prediction);
+      // search(prediction);
+      commandHandler.handleCommand(prediction)
       console.log('audio input = ' + prediction);
-      ipc.send('abort');
 
-      let processed = false;
-
-      if (prediction == "yes") {
-        open('', { a: "slack" }, function(error) {
-          console.log('failed to load slack ' + error)
-        });
-        processed = true;
-      }
-
-      if (prediction == "left") {
-        open('/Users/jaejunlee/Documents/master/keyword-spotting/honkling-node/test/', { a: "atom" }, function(error) {
-          console.log('failed to load atom ' + error)
-        });
-        processed = true;
-      }
-
-      if (!processed) {
-        audioFiles.forEach(fileName => {
-          if (fileName.includes(prediction)) {
-            open(audioDir+fileName, { a: "VOX" }, function(error) {
-              console.log('failed to load audio file ' + error)
-            });
-            processed = true;
-          }
-        })
-      }
-
-      if (!processed) {
-        open('https://en.wikipedia.org/wiki/ ' + prediction);
-      }
+      // ipc.send('abort');
     }
   }
 }
@@ -175,7 +132,7 @@ document.addEventListener('keydown', function (evt) {
       } else {
         jumpto('next')
       }
-    } else if (evt.keyCode === 13) {
+    } else if (evt.keyCode === 13) { // enter
       copyFocusedEmoji(evt.target, evt.shiftKey)
     } else if (Object.keys(directions).indexOf(evt.keyCode.toString()) >= 0) {
       // on navigation, navigate
@@ -188,7 +145,7 @@ document.addEventListener('keydown', function (evt) {
     searchInput.select()
     evt.preventDefault()
   } else if (evt.keyCode === 27) {
-    // on escape: exit
+    // on escape: exit (esc)
     ipc.send('abort')
   }
 })

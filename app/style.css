@@ -21,6 +21,41 @@ button {
   font-family: AppleColorEmoji;
 }
 
+#statusBar {
+ display:table-cell;
+ vertical-align:middle;
+ color: #696969;
+ font-family: Arial;
+ font-size: 15px;
+}
+
+#statusBarWrapper {
+  width: 100%;
+  height: 80%;
+  background: #f7f7f7;
+  border-bottom: 1px solid #f0f0f0;
+  position: fixed;
+  top: 26%;
+  display:table;
+  text-align: center;
+}
+
+#listDiv {
+  width: 100%;
+  height: 80%;
+  background: #f7f7f7;
+  border-bottom: 1px solid #f0f0f0;
+  position: fixed;
+  top: 26%;
+}
+
+#listWrapper {
+  padding-left: 40px;
+  color: #696969;
+  font-family: Arial;
+  font-size: 15px;
+}
+
 #waveform {
   width: 100%;
   height: 80%;
