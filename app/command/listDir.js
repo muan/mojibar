@@ -44,9 +44,8 @@ ListDir.prototype.move = function(deferred, dir) {
   if (fs.lstatSync(path).isDirectory()) {
     this.listDir(deferred, path);
   } else {
-    deferred.resolve(false);
+    deferred.resolve(true);
     this.processor.handleCommand("open");
-    console.log("open", this.processor.getPath())
   }
 }
 
@@ -73,18 +72,23 @@ ListDir.prototype.processCommand = function(term) {
     deferred.resolve(true);
   } else if (term == "one") {
     let index = this.currentIndex - displayManager.listSize;
+    if (index < 0) index = 0;
     this.move(deferred, this.fileList[index]);
   } else if (term == "two") {
     let index = this.currentIndex - displayManager.listSize;
+    if (index < 0) index = 0;
     this.move(deferred, this.fileList[index+1]);
   } else if (term == "three") {
     let index = this.currentIndex - displayManager.listSize;
+    if (index < 0) index = 0;
     this.move(deferred, this.fileList[index+2]);
   } else if (term == "four") {
     let index = this.currentIndex - displayManager.listSize;
+    if (index < 0) index = 0;
     this.move(deferred, this.fileList[index+3]);
   } else if (term == "five") {
     let index = this.currentIndex - displayManager.listSize;
+    if (index < 0) index = 0;
     this.move(deferred, this.fileList[index+4]);
   } else if (term == "up") {
     let path_arr = this.processor.getPath().split('/');

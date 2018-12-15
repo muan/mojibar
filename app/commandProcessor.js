@@ -7,6 +7,7 @@ var ControlVolume = require('./command/controlVolume')
 var ListDir = require('./command/listDir')
 var ListTop = require('./command/listTop')
 var ListMemory = require('./command/listMemory')
+var OpenApp = require('./command/openApp')
 
 let commandProcessor;
 
@@ -32,6 +33,7 @@ function CommandProcessor() {
   registerHandler(new ListDir());
   registerHandler(new ListTop());
   registerHandler(new ListMemory());
+  registerHandler(new OpenApp());
 
   console.log("Registered Commands - " + this.commandSet)
 }
