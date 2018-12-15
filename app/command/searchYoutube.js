@@ -1,17 +1,17 @@
+var CommandHandler = require('./commandHandler');
+var util = util = require('util');
 var open = require('mac-open');
 var youtubeSearch = require('youtube-search');
 
 function SearchYoutube() {
-  this.command = 'youtube';
-  this.opts = {
-    maxResults: 1,
-    key: 'AIzaSyDyZMEDTMIb_RmdPjN8wpkXXuBCnHGFBXA'
-  };
+    CommandHandler.apply(this, ["youtube"]);
+    this.opts = {
+      maxResults: 1,
+      key: 'AIzaSyDyZMEDTMIb_RmdPjN8wpkXXuBCnHGFBXA'
+    };
 }
 
-SearchYoutube.prototype.getCommand = function() {
-  return this.command;
-}
+util.inherits(SearchYoutube, CommandHandler);
 
 SearchYoutube.prototype.processCommand = function(term) {
   let deferred = $.Deferred();

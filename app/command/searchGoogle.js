@@ -1,12 +1,12 @@
+var CommandHandler = require('./commandHandler');
+var util = util = require('util');
 var open = require('mac-open');
 
 function SearchGoogle() {
-  this.command = 'google';
+    CommandHandler.apply(this, ["google"]);
 }
 
-SearchGoogle.prototype.getCommand = function() {
-  return this.command;
-}
+util.inherits(SearchGoogle, CommandHandler);
 
 SearchGoogle.prototype.processCommand = function(term) {
   let deferred = $.Deferred();

@@ -5,7 +5,7 @@ var modifiers = require('emojilib').fitzpatrick_scale_modifiers
 var clipboard = require('electron').clipboard
 var ipc = require('electron').ipcRenderer
 
-var CommandHandler = require('./CommandHandler')
+var CommandProcessor = require('./CommandProcessor')
 var MicAudioProcessor = require('./micAudioProcessor')
 var KeywordSpotter = require('honkling-node')
 var displayManager = require('./displayManager')
@@ -54,7 +54,7 @@ function fetchAndUpdateLocalCache () {
 
 let micProcessor = new MicAudioProcessor();
 let keywordSpotter = new KeywordSpotter("RES8");
-let commandHandler = new CommandHandler();
+let commandProcessor = new CommandProcessor();
 displayManager.displayAudio();
 
 let audioProcessingInterval;
@@ -69,7 +69,7 @@ function processAudioInput(prediction) {
     if (currentTime > lastAudioInputTime + audioInputDelay) {
       lastAudioInputTime = currentTime;
       // search(prediction);
-      commandHandler.handleCommand(prediction)
+      commandProcessor.handleCommand(prediction)
       console.log('audio input = ' + prediction);
 
       // ipc.send('abort');

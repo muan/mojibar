@@ -6,19 +6,21 @@ var SearchWikipedia = require('./command/searchWikipedia')
 var ControlVolume = require('./command/controlVolume')
 var ListDir = require('./command/listDir')
 
-let commandHandler;
+let commandProcessor;
 
-function CommandHandler() {
-  commandHandler = this;
+function CommandProcessor() {
+  commandProcessor = this;
 
   this.inputCommand = '';
   this.commandSet = [];
   this.handlerMap = {};
+  this.path = '';
 
   function registerHandler(handler) {
     let command = handler.getCommand();
-    commandHandler.commandSet.push(command);
-    commandHandler.handlerMap[command] = handler;
+    commandProcessor.commandSet.push(command);
+    commandProcessor.handlerMap[command] = handler;
+    handler.registerProcessor(commandProcessor);
   }
 
   registerHandler(new SearchYoutube());
@@ -30,13 +32,13 @@ function CommandHandler() {
   console.log("Registered Commands - " + this.commandSet)
 }
 
-CommandHandler.prototype.resetStatus = function() {
+CommandProcessor.prototype.resetStatus = function() {
   this.inputCommand = ''
   displayManager.updateCommandText('')
   ipc.send('abort');
 }
 
-CommandHandler.prototype.handleCommand = function(input) {
+CommandProcessor.prototype.handleCommand = function(input) {
   if (input == "bye") {
     this.resetStatus();
   } else if (this.commandSet.includes(input)) {
@@ -49,17 +51,29 @@ CommandHandler.prototype.handleCommand = function(input) {
 
     promise.done(function(keep) {
       if (keep) {
-        displayManager.updateCommandText(commandHandler.inputCommand)
+        displayManager.updateCommandText(commandProcessor.inputCommand)
       } else {
-        commandHandler.resetStatus();
+        commandProcessor.resetStatus();
       }
     }).fail(function(msg) {
       displayManager.displayStatusBar(msg);
       setTimeout(function() {
-        commandHandler.resetStatus();
+        commandProcessor.resetStatus();
       }, 3000)
     })
   }
 }
 
-module.exports = CommandHandler;
+CommandProcessor.prototype.appendPath = function(folder) {
+  this.path = this.path + "/" + folder;
+}
+
+CommandProcessor.prototype.setPath = function(path) {
+  this.path = path;
+}
+
+CommandProcessor.prototype.getPath = function() {
+  return this.path;
+}
+
+module.exports = CommandProcessor;

@@ -1,30 +1,26 @@
+var CommandHandler = require('./commandHandler');
+var util = util = require('util');
 const osxVol = require('osx-vol');
 var displayManager = require('../displayManager')
 
 function ControlVolume() {
-  this.command = 'volume';
-  this.returnValue = false;
+    CommandHandler.apply(this, ["volume"]);
 }
 
-ControlVolume.prototype.getCommand = function() {
-  return this.command;
-}
+util.inherits(ControlVolume, CommandHandler);
 
 ControlVolume.prototype.processCommand = function(term) {
-  if (term == "bye") {
-    return false;
-  }
-
   let deferred = $.Deferred();
 
   osxVol.get().then(level => {
     console.log('Current volume level is '+level*100+'%');
     if (term == "up") {
-      level += 0.03
+      level += 0.03;
     } else if (term == "down") {
-      level -= 0.03
+      level -= 0.03;
     } else {
-      deferred.reject("invalid command : " + term)
+      deferred.reject("valid command : up down")
+      return;
     }
 
     if (level >= 0 && level <= 1) {

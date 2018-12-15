@@ -1,11 +1,13 @@
+var CommandHandler = require('./commandHandler');
+var util = util = require('util');
 const fs = require('fs');
 var displayManager = require('../displayManager')
 
 let listDir;
 
 function ListDir() {
+  CommandHandler.apply(this, ["list"]);
   listDir = this;
-  this.command = 'list';
 
   this.listDirPath = {};
   this.listDirPath['music'] = "./sample_audio";
@@ -14,38 +16,93 @@ function ListDir() {
   this.listDirPath['home'] = "../../../..";
 }
 
+util.inherits(ListDir, CommandHandler);
+
 ListDir.prototype.getCommand = function() {
   return this.command;
+}
+
+ListDir.prototype.listDir = function(deferred, path) {
+  this.currentIndex = 0;
+  fs.readdir(path, function(err, items) {
+    if (err) {
+      listDir.processor.setPath('');
+      deferred.reject(err);
+      return;
+    }
+    listDir.fileList = items;
+    listDir.currentIndex = displayManager.updateList(
+        listDir.processor.getPath(),
+        listDir.fileList,
+        listDir.currentIndex);
+    displayManager.displayList();
+    deferred.resolve(true);
+  });
+}
+
+ListDir.prototype.move = function(deferred, dir) {
+  this.processor.appendPath(dir);
+  let path = this.processor.getPath();
+  if (fs.lstatSync(path).isDirectory()) {
+    this.listDir(deferred, path);
+  } else {
+    deferred.resolve(false);
+    this.processor.handleCommand("open");
+    console.log("open", this.processor.getPath())
+  }
 }
 
 ListDir.prototype.processCommand = function(term) {
   let deferred = $.Deferred();
 
   if (term in this.listDirPath) {
-    this.currentIndex = 0;
-    fs.readdir(this.listDirPath[term], function(err, items) {
-      if (err) {
-        deferred.reject(err);
-        return;
-      }
-      listDir.fileList = items;
-      listDir.currentIndex = displayManager.updateList(listDir.fileList, listDir.currentIndex);
-      displayManager.displayList();
-      deferred.resolve(true);
-    });
+    let path = this.listDirPath[term];
+    this.processor.setPath(path);
+    this.listDir(deferred, path);
   } else if (term == "next") {
-    this.currentIndex = displayManager.updateList(this.fileList, this.currentIndex);
+    this.currentIndex = displayManager.updateList(
+        this.processor.getPath(),
+        this.fileList,
+        this.currentIndex);
     deferred.resolve(true);
   } else if (term == "previous") {
     this.currentIndex -= displayManager.listSize * 2;
     if (this.currentIndex < 0) this.currentIndex = 0;
-    this.currentIndex = displayManager.updateList(this.fileList, this.currentIndex);
+    this.currentIndex = displayManager.updateList(
+        this.processor.getPath(),
+        this.fileList,
+        this.currentIndex);
     deferred.resolve(true);
+  } else if (term == "one") {
+    let index = this.currentIndex - displayManager.listSize;
+    this.move(deferred, this.fileList[index]);
+  } else if (term == "two") {
+    let index = this.currentIndex - displayManager.listSize;
+    this.move(deferred, this.fileList[index+1]);
+  } else if (term == "three") {
+    let index = this.currentIndex - displayManager.listSize;
+    this.move(deferred, this.fileList[index+2]);
+  } else if (term == "four") {
+    let index = this.currentIndex - displayManager.listSize;
+    this.move(deferred, this.fileList[index+3]);
+  } else if (term == "five") {
+    let index = this.currentIndex - displayManager.listSize;
+    this.move(deferred, this.fileList[index+4]);
+  } else if (term == "up") {
+    let path_arr = this.processor.getPath().split('/');
+    path_arr.pop();
+    let path = path_arr.join('/');
+    this.processor.setPath(path);
+    this.listDir(deferred, path);
   } else {
-    deferred.reject("invalid command : " + term);
+    deferred.reject("valid command : next, previous, 1, 2, 3, 4, 5, open, up");
   }
 
   return deferred.promise();
+}
+
+ListDir.prototype.getCurrentPath = function() {
+  return this.path;
 }
 
 module.exports = ListDir;

@@ -3,7 +3,7 @@ const visualizer = require('visualizer.js')
 const viz = visualizer({
   parent: '#waveform'
 })
-const listSize = 6;
+const listSize = 5;
 
 module.exports.displayAudio = function() {
   $('.results').hide();
@@ -19,9 +19,11 @@ module.exports.displayList = function() {
   $('#waveform').hide();
 }
 
-module.exports.updateList = function(items, index) {
+module.exports.updateList = function(heading, items, index) {
   let currentListSize = 0;
   $("#listWrapper").empty();
+
+  $("#listWrapper").append($("<b>").text(heading));
 
   while (index < items.length && currentListSize < listSize) {
     $("#listWrapper").append($("<li>").text(items[index]));
@@ -31,9 +33,9 @@ module.exports.updateList = function(items, index) {
 
   if (index < items.length) {
     let remaining = items.length - index;
-    $("#listWrapper").append($("<span>").text(remaining + " more files exist"));
+    $("#listWrapper").append($("<span>").text(remaining + " more exist"));
   } else {
-    $("#listWrapper").append($("<span>").text("total of " + items.length + " files"));
+    $("#listWrapper").append($("<span>").text("total size : " + items.length));
   }
 
   return index;
@@ -55,4 +57,4 @@ module.exports.updateCommandText = function(text) {
   $('.js-search').val(text)
 }
 
-module.exports.listSize = 6;
+module.exports.listSize = listSize;

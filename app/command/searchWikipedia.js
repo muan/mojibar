@@ -1,12 +1,12 @@
+var CommandHandler = require('./commandHandler');
+var util = util = require('util');
 var open = require('mac-open');
 
 function SearchWikipedia() {
-  this.command = 'wikipedia';
+    CommandHandler.apply(this, ["wikipedia"]);
 }
 
-SearchWikipedia.prototype.getCommand = function() {
-  return this.command;
-}
+util.inherits(SearchWikipedia, CommandHandler);
 
 SearchWikipedia.prototype.processCommand = function(term) {
   let deferred = $.Deferred();
