@@ -4,7 +4,7 @@ const osxVol = require('osx-vol');
 var displayManager = require('../displayManager')
 
 function ControlVolume() {
-    CommandHandler.apply(this, ["volume"]);
+    CommandHandler.apply(this, ["volume", false]);
 }
 
 util.inherits(ControlVolume, CommandHandler);

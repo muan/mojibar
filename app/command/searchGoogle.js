@@ -3,7 +3,7 @@ var util = util = require('util');
 var open = require('mac-open');
 
 function SearchGoogle() {
-    CommandHandler.apply(this, ["google"]);
+    CommandHandler.apply(this, ["google", false]);
 }
 
 util.inherits(SearchGoogle, CommandHandler);

@@ -23,7 +23,9 @@ module.exports.updateList = function(heading, items, index) {
   let currentListSize = 0;
   $("#listWrapper").empty();
 
-  $("#listWrapper").append($("<b>").text(heading));
+  let num = Math.ceil(index / listSize) + 1;
+  let den = Math.ceil(items.length / listSize)
+  $("#listWrapper").append($("<b>").text(heading + " (" + num + "/" + den + ")"));
 
   while (index < items.length && currentListSize < listSize) {
     $("#listWrapper").append($("<li>").text(items[index]));

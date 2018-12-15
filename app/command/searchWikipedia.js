@@ -3,7 +3,7 @@ var util = util = require('util');
 var open = require('mac-open');
 
 function SearchWikipedia() {
-    CommandHandler.apply(this, ["wikipedia"]);
+    CommandHandler.apply(this, ["wikipedia", false]);
 }
 
 util.inherits(SearchWikipedia, CommandHandler);

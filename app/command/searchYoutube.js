@@ -4,7 +4,7 @@ var open = require('mac-open');
 var youtubeSearch = require('youtube-search');
 
 function SearchYoutube() {
-    CommandHandler.apply(this, ["youtube"]);
+    CommandHandler.apply(this, ["youtube", false]);
     this.opts = {
       maxResults: 1,
       key: 'AIzaSyDyZMEDTMIb_RmdPjN8wpkXXuBCnHGFBXA'

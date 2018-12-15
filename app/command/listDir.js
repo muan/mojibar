@@ -6,21 +6,19 @@ var displayManager = require('../displayManager')
 let listDir;
 
 function ListDir() {
-  CommandHandler.apply(this, ["list"]);
+  CommandHandler.apply(this, ["list", false]);
   listDir = this;
 
+  this.currentIndex = 0;
   this.listDirPath = {};
   this.listDirPath['music'] = "./sample_audio";
   this.listDirPath['workplace'] = "..";
   this.listDirPath['documents'] = "../../..";
   this.listDirPath['home'] = "../../../..";
+  this.fileList = [];
 }
 
 util.inherits(ListDir, CommandHandler);
-
-ListDir.prototype.getCommand = function() {
-  return this.command;
-}
 
 ListDir.prototype.listDir = function(deferred, path) {
   this.currentIndex = 0;
