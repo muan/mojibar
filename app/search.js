@@ -53,20 +53,30 @@ function fetchAndUpdateLocalCache () {
 }
 
 let micProcessor = new MicAudioProcessor();
-let keywordSpotter = new KeywordSpotter("RES8");
+let keywordSpotter = new KeywordSpotter("light", "res8", 0.8);
+console.log("valid keywords : " + keywordSpotter.getCommands());
+
 let commandProcessor = new CommandProcessor();
 displayManager.displayAudio();
 
 let audioProcessingInterval;
-let predictionFrequency = 350;
+let predictionFrequency = 200;
 let audioInputDelay = 2500;
 let lastAudioInputTime = 0;
+let prevPrediction = "unknown"
 
 function processAudioInput(prediction) {
   if (prediction != 'unknown' && prediction != 'silence') {
+    if (prevPrediction != "unknown") {
+      // gap ("unknown") must exist between commands
+      prevPrediction = prediction
+      return
+    }
+
     let currentTime = new Date().getTime();
 
     if (currentTime > lastAudioInputTime + audioInputDelay) {
+      // gap (time) must exist between commands
       lastAudioInputTime = currentTime;
       // search(prediction);
       commandProcessor.handleCommand(prediction)
@@ -75,11 +85,13 @@ function processAudioInput(prediction) {
       // ipc.send('abort');
     }
   }
+  prevPrediction = prediction;
 }
 
 function startAudioProcessing() {
   audioProcessingInterval = setInterval(function() {
     let prediction = keywordSpotter.predict(micProcessor.getData());
+    // console.log(prediction)
     processAudioInput(prediction);
   }, predictionFrequency);
 }

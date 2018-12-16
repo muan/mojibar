@@ -3,7 +3,7 @@ const visualizer = require('visualizer.js')
 const viz = visualizer({
   parent: '#waveform'
 })
-const listSize = 5;
+const listSize = 4;
 
 module.exports.displayAudio = function() {
   $('.results').hide();
