@@ -53,7 +53,7 @@ function fetchAndUpdateLocalCache () {
 }
 
 let micProcessor = new MicAudioProcessor();
-let keywordSpotter = new KeywordSpotter("light", "res8", 0.8);
+let keywordSpotter = new KeywordSpotter("mojibar");
 console.log("valid keywords : " + keywordSpotter.getCommands());
 
 let commandProcessor = new CommandProcessor();
