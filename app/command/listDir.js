@@ -56,13 +56,13 @@ ListDir.prototype.processCommand = function(term) {
     let path = this.listDirPath[term];
     this.processor.setPath(path);
     this.listDir(deferred, path);
-  } else if (term == "next") {
+  } else if (term == "right") {
     this.currentIndex = displayManager.updateList(
         this.processor.getPath(),
         this.fileList,
         this.currentIndex);
     deferred.resolve(true);
-  } else if (term == "previous") {
+  } else if (term == "left") {
     this.currentIndex -= displayManager.listSize * 2;
     if (this.currentIndex < 0) this.currentIndex = 0;
     this.currentIndex = displayManager.updateList(
@@ -97,7 +97,7 @@ ListDir.prototype.processCommand = function(term) {
     this.processor.setPath(path);
     this.listDir(deferred, path);
   } else {
-    deferred.reject("valid command : next, previous, 1, 2, 3, 4, 5, open, up");
+    deferred.reject("valid command : right, left, 1, 2, 3, 4, 5, open, up");
   }
 
   return deferred.promise();
