@@ -59,25 +59,31 @@ ListTop.prototype.listTop = function(deferred) {
 ListTop.prototype.processCommand = function(term) {
   let deferred = $.Deferred();
   if (term == undefined) {
-    this.listTop(deferred);
-  } else if (term == "right") {
-    this.currentIndex = displayManager.updateList(
-        this.command,
-        this.procList,
-        this.currentIndex);
-    deferred.resolve(true);
-  } else if (term == "left") {
-    this.currentIndex -= displayManager.listSize * 2;
-    if (this.currentIndex < 0) this.currentIndex = 0;
-    this.currentIndex = displayManager.updateList(
-        this.command,
-        this.procList,
-        this.currentIndex);
-    deferred.resolve(true);
-  } else {
-    displayManager.displayStatusBar("valid command : right, left");
+    displayManager.displayProcess(this.port);
     deferred.resolve(true);
   }
+
+  // // top
+  // if (term == undefined) {
+  //   // this.listTop(deferred);
+  // } else if (term == "right") {
+  //   this.currentIndex = displayManager.updateList(
+  //       this.command,
+  //       this.procList,
+  //       this.currentIndex);
+  //   deferred.resolve(true);
+  // } else if (term == "left") {
+  //   this.currentIndex -= displayManager.listSize * 2;
+  //   if (this.currentIndex < 0) this.currentIndex = 0;
+  //   this.currentIndex = displayManager.updateList(
+  //       this.command,
+  //       this.procList,
+  //       this.currentIndex);
+  //   deferred.resolve(true);
+  // } else {
+  //   displayManager.displayStatusBar("valid command : right, left");
+  //   deferred.resolve(true);
+  // }
   return deferred.promise();
 }
 

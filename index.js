@@ -6,7 +6,7 @@ var path = require('path')
 var mb = menubar({
   dir: path.join(__dirname, '/app'),
   width: 400,
-  height: 200,
+  height: 180,
   icon: path.join(__dirname, '/app/Icon-Template.png'),
   preloadWindow: true,
   windowPosition: 'topRight',

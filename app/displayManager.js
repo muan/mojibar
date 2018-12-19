@@ -8,15 +8,27 @@ const listSize = 4;
 module.exports.displayAudio = function() {
   $('.results').hide();
   $('#listDiv').hide();
-  $('#statusBarWrapper').hide();
+  $('#statusBarDiv').hide();
   $('#waveform').show();
+  $('#processDiv').hide();
+}
+
+module.exports.displayProcess = function(port) {
+  $('.results').hide();
+  $('#listDiv').hide();
+  $('#statusBarDiv').hide();
+  $('#waveform').show();
+  $('#processDiv').show();
+  $('#processDiv').empty()
+  $('#processDiv').html('<object data="http://localhost:'+port+'">');
 }
 
 module.exports.displayList = function() {
   $('.results').hide();
   $('#listDiv').show();
-  $('#statusBarWrapper').hide();
+  $('#statusBarDiv').hide();
   $('#waveform').hide();
+  $('#processDiv').hide();
 }
 
 module.exports.updateList = function(heading, items, index) {
@@ -46,8 +58,9 @@ module.exports.updateList = function(heading, items, index) {
 module.exports.displayStatusBar = function(msg) {
   $('.results').hide();
   $('#listDiv').hide();
-  $('#statusBarWrapper').show();
+  $('#statusBarDiv').show();
   $('#waveform').hide();
+  $('#processDiv').hide();
   $('#statusBar').text(msg);
 
   setTimeout(function() {
