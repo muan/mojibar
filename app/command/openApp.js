@@ -4,7 +4,7 @@ const fs = require('fs');
 var open = require('mac-open');
 
 function OpenApp() {
-    CommandHandler.apply(this, ["open", true]);
+    CommandHandler.apply(this, ["go", true]);
 }
 
 util.inherits(OpenApp, CommandHandler);

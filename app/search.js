@@ -115,6 +115,8 @@ ipc.on('show', function (event, message) {
 })
 
 ipc.on('abort', function (event, message) {
+  displayManager.displayAudio();
+  commandProcessor.clearCommand();
   stopAudioProcessing();
 })
 

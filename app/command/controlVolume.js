@@ -1,7 +1,7 @@
 var CommandHandler = require('./commandHandler');
 var util = util = require('util');
 const osxVol = require('osx-vol');
-var displayManager = require('../displayManager')
+var displayManager = require('../displayManager');
 
 function ControlVolume() {
     CommandHandler.apply(this, ["volume", false]);
@@ -19,7 +19,8 @@ ControlVolume.prototype.processCommand = function(term) {
     } else if (term == "down") {
       level -= 0.03;
     } else {
-      deferred.reject("valid command : up down")
+      displayStatusBar.displayStatusBar("valid command : up down");
+      deferred.resolve(true);
       return;
     }
 
@@ -27,10 +28,10 @@ ControlVolume.prototype.processCommand = function(term) {
       osxVol.set(level).then(() => {
         displayManager.displayStatusBar('Changed volume level to ' + Math.round(level*100) + ' %');
       });
-      deferred.resolve(true)
     } else {
-      deferred.reject("volume out of range")
+      displayStatusBar.displayStatusBar("volume out of range");
     }
+    deferred.resolve(true);
   });
 
   return deferred.promise();

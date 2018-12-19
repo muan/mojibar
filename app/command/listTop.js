@@ -36,7 +36,7 @@ ListTop.prototype.listTop = function(deferred) {
 ListTop.prototype.processCommand = function(term) {
   let deferred = $.Deferred();
   if (term == undefined) {
-    this.listTop(deferred)
+    this.listTop(deferred);
   } else if (term == "right") {
     this.currentIndex = displayManager.updateList(
         this.command,
@@ -52,7 +52,8 @@ ListTop.prototype.processCommand = function(term) {
         this.currentIndex);
     deferred.resolve(true);
   } else {
-    deferred.reject("valid command : right, left");
+    displayManager.displayStatusBar("valid command : right, left");
+    deferred.resolve(true);
   }
   return deferred.promise();
 }

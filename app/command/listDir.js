@@ -6,13 +6,13 @@ var displayManager = require('../displayManager')
 let listDir;
 
 function ListDir() {
-  CommandHandler.apply(this, ["list", false]);
+  CommandHandler.apply(this, ["list", true]);
   listDir = this;
 
   this.currentIndex = 0;
   this.listDirPath = {};
   this.listDirPath['music'] = "./sample_audio";
-  this.listDirPath['workplace'] = "..";
+  this.listDirPath['workspace'] = "..";
   this.listDirPath['documents'] = "../../..";
   this.listDirPath['home'] = "../../../..";
   this.fileList = [];
@@ -25,7 +25,8 @@ ListDir.prototype.listDir = function(deferred, path) {
   fs.readdir(path, function(err, items) {
     if (err) {
       listDir.processor.setPath('');
-      deferred.reject(err);
+      displayManager.displayStatusBar(err);
+      deferred.resolve(true);
       return;
     }
     listDir.fileList = items;
@@ -45,14 +46,19 @@ ListDir.prototype.move = function(deferred, dir) {
     this.listDir(deferred, path);
   } else {
     deferred.resolve(true);
-    this.processor.handleCommand("open");
+    this.processor.handleCommand("go");
   }
 }
 
 ListDir.prototype.processCommand = function(term) {
   let deferred = $.Deferred();
 
-  if (term in this.listDirPath) {
+  // to be used without specifying folder name
+  if (term == undefined) {
+    let path = this.listDirPath['documents'];
+    this.processor.setPath(path);
+    this.listDir(deferred, path);
+  } else if (term in this.listDirPath) {
     let path = this.listDirPath[term];
     this.processor.setPath(path);
     this.listDir(deferred, path);
@@ -97,7 +103,8 @@ ListDir.prototype.processCommand = function(term) {
     this.processor.setPath(path);
     this.listDir(deferred, path);
   } else {
-    deferred.reject("valid command : right, left, 1, 2, 3, 4, 5, open, up");
+    displayManager.displayStatusBar("valid command : right, left, 1, 2, 3, 4, 5, go, up");
+    deferred.resolve(true);
   }
 
   return deferred.promise();

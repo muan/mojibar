@@ -27,8 +27,7 @@ ControlLight.prototype.sendMsg = function(deferred, body) {
     body: JSON.stringify(body)
   }, function (error, response, body) {
     if (error) {
-      deferred.reject(error);
-      return;
+      displayStatusBar.displayStatusBar(error);
     }
     deferred.resolve(true);
   });
@@ -58,8 +57,8 @@ ControlLight.prototype.processCommand = function(term) {
     this.sendMsg(deferred, body);
 
   } else {
-    deferred.reject("valid command : up, down, off, on");
-    return;
+    displayStatusBar.displayStatusBar("valid command : up, down, off, on");
+    deferred.resolve(true);
   }
 
   return deferred.promise();

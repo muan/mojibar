@@ -40,9 +40,13 @@ function CommandProcessor() {
   console.log("Registered Commands - " + this.commandSet)
 }
 
+CommandProcessor.prototype.clearCommand = function() {
+  this.inputCommand = '';
+  displayManager.updateCommandText('');
+}
+
 CommandProcessor.prototype.resetStatus = function() {
-  this.inputCommand = ''
-  displayManager.updateCommandText('')
+  this.clearCommand();
   ipc.send('abort');
 }
 
@@ -53,11 +57,11 @@ CommandProcessor.prototype.handleCommand = function(input) {
     this.inputCommand = input
     displayManager.updateCommandText(input);
     if (!this.handlerMap[this.inputCommand].requireParam()) {
-      this.executeCommand()
+      this.executeCommand();
     }
   } else if (this.inputCommand != '') {
     displayManager.updateCommandText(this.inputCommand + ' ' + input);
-    this.executeCommand(input)
+    this.executeCommand(input);
   }
 }
 
@@ -65,9 +69,7 @@ CommandProcessor.prototype.executeCommand = function(input) {
   let promise = this.handlerMap[this.inputCommand].processCommand(input);
 
   promise.done(function(keep) {
-    if (keep) {
-      displayManager.updateCommandText(commandProcessor.inputCommand)
-    } else {
+    if (!keep) {
       commandProcessor.resetStatus();
     }
   }).fail(function(msg) {
