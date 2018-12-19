@@ -15,4 +15,12 @@ CommandHandler.prototype.requireParam = function () {
   return !this.worksWithoutParam;
 };
 
+CommandHandler.prototype.initHandler = function () {
+  return;
+};
+
+CommandHandler.prototype.cleanUpHandler = function () {
+  return;
+};
+
 module.exports = CommandHandler;

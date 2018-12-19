@@ -41,12 +41,14 @@ function CommandProcessor() {
 }
 
 CommandProcessor.prototype.clearCommand = function() {
+  this.handlerMap[this.inputCommand].cleanUpHandler();
   this.inputCommand = '';
   displayManager.updateCommandText('');
 }
 
 CommandProcessor.prototype.resetStatus = function() {
   this.clearCommand();
+  this.handlerMap[this.inputCommand].cleanUpHandler();
   ipc.send('abort');
 }
 
@@ -54,8 +56,9 @@ CommandProcessor.prototype.handleCommand = function(input) {
   if (input == "bye") {
     this.resetStatus();
   } else if (this.commandSet.includes(input)) {
-    this.inputCommand = input
-    displayManager.updateCommandText(input);
+    this.inputCommand = input;
+    this.handlerMap[this.inputCommand].initHandler();
+    displayManager.updateCommandText(this.inputCommand);
     if (!this.handlerMap[this.inputCommand].requireParam()) {
       this.executeCommand();
     }
@@ -90,6 +93,13 @@ CommandProcessor.prototype.setPath = function(path) {
 
 CommandProcessor.prototype.getPath = function() {
   return this.path;
+}
+
+CommandProcessor.prototype.cleanUpHandlers = function() {
+  for (var i = 0; i < this.commandSet.length; i++) {
+    let command = this.commandSet[i];
+    this.handlerMap[command].cleanUpHandler();
+  }
 }
 
 module.exports = CommandProcessor;

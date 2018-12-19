@@ -1,7 +1,8 @@
 var CommandHandler = require('./commandHandler');
 var util = util = require('util');
 var psList = require('ps-list');
-var displayManager = require('../displayManager')
+var displayManager = require('../displayManager');
+var process = require('child_process');
 
 let listTop;
 
@@ -11,6 +12,8 @@ function ListTop() {
 
   this.currentIndex = 0;
   this.procList = [];
+
+  this.port = 8888;
 }
 
 function compareCPU(a, b) {
@@ -18,6 +21,26 @@ function compareCPU(a, b) {
 }
 
 util.inherits(ListTop, CommandHandler);
+
+ListTop.prototype.initHandler = function() {
+  this.htop = process.exec('gotty -p ' + this.port + ' htop', (error, stdout, stderr) => {
+    if (error) {
+      console.error(`[listTop] process exec error: ${error}`);
+      return;
+    }
+    // console.log(`[listTop] process stdout : ${stdout}`);
+    // console.log(`[listTop] process stderr: ${stderr}`);
+  });
+
+  console.log('[listTop] gotty terminal with htop is running (port : ' + this.port + ', pid : ' + this.htop.pid + ')');
+}
+
+ListTop.prototype.cleanUpHandler = function() {
+  if (this.htop != undefined) {
+    console.log('[listTop] terminating gotty terminal with htop (port : ' + this.port + ', pid : ' + this.htop.pid + ')');
+    this.htop.kill('SIGHUP');
+  }
+}
 
 ListTop.prototype.listTop = function(deferred) {
   this.currentIndex = 0;
