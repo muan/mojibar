@@ -27,13 +27,8 @@ mb.app.on('activate', function () {
 
 // when receive the abort message, close the app
 ipcMain.on('abort', function () {
-  if (isMac) {
-    mb.app.hide()
-  } else {
-    // Windows and Linux
-    mb.window.blur()
-    mb.hideWindow()
-  }
+  mb.window.blur()
+  mb.hideWindow()
 })
 
 // update shortcuts when preferences change
