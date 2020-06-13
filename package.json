@@ -5,11 +5,11 @@
   "main": "index.js",
   "dependencies": {
     "electron-is-dev": "^0.1.2",
-    "emojilib": "2.2.3",
+    "emojilib": "^2.4.0",
     "menubar": "^5.1.0"
   },
   "devDependencies": {
-    "electron": "^1.6.0",
+    "electron": "^1.8.8",
     "electron-packager": "^8.0.0",
     "standard": "^10.0.2"
   },
