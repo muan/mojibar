@@ -11,10 +11,16 @@ var searching = false
 var searchInput = document.querySelector('.js-search')
 var preference = JSON.parse(localStorage.getItem('preference'))
 var directions = {
-  37: 'left',
-  38: 'up',
-  39: 'right',
-  40: 'down'
+  "ArrowLeft": 'left',
+  "ArrowUp": 'up',
+  "ArrowRight": 'right',
+  "ArrowDown": 'down'
+}
+var vimdirections = {
+  'h': 'left', // h
+  'j': 'down', // j
+  'k': 'up',   // k
+  'l': 'right' // l
 }
 
 function fetchAndUpdateLocalCache () {
@@ -69,33 +75,35 @@ document.addEventListener('mousewheel', function (e) {
 document.addEventListener('keydown', function (evt) {
   var onSearchField = !!evt.target.dataset.isSearchInput
   if (onSearchField) {
-    if (evt.keyCode === 40) {
+    if (evt.key === 'ArrowDown' || (evt.ctrlKey && evt.key === 'j')) {
       // on down: focus on the first thing!
       jumpto('up')
       evt.preventDefault()
-    } else if (evt.keyCode === 13) {
+    } else if (evt.key === "Enter") {
       copyFocusedEmoji(document.querySelector('.emoji:first-child'), evt.shiftKey)
     }
   } else if (evt.target.classList.contains('emoji')) {
-    if (evt.keyCode === 32) {
+    if (evt.key === " ") {
       if (evt.shiftKey) {
         jumpto('prev')
       } else {
         jumpto('next')
       }
-    } else if (evt.keyCode === 13) {
+    } else if (evt.key === "Enter") {
       copyFocusedEmoji(evt.target, evt.shiftKey)
-    } else if (Object.keys(directions).indexOf(evt.keyCode.toString()) >= 0) {
+    } else if (evt.ctrlKey && evt.key in vimdirections) {
+      jumpto(vimdirections[evt.key])
+    } else if (evt.key in directions) {
       // on navigation, navigate
-      jumpto(directions[evt.keyCode])
+      jumpto(directions[evt.key])
     }
   }
 
-  if (!onSearchField && evt.keyCode === 191 && !evt.shiftKey && !evt.metaKey && !evt.ctrlKey) {
+  if (!onSearchField && evt.key === "/" && !evt.shiftKey && !evt.metaKey && !evt.ctrlKey) {
     // on `/`: focus on the search field
     searchInput.select()
     evt.preventDefault()
-  } else if (evt.keyCode === 27) {
+  } else if (evt.key === "Escape") {
     // on escape: exit
     ipc.send('abort')
   }
