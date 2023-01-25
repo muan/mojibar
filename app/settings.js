@@ -1,27 +1,27 @@
 /* global localStorage, alert */
-var preference
-var ipc = require('electron').ipcRenderer
-var modifiers = require('emojilib').fitzpatrick_scale_modifiers
+let preference
+const ipc = require('electron').ipcRenderer
+const modifiers = require('unicode-emoji-json/data-emoji-components')
 
-var defaultPreference = {
+const defaultPreference = {
   'open-window-shortcut': 'ctrl+shift+space',
   'emoji-size': '20',
   'open-at-login': false,
   'skin-tone-modifier': ''
 }
 
-var preferenceNames = {
+const preferenceNames = {
   'open-window-shortcut': 'Mojibar shortcut',
   'emoji-size': 'Emoji font size',
   'open-at-login': 'Start Mojibar at login',
   'skin-tone-modifier': 'Skin tone modifier'
 }
 
-var applyPreferences = function (preference, initialization) {
+const applyPreferences = function (preference, initialization) {
   localStorage.setItem('preference', JSON.stringify(preference))
 
   ipc.send('update-preference', preference, initialization)
-  var style = document.createElement('style')
+  const style = document.createElement('style')
   style.innerText = '.emoji { font-size: ' + preference['emoji-size'] + 'px; width: ' + (Number(preference['emoji-size']) + 20) + 'px; height: ' + (Number(preference['emoji-size']) + 20) + 'px; }'
   document.body.appendChild(style)
   // Update skin tone setting
@@ -29,11 +29,11 @@ var applyPreferences = function (preference, initialization) {
   window.searchInput.focus()
 }
 
-var savePreference = function (event) {
+const savePreference = function (event) {
   event.preventDefault()
 
   Object.keys(preference).forEach(function (key) {
-    var el = document.getElementById(key)
+    const el = document.getElementById(key)
     preference[key] = el.nodeName === 'INPUT' && el.type === 'checkbox' ? el.checked : el.value
   })
 
@@ -66,17 +66,17 @@ ipc.on('preference-updated', function (event, result, initialization) {
   }
 })
 
-var togglePreferencePanel = function () {
+const togglePreferencePanel = function () {
   if (document.body.classList.contains('on-preference')) {
     document.body.classList.remove('on-preference')
     document.getElementById('js-preference-panel').remove()
   } else {
-    var preference = JSON.parse(localStorage.getItem('preference'))
-    var panel = document.createElement('div')
+    const preference = JSON.parse(localStorage.getItem('preference'))
+    const panel = document.createElement('div')
 
     panel.classList.add('preference-panel')
     panel.id = 'js-preference-panel'
-    var html = '<form>'
+    let html = '<form>'
     Object.keys(preferenceNames).forEach(function (key) {
       html += '<div class="pref-item">'
       if (typeof preference[key] === 'boolean') {
@@ -89,7 +89,7 @@ var togglePreferencePanel = function () {
         html += preferenceNames[key]
         html += '</label>'
         html += '<select id="' + key + '">>'
-        html += `<option value="">None</option>`
+        html += '<option value="">None</option>'
         modifiers.forEach(function (modifier) {
           html += `<option value="${modifier}" ${preference[key] === modifier ? 'selected' : ''}>${modifier}</option>`
         })

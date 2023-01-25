@@ -1,16 +1,20 @@
-var { app, ipcMain, globalShortcut, Menu } = require('electron')
-var isMac = /darwin/.test(process.platform)
-var menubar = require('menubar')
-var isDev = require('electron-is-dev')
-var path = require('path')
-var mb = menubar({
+const { app, ipcMain, globalShortcut, Menu } = require('electron')
+const isMac = /darwin/.test(process.platform)
+const menubar = require('menubar')
+const isDev = require('electron-is-dev')
+const path = require('path')
+const mb = menubar({
   dir: path.join(__dirname, '/app'),
   width: 440,
   height: 330,
   icon: path.join(__dirname, '/app/Icon-Template.png'),
   preloadWindow: true,
-  windowPosition: 'topRight',
-  alwaysOnTop: true
+  windowPosition: 'trayLeft',
+  alwaysOnTop: true,
+  webPreferences: {
+    nodeIntegration: true,
+    contextIsolation: false,
+  }
 })
 
 mb.on('show', function () {
@@ -49,7 +53,7 @@ ipcMain.on('update-preference', function (evt, pref, initialization) {
   }
 })
 
-var template = [
+const template = [
   {
     label: 'Mojibar',
     submenu: [
@@ -109,7 +113,7 @@ var template = [
 
 mb.on('ready', function ready () {
   // Build default menu for text editing and devtools. (gone since electron 0.25.2)
-  var menu = Menu.buildFromTemplate(template)
+  const menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 
   mb.window.on('hide', function () {
@@ -117,12 +121,24 @@ mb.on('ready', function ready () {
   })
 })
 
+// Close the window when losing focus
+mb.on('focus-lost', function focusLost () {
+  if (isMac) {
+    mb.hideWindow()
+  } else {
+    // Windows and Linux
+    mb.window.blur()
+    mb.hideWindow()
+  }
+})
+
 // Register a shortcut listener.
-var registerShortcut = function (keybinding, initialization) {
+const registerShortcut = function (keybinding, initialization) {
+  let ret = ''
   globalShortcut.unregisterAll()
 
   try {
-    var ret = globalShortcut.register(keybinding, function () {
+    ret = globalShortcut.register(keybinding, function () {
       if (mb.window.isVisible()) {
         return mb.hideWindow()
       }
