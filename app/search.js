@@ -160,14 +160,33 @@ function search (query) {
     if (query.length === 0 || (query.length === 1 && query.charCodeAt() <= 255)) {
       results = emojikeys.slice(0)
     } else {
-      const resultsDict = {}
-      indexKeys.forEach(function matchQuery (keyword) {
-        if (stringIncludes(keyword, query)) {
-          index[keyword].forEach(function addMatchingEmoji (emoji) {
-            resultsDict[emoji] = true
-          })
+      let resultsDict = null
+      const words = query.split(/\s+/)
+      for (const i in words) {
+        const word = words[i]
+        if (word === '') continue
+
+        let wordResultsDict = {}
+        indexKeys.forEach(function matchQuery (keyword) {
+          if (stringIncludes(keyword, word)) {
+            index[keyword].forEach(function addMatchingEmoji (emoji) {
+              wordResultsDict[emoji] = true
+            })
+          }
+        })
+
+        if (resultsDict === null) {
+          // Just initialize it.
+          resultsDict = wordResultsDict
+        } else {
+          // Intersect with existing results.
+          for (const emoji in resultsDict) {
+            if (!wordResultsDict.hasOwnProperty(emoji)) {
+              delete resultsDict[emoji]
+            }
+          }
         }
-      })
+      }
       results = Object.keys(resultsDict).sort(function sortResults (a, b) {
         return emojikeyIndexTable[a] - emojikeyIndexTable[b]
       })
