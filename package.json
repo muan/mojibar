@@ -1,23 +1,26 @@
 {
   "name": "mojibar",
-  "version": "2.6.2",
+  "version": "3.0.0",
   "description": "A menubar app adaptation of Emoji searcher.",
-  "main": "index.js",
+  "main": "main.js",
   "dependencies": {
-    "electron-is-dev": "^0.1.2",
-    "emojilib": "2.2.3",
-    "menubar": "^5.1.0"
+    "electron-is-dev": "^2.0.0",
+    "emojilib": "^3.0.8",
+    "menubar": "^5.1.0",
+    "unicode-emoji-json": "^0.4.0"
   },
   "devDependencies": {
-    "electron": "^1.6.0",
-    "electron-packager": "^8.0.0",
-    "standard": "^10.0.2"
+    "electron": "^22.0.3",
+    "electron-packager": "^17.1.1",
+    "standard": "^17.0.0"
   },
   "scripts": {
     "start": "electron .",
     "build": "electron-packager . Mojibar --platform=darwin --arch=x64 --overwrite --icon=mojibar",
     "build:linux": "electron-packager . Mojibar --platform=linux --arch=x64 --overwrite --icon=mojibar",
-    "test": "standard index.js app/search.js app/settings.js"
+    "build:win":"electron-packager . Mojibar --platform=win32 --arch=x64 --overwrite --icon=mojibar",
+    "test": "standard main.js app/search.js app/settings.js",
+    "fix": "standard --fix main.js app/search.js app/settings.js"
   },
   "repository": {
     "type": "git",
