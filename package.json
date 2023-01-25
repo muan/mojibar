@@ -18,6 +18,7 @@
     "start": "electron .",
     "build": "electron-packager . Mojibar --platform=darwin --arch=x64 --overwrite --icon=mojibar",
     "build:linux": "electron-packager . Mojibar --platform=linux --arch=x64 --overwrite --icon=mojibar",
+    "build:win":"electron-packager . Mojibar --platform=win32 --arch=x64 --overwrite --icon=mojibar",
     "test": "standard index.js app/search.js app/settings.js",
     "fix": "standard --fix index.js app/search.js app/settings.js"
   },
