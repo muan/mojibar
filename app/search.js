@@ -1,31 +1,43 @@
 /* global localStorage, fetch */
-var emojilib = JSON.parse(localStorage.getItem('emojilib')) || require('emojilib').lib
-var emojikeys = JSON.parse(localStorage.getItem('emojikeys')) || require('emojilib').ordered
-var modifiers = require('emojilib').fitzpatrick_scale_modifiers
-var clipboard = require('electron').clipboard
-var ipc = require('electron').ipcRenderer
-var index = buildIndex()
-var indexKeys = Object.keys(index)
-var emojikeyIndexTable = buildEmojikeyIndexTable()
-var searching = false
-var searchInput = document.querySelector('.js-search')
-var preference = JSON.parse(localStorage.getItem('preference'))
-var directions = {
+const unicodeEmojiJsonData = require('unicode-emoji-json')
+const emojilibkeywordSet = JSON.parse(localStorage.getItem('emojilib')) || require('emojilib')
+const emojilib = fetchEmojilibData(unicodeEmojiJsonData, emojilibkeywordSet)
+const emojikeys = JSON.parse(localStorage.getItem('emojikeys')) || require('unicode-emoji-json/data-ordered-emoji')
+const { Debugger } = require('electron')
+const modifiers = require('unicode-emoji-json/data-emoji-components')
+const clipboard = require('electron').clipboard
+const ipc = require('electron').ipcRenderer
+const index = buildIndex()
+const indexKeys = Object.keys(index)
+const emojikeyIndexTable = buildEmojikeyIndexTable()
+let searching = false
+const searchInput = document.querySelector('.js-search')
+const preference = JSON.parse(localStorage.getItem('preference'))
+const directions = {
   37: 'left',
   38: 'up',
   39: 'right',
   40: 'down'
 }
 
+function fetchEmojilibData (data, keywordSet) {
+  for (const emoji in data) {
+    data[emoji].keywords = keywordSet[emoji]
+  }
+  return data
+}
+
 function fetchAndUpdateLocalCache () {
   if (!navigator.onLine) return
-  var expireTime = localStorage.getItem('emojilibExpireTime')
+  const expireTime = localStorage.getItem('emojilibExpireTime')
   if (expireTime && Number(expireTime) > new Date().getTime()) return
-  var version = '^2.0.0'
-  var emojilibLib = `https://unpkg.com/emojilib@${version}/emojis.json`
-  var emojilibOrdered = `https://unpkg.com/emojilib@${version}/ordered.json`
+  const version = '^3.0.0'
+  const emojilibLib = `https://unpkg.com/emojilib@${version}/dist/emoji-en-US.json`
+  const emojilibOrdered = `https://unpkg.com/unicode-emoji-json@${version}/data-ordered-emoji.json`
 
-  fetch(emojilibLib).then(function (res) { return checkIfNewVersion(res) }).then(function (newData) {
+  fetch(emojilibLib)
+  .then(function (res) { return checkIfNewVersion(res) })
+  .then(function (newData) {
     // Fetch only once per day
     localStorage.setItem('emojilibExpireTime', new Date().getTime() + 1000 * 60 * 60 * 24)
     if (!newData) return
@@ -38,7 +50,7 @@ function fetchAndUpdateLocalCache () {
   })
 
   function checkIfNewVersion (res) {
-    var fetchedVersion = res.url.match(/@([\d.]+)/)[1]
+    const fetchedVersion = res.url.match(/@([\d.]+)/)[1]
     if (fetchedVersion !== localStorage.getItem('emojilibVersion')) {
       localStorage.setItem('emojilibVersion', fetchedVersion)
       return res.json()
@@ -67,7 +79,7 @@ document.addEventListener('mousewheel', function (e) {
   }
 })
 document.addEventListener('keydown', function (evt) {
-  var onSearchField = !!evt.target.dataset.isSearchInput
+  const onSearchField = !!evt.target.dataset.isSearchInput
   if (onSearchField) {
     if (evt.keyCode === 40) {
       // on down: focus on the first thing!
@@ -102,7 +114,7 @@ document.addEventListener('keydown', function (evt) {
 })
 
 function copyFocusedEmoji (emoji, copyText) {
-  var data
+  let data
   // on enter: copy data and exit
   if (copyText) {
     data = ':' + emoji.getAttribute('aria-label') + ':'
@@ -117,7 +129,7 @@ function copyFocusedEmoji (emoji, copyText) {
 
 document.addEventListener('keypress', function (evt) {
   // if typing while navigatin, just type into the search box!
-  var word = isWord(evt.charCode)
+  const word = isWord(evt.charCode)
   if (word && evt.target.classList.contains('emoji')) {
     searchInput.focus()
   }
@@ -144,11 +156,11 @@ function search (query) {
     clearTimeout(searching)
   }
   searching = setTimeout(function () {
-    var results
+    let results
     if (query.length === 0 || (query.length === 1 && query.charCodeAt() <= 255)) {
       results = emojikeys.slice(0)
     } else {
-      var resultsDict = {}
+      const resultsDict = {}
       indexKeys.forEach(function matchQuery (keyword) {
         if (stringIncludes(keyword, query)) {
           index[keyword].forEach(function addMatchingEmoji (emoji) {
@@ -174,12 +186,12 @@ function search (query) {
 
 function renderResults (emojiNameArray, containerElement) {
   containerElement.innerHTML = ''
-  var fragment = document.createDocumentFragment()
-  var modifierValue = preference['skin-tone-modifier']
-  var modifier = modifiers.indexOf(modifierValue) >= 0 ? modifierValue : null
+  const fragment = document.createDocumentFragment()
+  const modifierValue = preference ? preference['skin-tone-modifier'] : 'none'
+  const modifier = modifiers[modifierValue] ? modifierValue : null
   emojiNameArray.forEach(function (name) {
-    var unicode = addModifier(emojilib[name], modifier) || '--'
-    var resultElement = document.createElement('button')
+    const unicode = addModifier(emojilib[name], modifier) || '--'
+    const resultElement = document.createElement('button')
     resultElement.type = 'button'
     resultElement.className = 'emoji'
     resultElement.setAttribute('aria-label', name)
@@ -190,7 +202,7 @@ function renderResults (emojiNameArray, containerElement) {
 }
 
 function buildEmojikeyIndexTable () {
-  var indexTable = {}
+  const indexTable = {}
   emojikeys.forEach(function (name, index) {
     indexTable[name] = index
   })
@@ -198,20 +210,22 @@ function buildEmojikeyIndexTable () {
 }
 
 function buildIndex () {
-  var keywords = {}
+  const keywords = {}
   emojikeys.forEach(function (name) {
-    var words = emojilib[name]['keywords']
-    words.push(name)
-    words.push(emojilib[name]['char'])
-    words.push(emojilib[name]['category'])
+    const words = emojilib[name].keywords
+    if (words) {
+      words.push(name)
+      // words.push(emojilib[name].char)
+      // words.push(emojilib[name].category)
 
-    words.forEach(function (word) {
-      if (keywords[word] && keywords[word].indexOf(name) < 0) {
-        keywords[word].push(name)
-      } else if (!keywords[word]) {
-        keywords[word] = [name]
-      }
-    })
+      words.forEach(function (word) {
+        if (keywords[word] && keywords[word].indexOf(name) < 0) {
+          keywords[word].push(name)
+        } else if (!keywords[word]) {
+          keywords[word] = [name]
+        }
+      })
+    }
   })
 
   return keywords
@@ -223,19 +237,25 @@ function isWord (charCode) {
 
 // Insert modifier in front of zwj
 function addModifier (emoji, modifier) {
-  if (!modifier || !emoji['fitzpatrick_scale']) return emoji['char']
-  var zwj = new RegExp('‍', 'g')
-  return emoji['char'].match(zwj) ? emoji['char'].replace(zwj, modifier + '‍') : emoji['char'] + modifier
+  if (emoji.skin_tone_support || !modifier || !emoji.fitzpatrick_scale) {
+    if (emoji.keywords) {
+      return emoji.keywords[emoji.keywords.length - 1]
+    } else {
+      return false
+    }
+  }
+  const zwj = new RegExp('‍', 'g')
+  return emoji.char.match(zwj) ? emoji.char.replace(zwj, modifier + '‍') : emoji.char + modifier
 }
 
 function jumpto (destination) {
-  var container = document.getElementsByClassName('js-results')[0]
-  var all = document.getElementsByClassName('emoji')
-  var focusedElement = document.querySelector('.emoji:focus')
-  var nodeIndex = Array.prototype.indexOf.call(all, focusedElement)
-  var resultPerRow = Math.floor(container.clientWidth / all[0].clientWidth)
-  var resultPerCol = Math.floor(container.clientHeight / all[0].clientHeight)
-  var newTarget
+  const container = document.getElementsByClassName('js-results')[0]
+  const all = document.getElementsByClassName('emoji')
+  const focusedElement = document.querySelector('.emoji:focus')
+  const nodeIndex = Array.prototype.indexOf.call(all, focusedElement)
+  const resultPerRow = Math.floor(container.clientWidth / all[0].clientWidth)
+  const resultPerCol = Math.floor(container.clientHeight / all[0].clientHeight)
+  let newTarget
 
   if (destination === 'up') {
     newTarget = nodeIndex - resultPerRow
